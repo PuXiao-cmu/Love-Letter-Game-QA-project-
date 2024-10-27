@@ -2,6 +2,10 @@ package edu.cmu.f24qa.loveletter;
 
 import java.util.LinkedList;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+
 public class PlayerList {
 
     private LinkedList<Player> players;
@@ -90,13 +94,14 @@ public class PlayerList {
      *
      * @return the round winner
      */
-    public Player getRoundWinner() {
+    public @NonNull Player getRoundWinner() {
         for (Player p : players) {
             if (p.getHand().hasCards()) {
                 return p;
             }
         }
-        return null;
+        throw new IllegalStateException("No player with cards found");
+        // return null;
     }
 
     /**
@@ -104,13 +109,14 @@ public class PlayerList {
      *
      * @return the game winner
      */
-    public Player getGameWinner() {
+    public @NonNull Player getGameWinner() {
         for (Player p : players) {
             if (p.getTokens() == 5) {
                 return p;
             }
         }
-        return null;
+        throw new IllegalStateException("No player has won the game yet");
+        // return null;
     }
 
     /**
@@ -133,7 +139,7 @@ public class PlayerList {
      *
      * @return the player with the given name or null if there is no such player
      */
-    public Player getPlayer(String name) {
+    public @Nullable Player getPlayer(String name) {
         for (Player p : players) {
             if (p.getName().equalsIgnoreCase(name)) {
                 return p;

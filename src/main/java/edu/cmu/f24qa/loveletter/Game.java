@@ -1,6 +1,8 @@
 package edu.cmu.f24qa.loveletter;
 
 import java.util.Scanner;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 
 public class Game {
     private PlayerList players;
@@ -221,11 +223,23 @@ public class Game {
      *          the player choosing an opponent
      * @return the chosen target player
      */
-    private Player getOpponent(Scanner in, PlayerList playerList, Player user) {
-        System.out.print("Who would you like to target: ");
-        String opponentName = in.nextLine();
-        return playerList.getPlayer(opponentName);
+    private @NonNull Player getOpponent(Scanner in, PlayerList playerList, Player user) {
+        while (true) {
+            System.out.print("Who would you like to target: ");
+            String opponentName = in.nextLine();
+            Player opponent = playerList.getPlayer(opponentName);
+            if (opponent == null) {
+                System.out.println("Invalid player name. Please try again.");
+                continue;
+            }
+            
+            if (opponent == user) {
+                System.out.println("You cannot target yourself. Please choose another player.");
+                continue;
+            }
+            
+            return opponent;
+            // return playerList.getPlayer(opponentName);
+        }
     }
-
-
 }
