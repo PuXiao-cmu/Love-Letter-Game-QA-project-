@@ -109,14 +109,14 @@ public class PlayerList {
      *
      * @return the game winner
      */
-    public @NonNull Player getGameWinner() {
+    public @Nullable Player getGameWinner() {
         for (Player p : players) {
             if (p.getTokens() == 5) {
                 return p;
             }
         }
-        throw new IllegalStateException("No player has won the game yet");
-        // return null;
+        //throw new IllegalStateException("No player has won the game yet");
+        return null;
     }
 
     /**
