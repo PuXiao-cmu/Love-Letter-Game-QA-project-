@@ -23,3 +23,6 @@ jobs:
       
     - name: Run Nullness Checker
       run: mvn clean compile
+    
+    - name: Run SpotBugs
+      run: mvn spotbugs:check
