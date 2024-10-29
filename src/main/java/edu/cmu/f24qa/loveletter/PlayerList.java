@@ -48,8 +48,8 @@ public class PlayerList {
      */
     public void reset() {
         for (Player p : players) {
-            p.getHand().clear();
-            p.getDiscarded().clear();
+            p.clearHand();
+            p.clearDiscarded();
         }
     }
 
@@ -59,7 +59,7 @@ public class PlayerList {
     public void printUsedPiles() {
         for (Player p : players) {
             System.out.println("\n" + p.getName());
-            p.getDiscarded().print();
+            p.printDiscarded();
         }
     }
 
@@ -82,7 +82,7 @@ public class PlayerList {
     public boolean checkForRoundWinner() {
         int count = 0;
         for (Player p : players) {
-            if (p.getHand().hasCards()) {
+            if (p.hasHandCards()) {
                 count++;
             }
         }
@@ -96,7 +96,7 @@ public class PlayerList {
      */
     public @NonNull Player getRoundWinner() {
         for (Player p : players) {
-            if (p.getHand().hasCards()) {
+            if (p.hasHandCards()) {
                 return p;
             }
         }
@@ -127,7 +127,7 @@ public class PlayerList {
      */
     public void dealCards(Deck deck) {
         for (Player p : players) {
-            p.getHand().add(deck.draw());
+            p.receiveHandCard(deck.draw());
         }
     }
 
@@ -156,7 +156,7 @@ public class PlayerList {
     public Player compareUsedPiles() {
         Player winner = players.getFirst();
         for (Player p : players) {
-            if (p.getDiscarded().value() > winner.getDiscarded().value()) {
+            if (p.discardedValue() > winner.discardedValue()) {
                 winner = p;
             }
         }

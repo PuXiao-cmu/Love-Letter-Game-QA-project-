@@ -97,6 +97,13 @@ public class Player {
     }
 
     /**
+     * Clears all the cards in the player's hand.
+     */
+    public void clearHand() {
+        this.hand.clear();
+    }
+
+    /**
      * Adds a card to the player's discard pile.
      *
      * @param card the card to be discarded
@@ -112,6 +119,20 @@ public class Player {
      */
     public int discardedValue() {
         return this.discarded.value();
+    }
+
+    /**
+     * Prints the cards in the player's discard pile.
+     */
+    public void printDiscarded() {
+        this.discarded.print();
+    }
+
+    /**
+     * Clears all the cards in the player's discard pile.
+     */
+    public void clearDiscarded() {
+        this.discarded.clear();
     }
 
     /**
