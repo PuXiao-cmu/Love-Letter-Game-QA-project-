@@ -156,6 +156,24 @@
           <consoleOutput>true</consoleOutput>
         </configuration>
       </plugin>
+      <!-- <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+            <encoding>UTF-8</encoding>
+            <configLocation>checkstyle.xml</configLocation>
+            <failsOnError>true</failsOnError>
+            <consoleOutput>true</consoleOutput>
+        </configuration>
+        <executions>
+            <execution>
+                <goals>
+                    <goal>check</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin> -->
 
       <!-- Surefire -->
       <plugin>
