@@ -152,7 +152,7 @@
           <encoding>UTF-8</encoding>
           <linkXRef>false</linkXRef>
           <configLocation>checkstyle.xml</configLocation>
-          <failsOnError>false</failsOnError>
+          <failsOnError>true</failsOnError>
           <consoleOutput>true</consoleOutput>
         </configuration>
       </plugin>
