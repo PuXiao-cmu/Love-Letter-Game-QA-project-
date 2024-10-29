@@ -3,11 +3,15 @@ package edu.cmu.f24qa.loveletter;
 import java.util.Scanner;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 
 public class Game {
     private PlayerList players;
     private Deck deck;
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "It's fine for console reads")
     private Scanner in;
+    @SuppressFBWarnings(value = "URF_UNREAD_FIELD", justification = "Might be used later")
     int round;
 
     public Game(Scanner in) {
@@ -20,7 +24,7 @@ public class Game {
     public void setPlayers() {
         System.out.print("Enter player name (empty when done): ");
         String name = in.nextLine();
-        while (name != "") {
+        while (!name.isBlank()) {
             this.players.addPlayer(name);
             System.out.print("Enter player name (empty when done): ");
             name = in.nextLine();
@@ -38,20 +42,20 @@ public class Game {
             while (!players.checkForRoundWinner() && deck.hasMoreCards()) {
                 Player turn = players.getCurrentPlayer();
 
-                if (turn.getHand().hasCards()) {
+                if (turn.hasHandCards()) {
                     players.printUsedPiles();
                     System.out.println("\n" + turn.getName() + "'s turn:");
                     if (turn.isProtected()) {
                         turn.switchProtection();
                     }
-                    turn.getHand().add(deck.draw());
+                    turn.receiveHandCard(deck.draw());
 
-                    int royaltyPos = turn.getHand().royaltyPos();
+                    int royaltyPos = turn.handRoyaltyPos();
                     if (royaltyPos != -1) {
-                        if (royaltyPos == 0 && turn.getHand().peek(1).value() == 7) {
-                            playCard(turn.getHand().remove(1), turn);
-                        } else if (royaltyPos == 1 && turn.getHand().peek(0).value() == 7) {
-                            playCard(turn.getHand().remove(0), turn);
+                        if (royaltyPos == 0 && turn.viewHandCard(1).value() == 7) {
+                            playCard(turn.playHandCard(1), turn);
+                        } else if (royaltyPos == 1 && turn.viewHandCard(0).value() == 7) {
+                            playCard(turn.playHandCard(0), turn);
                         } else {
                             playCard(getCard(turn), turn);
                         }
@@ -91,9 +95,10 @@ public class Game {
      *          the player of the card
      */
     private void playCard(Card card, Player user) {
-        String name = card.name;
+        String name = card.getName();
         int value = card.value();
-        user.getDiscarded().add(card);
+        // user.getDiscarded().add(card);
+        user.discardCard(card);
 
         if (value < 4 || value == 5 || value == 6) {
             if (name == "guard") {
@@ -101,7 +106,7 @@ public class Game {
                 useGuard(in, opponent);
             } else if (name == "preist") {
                 Player opponent = getOpponent(in, players, user);
-                Card opponentCard = opponent.getHand().peek(0);
+                Card opponentCard = opponent.viewHandCard(0);
                 System.out.println(opponent.getName() + " shows you a " + opponentCard);
             } else if (name == "baron") {
                 Player opponent = getOpponent(in, players, user);
@@ -133,12 +138,12 @@ public class Game {
      * @return the chosen card
      */
     private Card getCard(Player user) {
-        user.getHand().print();
+        user.printHand();
         System.out.println();
         System.out.print("Which card would you like to play (0 for first, 1 for second): ");
         String CARD_POSITION = in.nextLine();
         int idx = Integer.parseInt(CARD_POSITION);
-        return user.getHand().remove(idx);
+        return user.playHandCard(idx);
     }
 
     /**
@@ -154,7 +159,7 @@ public class Game {
         System.out.print("Which card would you like to guess: ");
         String cardName = in.nextLine();
 
-        Card opponentCard = opponent.getHand().peek(0);
+        Card opponentCard = opponent.viewHandCard(0);
         if (opponentCard.getName().equals(cardName)) {
             System.out.println("You have guessed correctly!");
             opponent.eliminate();
@@ -176,8 +181,8 @@ public class Game {
      */
     private void useBaron(
         Player user, Player opponent) {
-        Card userCard = user.getHand().peek(0);
-        Card opponentCard = opponent.getHand().peek(0);
+        Card userCard = user.viewHandCard(0);
+        Card opponentCard = opponent.viewHandCard(0);
 
         int cardComparison = Integer.compare(userCard.value(), opponentCard.value());
         if (cardComparison > 0) {
@@ -188,7 +193,7 @@ public class Game {
             user.eliminate();
         } else {
             System.out.println("You have the same card!");
-            if (opponent.getDiscarded().value() > user.getDiscarded().value()) {
+            if (opponent.discardedValue() > user.discardedValue()) {
                 System.out.println("You have lost the used pile comparison");
                 opponent.eliminate();
             } else {
@@ -207,10 +212,10 @@ public class Game {
      *          the targeted player
      */
     private void useKing(Player user, Player opponent) {
-        Card userCard = user.getHand().remove(0);
-        Card opponentCard = opponent.getHand().remove(0);
-        user.getHand().add(opponentCard);
-        opponent.getHand().add(userCard);
+        Card userCard = user.playHandCard(0);
+        Card opponentCard = opponent.playHandCard(0);
+        user.receiveHandCard(opponentCard);
+        opponent.receiveHandCard(userCard);
     }
 
     /**

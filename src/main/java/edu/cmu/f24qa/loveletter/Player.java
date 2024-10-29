@@ -42,12 +42,76 @@ public class Player {
         this.isProtected = !this.isProtected;
     }
 
-    public Hand getHand() {
-        return this.hand;
+    /**
+     * Removes the card at the given index from the player's hand.
+     * 
+     * @param index the index of the card to remove
+     * @return the card that was removed
+     */
+    public Card playHandCard(int index) {
+        return this.hand.remove(index);
     }
 
-    public DiscardPile getDiscarded() {
-        return this.discarded;
+    /**
+     * Adds a card to the player's hand.
+     * 
+     * @param card the card to add
+     */
+    public void receiveHandCard(Card card) {
+        this.hand.add(card);
+    }
+
+    /**     
+     * Returns the card at the given index in the player's hand.
+     * 
+     * @param index the index of the card to return
+     * @return the card at the given index
+     */
+    public Card viewHandCard(int index) {
+        return this.hand.peek(index);
+    }
+
+    /**
+     * Checks if the player has any cards in their hand.
+     * 
+     * @return true if the player has any cards, false if not
+     */
+    public boolean hasHandCards() {
+        return this.hand.hasCards();
+    }
+
+    /**
+     * Prints the player's hand.
+     */
+    public void printHand() {
+        this.hand.print();
+    }
+
+    /**
+     * Finds the position of a royal card in the hand.
+     * 
+     * @return the position of a royal card, -1 if no royal card is in hand
+     */
+    public int handRoyaltyPos() {
+        return this.hand.royaltyPos();
+    }
+
+    /**
+     * Adds a card to the player's discard pile.
+     *
+     * @param card the card to be discarded
+     */
+    public void discardCard(Card card) {
+        this.discarded.add(card);
+    }
+
+    /**
+     * Calculates the total value of the cards in the player's discard pile.
+     * 
+     * @return the total value of the discarded cards
+     */
+    public int discardedValue() {
+        return this.discarded.value();
     }
 
     /**
