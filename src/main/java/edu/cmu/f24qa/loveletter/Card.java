@@ -11,7 +11,7 @@ public enum Card {
     PRINCESS("Princess", 8);
 
     public String name;
-    public int value;
+    public int cardValue;
 
     /**
      * All possible card names.
@@ -37,11 +37,11 @@ public enum Card {
      */
     Card(String name, int value) {
         this.name = name;
-        this.value = value;
+        this.cardValue = value;
     }
 
     public int value() {
-        return this.value;
+        return this.cardValue;
     }
 
     public String getName() {
@@ -50,6 +50,6 @@ public enum Card {
 
     @Override
     public String toString() {
-        return this.name + " (" + value + ")";
+        return this.name + " (" + cardValue + ")";
     }
 }

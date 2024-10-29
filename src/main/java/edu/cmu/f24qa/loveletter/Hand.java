@@ -1,9 +1,10 @@
 package edu.cmu.f24qa.loveletter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Hand {
-    private ArrayList<Card> hand;
+    private List<Card> hand;
 
     public Hand() {
         this.hand  = new ArrayList<>();

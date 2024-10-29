@@ -18,7 +18,7 @@ public class Game {
     public void setPlayers() {
         System.out.print("Enter player name (empty when done): ");
         String name = in.nextLine();
-        while (name != "") {
+        while (!"".equals(name)) {
             this.players.addPlayer(name);
             System.out.print("Enter player name (empty when done): ");
             name = in.nextLine();
@@ -37,25 +37,7 @@ public class Game {
                 Player turn = players.getCurrentPlayer();
 
                 if (turn.getHand().hasCards()) {
-                    players.printUsedPiles();
-                    System.out.println("\n" + turn.getName() + "'s turn:");
-                    if (turn.isProtected()) {
-                        turn.switchProtection();
-                    }
-                    turn.getHand().add(deck.draw());
-
-                    int royaltyPos = turn.getHand().royaltyPos();
-                    if (royaltyPos != -1) {
-                        if (royaltyPos == 0 && turn.getHand().peek(1).value() == 7) {
-                            playCard(turn.getHand().remove(1), turn);
-                        } else if (royaltyPos == 1 && turn.getHand().peek(0).value() == 7) {
-                            playCard(turn.getHand().remove(0), turn);
-                        } else {
-                            playCard(getCard(turn), turn);
-                        }
-                    } else {
-                        playCard(getCard(turn), turn);
-                    }
+                    executeTurn(turn);
                 }
             }
 
@@ -70,9 +52,26 @@ public class Game {
             System.out.println(winner.getName() + " has won this round!");
             players.print();
         }
-        Player game_Winner = players.getGameWinner();
-        System.out.println(game_Winner + " has won the game and the heart of the princess!");
+        Player gameWinner  = players.getGameWinner();
+        System.out.println(gameWinner  + " has won the game and the heart of the princess!");
 
+    }
+
+    private void executeTurn(Player turn) {
+        players.printUsedPiles();
+        System.out.println("\n" + turn.getName() + "'s turn:");
+        if (turn.isProtected()) turn.switchProtection();
+    
+        turn.getHand().add(deck.draw());
+        int royaltyPos = turn.getHand().royaltyPos();
+    
+        if (royaltyPos == 0 && turn.getHand().peek(1).value() == 7) {
+            playCard(turn.getHand().remove(1), turn);
+        } else if (royaltyPos == 1 && turn.getHand().peek(0).value() == 7) {
+            playCard(turn.getHand().remove(0), turn);
+        } else {
+            playCard(getCard(turn), turn);
+        }
     }
 
     private void setDeck() {
@@ -89,38 +88,30 @@ public class Game {
      *          the player of the card
      */
     private void playCard(Card card, Player user) {
-        String name = card.name;
         int value = card.value();
         user.getDiscarded().add(card);
-
+    
         if (value < 4 || value == 5 || value == 6) {
-            if (name == "guard") {
-                Player opponent = getOpponent(in, players, user);
-                useGuard(in, opponent);
-            } else if (name == "preist") {
-                Player opponent = getOpponent(in, players, user);
-                Card opponentCard = opponent.getHand().peek(0);
-                System.out.println(opponent.getName() + " shows you a " + opponentCard);
-            } else if (name == "baron") {
-                Player opponent = getOpponent(in, players, user);
-                useBaron(user, opponent);
-            } else if (name == "prince") {
-                Player opponent = getOpponent(in, players, user);
-                opponent.eliminate();
-            } else if (name == "king") {
-                Player opponent = getOpponent(in, players, user);
-                useKing(opponent, user);
-            }
-        } else {
-            if (value == 4) {
-                System.out.println("You are now protected until your next turn");
-            } else {
-                if (value == 8) {
-                    user.eliminate();
-                }
-            }
+            executeActionCard(card.name, user);
+        } else if (value == 4) {
+            System.out.println("You are now protected until your next turn");
+        } else if (value == 8) {
+            user.eliminate();
+        }
+    }  
+    
+    private void executeActionCard(String name, Player user) {
+        Player opponent = getOpponent(in, players);
+    
+        switch (name) {
+            case "guard" -> useGuard(in, opponent);
+            case "preist" -> System.out.println(opponent.getName() + " shows you a " + opponent.getHand().peek(0));
+            case "baron" -> useBaron(user, opponent);
+            case "prince" -> opponent.eliminate();
+            case "king" -> useKing(opponent, user);
         }
     }
+    
 
     /**
      * Allows for the user to pick a card from their hand to play.
@@ -134,8 +125,8 @@ public class Game {
         user.getHand().print();
         System.out.println();
         System.out.print("Which card would you like to play (0 for first, 1 for second): ");
-        String CARD_POSITION = in.nextLine();
-        int idx = Integer.parseInt(CARD_POSITION);
+        String cardPosition = in.nextLine();
+        int idx = Integer.parseInt(cardPosition);
         return user.getHand().remove(idx);
     }
 
@@ -159,7 +150,6 @@ public class Game {
         } else {
             System.out.println("You have guessed incorrectly");
         }
-        return;
     }
 
     /**
@@ -217,11 +207,9 @@ public class Game {
      *          the input stream
      * @param playerList
      *          the list of players
-     * @param user
-     *          the player choosing an opponent
      * @return the chosen target player
      */
-    private Player getOpponent(Scanner in, PlayerList playerList, Player user) {
+    private Player getOpponent(Scanner in, PlayerList playerList) {
         System.out.print("Who would you like to target: ");
         String opponentName = in.nextLine();
         return playerList.getPlayer(opponentName);

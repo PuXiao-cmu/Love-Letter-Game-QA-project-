@@ -1,9 +1,10 @@
 package edu.cmu.f24qa.loveletter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DiscardPile {
-    private ArrayList<Card> cards;
+    private List<Card> cards;
 
     public DiscardPile() {
         this.cards = new ArrayList<>();
@@ -14,11 +15,11 @@ public class DiscardPile {
     }
 
     public int value() {
-        int RET = 0;
+        int ret = 0;
         for (Card c : this.cards) {
-            RET = c.value();
+            ret = c.value();
         }
-        return RET;
+        return ret;
     }
 
     public void clear() {
