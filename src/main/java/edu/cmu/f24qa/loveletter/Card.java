@@ -40,7 +40,7 @@ public enum Card {
         this.value = value;
     }
 
-    public int value() {
+    public int getValue() {
         return this.value;
     }
 

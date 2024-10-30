@@ -1,5 +1,6 @@
 package edu.cmu.f24qa.loveletter;
 
+import java.util.Deque;
 import java.util.LinkedList;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -8,7 +9,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class PlayerList {
 
-    private LinkedList<Player> players;
+    private Deque<Player> players;
 
     public PlayerList() {
         this.players = new LinkedList<>();

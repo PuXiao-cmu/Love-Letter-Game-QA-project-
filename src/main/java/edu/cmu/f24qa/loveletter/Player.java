@@ -9,7 +9,7 @@ public class Player {
     /**
      * True if the player is protected by a handmaiden, false if not.
      */
-    private boolean isProtected;
+    private boolean protectedStatus;
 
     /**
      * The number of blocks the player has won.
@@ -20,7 +20,7 @@ public class Player {
         this.name = name;
         this.hand = new Hand();
         this.discarded = new DiscardPile();
-        this.isProtected = false;
+        this.protectedStatus = false;
         this.tokens = 0;
     }
 
@@ -39,7 +39,7 @@ public class Player {
      * Switches the user's level of protection.
      */
     public void switchProtection() {
-        this.isProtected = !this.isProtected;
+        this.protectedStatus = !this.protectedStatus;
     }
 
     /**
@@ -141,7 +141,7 @@ public class Player {
      * @return true, if the player is protected, false if not
      */
     public boolean isProtected() {
-        return this.isProtected;
+        return this.protectedStatus;
     }
 
     public int getTokens() {

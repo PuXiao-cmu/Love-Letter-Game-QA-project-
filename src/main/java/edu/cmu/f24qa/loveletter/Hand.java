@@ -1,9 +1,10 @@
 package edu.cmu.f24qa.loveletter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Hand {
-    private ArrayList<Card> hand;
+    private List<Card> hand;
 
     public Hand() {
         this.hand  = new ArrayList<>();
@@ -44,7 +45,7 @@ public class Hand {
      */
     public int royaltyPos() {
         for (int i = 0; i < hand.size(); i++) {
-            if (hand.get(i).value() == 5 || hand.get(i).value() == 6) {
+            if (hand.get(i).getValue() == 5 || hand.get(i).getValue() == 6) {
                 return i;
             }
         }

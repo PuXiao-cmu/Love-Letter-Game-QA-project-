@@ -2,7 +2,6 @@ package edu.cmu.f24qa.loveletter;
 
 import java.util.Scanner;
 import org.checkerframework.checker.nullness.qual.NonNull;
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 
@@ -43,25 +42,7 @@ public class Game {
                 Player turn = players.getCurrentPlayer();
 
                 if (turn.hasHandCards()) {
-                    players.printUsedPiles();
-                    System.out.println("\n" + turn.getName() + "'s turn:");
-                    if (turn.isProtected()) {
-                        turn.switchProtection();
-                    }
-                    turn.receiveHandCard(deck.draw());
-
-                    int royaltyPos = turn.handRoyaltyPos();
-                    if (royaltyPos != -1) {
-                        if (royaltyPos == 0 && turn.viewHandCard(1).value() == 7) {
-                            playCard(turn.playHandCard(1), turn);
-                        } else if (royaltyPos == 1 && turn.viewHandCard(0).value() == 7) {
-                            playCard(turn.playHandCard(0), turn);
-                        } else {
-                            playCard(getCard(turn), turn);
-                        }
-                    } else {
-                        playCard(getCard(turn), turn);
-                    }
+                    executeTurn(turn);
                 }
             }
 
@@ -76,9 +57,34 @@ public class Game {
             System.out.println(winner.getName() + " has won this round!");
             players.print();
         }
-        Player game_Winner = players.getGameWinner();
-        System.out.println(game_Winner + " has won the game and the heart of the princess!");
+        Player gameWinner  = players.getGameWinner();
+        System.out.println(gameWinner  + " has won the game and the heart of the princess!");
 
+    }
+
+    /**
+     * Executes a player's turn in the game.
+     *
+     * @param turn
+     *      the player whose turn it is
+     */
+    private void executeTurn(Player turn) {
+        players.printUsedPiles();
+        System.out.println("\n" + turn.getName() + "'s turn:");
+        if (turn.isProtected()) {
+            turn.switchProtection();
+        }
+
+        turn.receiveHandCard(deck.draw());
+        int royaltyPos = turn.handRoyaltyPos();
+
+        if (royaltyPos == 0 && turn.viewHandCard(1).getValue() == 7) {
+            playCard(turn.playHandCard(1), turn);
+        } else if (royaltyPos == 1 && turn.viewHandCard(0).getValue() == 7) {
+            playCard(turn.playHandCard(0), turn);
+        } else {
+            playCard(getCard(turn), turn);
+        }
     }
 
     private void setDeck() {
@@ -96,36 +102,35 @@ public class Game {
      */
     private void playCard(Card card, Player user) {
         String name = card.getName();
-        int value = card.value();
-        // user.getDiscarded().add(card);
+        int value = card.getValue();
         user.discardCard(card);
 
         if (value < 4 || value == 5 || value == 6) {
-            if (name == "guard") {
-                Player opponent = getOpponent(in, players, user);
-                useGuard(in, opponent);
-            } else if (name == "preist") {
-                Player opponent = getOpponent(in, players, user);
-                Card opponentCard = opponent.viewHandCard(0);
-                System.out.println(opponent.getName() + " shows you a " + opponentCard);
-            } else if (name == "baron") {
-                Player opponent = getOpponent(in, players, user);
-                useBaron(user, opponent);
-            } else if (name == "prince") {
-                Player opponent = getOpponent(in, players, user);
-                opponent.eliminate();
-            } else if (name == "king") {
-                Player opponent = getOpponent(in, players, user);
-                useKing(opponent, user);
-            }
-        } else {
-            if (value == 4) {
-                System.out.println("You are now protected until your next turn");
-            } else {
-                if (value == 8) {
-                    user.eliminate();
-                }
-            }
+            executeActionCard(name, user);
+        } else if (value == 4) {
+            System.out.println("You are now protected until your next turn");
+        } else if (value == 8) {
+            user.eliminate();
+        }
+    }
+
+    /**
+     * Executes the action associated with an action card.
+     * Depending on the card's name, performs specific actions
+     * involving the user and an opponent.
+     *
+     * @param name the name of the action card
+     * @param user the player playing the card
+     */
+    private void executeActionCard(String name, Player user) {
+        Player opponent = getOpponent(in, players, user);
+    
+        switch (name) {
+            case "guard" -> useGuard(in, opponent);
+            case "preist" -> System.out.println(opponent.getName() + " shows you a " + opponent.viewHandCard(0));
+            case "baron" -> useBaron(user, opponent);
+            case "prince" -> opponent.eliminate();
+            case "king" -> useKing(opponent, user);
         }
     }
 
@@ -141,8 +146,8 @@ public class Game {
         user.printHand();
         System.out.println();
         System.out.print("Which card would you like to play (0 for first, 1 for second): ");
-        String CARD_POSITION = in.nextLine();
-        int idx = Integer.parseInt(CARD_POSITION);
+        String cardPosition = in.nextLine();
+        int idx = Integer.parseInt(cardPosition);
         return user.playHandCard(idx);
     }
 
@@ -166,7 +171,6 @@ public class Game {
         } else {
             System.out.println("You have guessed incorrectly");
         }
-        return;
     }
 
     /**
@@ -184,7 +188,7 @@ public class Game {
         Card userCard = user.viewHandCard(0);
         Card opponentCard = opponent.viewHandCard(0);
 
-        int cardComparison = Integer.compare(userCard.value(), opponentCard.value());
+        int cardComparison = Integer.compare(userCard.getValue(), opponentCard.getValue());
         if (cardComparison > 0) {
             System.out.println("You have won the comparison!");
             opponent.eliminate();
