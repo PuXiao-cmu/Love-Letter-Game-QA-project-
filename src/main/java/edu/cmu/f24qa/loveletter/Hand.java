@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Represents a player's hand in the game.
  */
-public final class Hand {
+public class Hand {
     /**
      * Cards in a player's hand.
      */
