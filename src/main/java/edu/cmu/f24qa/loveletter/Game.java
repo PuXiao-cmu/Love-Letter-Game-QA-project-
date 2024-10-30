@@ -3,24 +3,31 @@ package edu.cmu.f24qa.loveletter;
 import java.util.Scanner;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-
 public class Game {
     private PlayerList players;
     private Deck deck;
     private Scanner in;
-    int round;
+    private int round;
 
-    public Game(Scanner in) {
+    /**
+     * Constructor for the Game class.
+     *
+     * @param scannerInput the input scanner
+     */
+    public Game(Scanner scannerInput) {
         this.players = new PlayerList();
         this.deck = new Deck();
-        this.in = in;
+        this.in = scannerInput;
         this.round = 0;
     }
 
+    /**
+     * Sets players for the game.
+     */
     public void setPlayers() {
         System.out.print("Enter player name (empty when done): ");
         String name = in.nextLine();
-        while (name != "") {
+        while (!name.equals("")) {
             this.players.addPlayer(name);
             System.out.print("Enter player name (empty when done): ");
             name = in.nextLine();
@@ -72,11 +79,13 @@ public class Game {
             System.out.println(winner.getName() + " has won this round!");
             players.print();
         }
-        Player game_Winner = players.getGameWinner();
-        System.out.println(game_Winner + " has won the game and the heart of the princess!");
-
+        Player gameWinner = players.getGameWinner();
+        System.out.println(gameWinner + " has won the game and the heart of the princess!");
     }
 
+    /**
+     * Sets up the deck.
+     */
     private void setDeck() {
         this.deck.build();
         this.deck.shuffle();
@@ -91,25 +100,25 @@ public class Game {
      *          the player of the card
      */
     private void playCard(Card card, Player user) {
-        String name = card.name;
+        String name = card.getName();
         int value = card.value();
         user.getDiscarded().add(card);
 
         if (value < 4 || value == 5 || value == 6) {
-            if (name == "guard") {
+            if (name.equalsIgnoreCase("guard")) {
                 Player opponent = getOpponent(in, players, user);
                 useGuard(in, opponent);
-            } else if (name == "preist") {
+            } else if (name.equalsIgnoreCase("priest")) {
                 Player opponent = getOpponent(in, players, user);
                 Card opponentCard = opponent.getHand().peek(0);
                 System.out.println(opponent.getName() + " shows you a " + opponentCard);
-            } else if (name == "baron") {
+            } else if (name.equalsIgnoreCase("baron")) {
                 Player opponent = getOpponent(in, players, user);
                 useBaron(user, opponent);
-            } else if (name == "prince") {
+            } else if (name.equalsIgnoreCase("prince")) {
                 Player opponent = getOpponent(in, players, user);
                 opponent.eliminate();
-            } else if (name == "king") {
+            } else if (name.equalsIgnoreCase("king")) {
                 Player opponent = getOpponent(in, players, user);
                 useKing(opponent, user);
             }
@@ -129,15 +138,14 @@ public class Game {
      *
      * @param user
      *      the current player
-     *
      * @return the chosen card
      */
     private Card getCard(Player user) {
         user.getHand().print();
         System.out.println();
         System.out.print("Which card would you like to play (0 for first, 1 for second): ");
-        String CARD_POSITION = in.nextLine();
-        int idx = Integer.parseInt(CARD_POSITION);
+        String cardPosition = in.nextLine();
+        int idx = Integer.parseInt(cardPosition);
         return user.getHand().remove(idx);
     }
 
@@ -145,23 +153,23 @@ public class Game {
      * Allows the user to guess a card that a player's hand contains (excluding another guard).
      * If the user is correct, the opponent loses the round and must lay down their card.
      * If the user is incorrect, the opponent is not affected.
-     * @param in
+     *
+     * @param inputScanner
      *          the input stream
      * @param opponent
      *          the targeted player
      */
-    private void useGuard(Scanner in, Player opponent) {
+    private void useGuard(Scanner inputScanner, Player opponent) {
         System.out.print("Which card would you like to guess: ");
-        String cardName = in.nextLine();
+        String cardName = inputScanner.nextLine();
 
         Card opponentCard = opponent.getHand().peek(0);
-        if (opponentCard.getName().equals(cardName)) {
+        if (opponentCard.getName().equalsIgnoreCase(cardName)) {
             System.out.println("You have guessed correctly!");
             opponent.eliminate();
         } else {
             System.out.println("You have guessed incorrectly");
         }
-        return;
     }
 
     /**
@@ -169,13 +177,13 @@ public class Game {
      * If the user's card is of higher value, the opposing player loses the round and their card.
      * If the user's card is of lower value, the user loses the round and their card.
      * If the two players have the same card, their used pile values are compared in the same manner.
+     *
      * @param user
      *          the initiator of the comparison
      * @param opponent
      *          the targeted player
      */
-    private void useBaron(
-        Player user, Player opponent) {
+    private void useBaron(Player user, Player opponent) {
         Card userCard = user.getHand().peek(0);
         Card opponentCard = opponent.getHand().peek(0);
 
@@ -201,6 +209,7 @@ public class Game {
     /**
      * Allows the user to switch cards with an opponent.
      * Swaps the user's hand for the opponent's.
+     *
      * @param user
      *          the initiator of the swap
      * @param opponent
@@ -215,7 +224,8 @@ public class Game {
 
     /**
      * Useful method for obtaining a chosen target from the player list.
-     * @param in
+     *
+     * @param inputScanner
      *          the input stream
      * @param playerList
      *          the list of players
@@ -223,23 +233,22 @@ public class Game {
      *          the player choosing an opponent
      * @return the chosen target player
      */
-    private @NonNull Player getOpponent(Scanner in, PlayerList playerList, Player user) {
+    private @NonNull Player getOpponent(Scanner inputScanner, PlayerList playerList, Player user) {
         while (true) {
             System.out.print("Who would you like to target: ");
-            String opponentName = in.nextLine();
+            String opponentName = inputScanner.nextLine();
             Player opponent = playerList.getPlayer(opponentName);
             if (opponent == null) {
                 System.out.println("Invalid player name. Please try again.");
                 continue;
             }
-            
+
             if (opponent == user) {
                 System.out.println("You cannot target yourself. Please choose another player.");
                 continue;
             }
-            
+
             return opponent;
-            // return playerList.getPlayer(opponentName);
         }
     }
 }

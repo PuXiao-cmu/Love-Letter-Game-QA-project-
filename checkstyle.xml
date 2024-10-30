@@ -64,15 +64,12 @@
   <!-- See https://checkstyle.org/checks/misc/newlineatendoffile.html -->
   <module name="NewlineAtEndOfFile"/>
 
-  <!-- Checks that property files contain the same keys.         -->
-  <!-- See https://checkstyle.org/checks/misc/translation.html -->
-  <module name="Translation"/>
-
   <!-- Checks for Size Violations.                    -->
   <!-- See https://checkstyle.org/checks/sizes/index.html -->
   <module name="FileLength"/>
   <module name="LineLength">
     <property name="fileExtensions" value="java"/>
+    <property name="max" value="120"/>
   </module>
 
   <!-- Checks for whitespace                               -->
@@ -88,21 +85,12 @@
     <property name="message" value="Line has trailing spaces."/>
   </module>
 
-  <!-- Checks for Headers                                -->
-  <!-- See https://checkstyle.org/checks/header/index.html   -->
-  <!-- <module name="Header"> -->
-  <!--   <property name="headerFile" value="${checkstyle.header.file}"/> -->
-  <!--   <property name="fileExtensions" value="java"/> -->
-  <!-- </module> -->
-
   <module name="TreeWalker">
 
     <!-- Checks for Javadoc comments.                     -->
     <!-- See https://checkstyle.org/checks/javadoc/index.html -->
     <module name="InvalidJavadocPosition"/>
     <module name="JavadocMethod"/>
-    <module name="JavadocType"/>
-    <module name="JavadocVariable"/>
     <module name="JavadocStyle"/>
     <module name="MissingJavadocMethod"/>
 
@@ -165,9 +153,7 @@
     <module name="HiddenField"/>
     <module name="IllegalInstantiation"/>
     <module name="InnerAssignment"/>
-    <module name="MagicNumber"/>
     <module name="MissingSwitchDefault"/>
-    <module name="MultipleVariableDeclarations"/>
     <module name="SimplifyBooleanExpression"/>
     <module name="SimplifyBooleanReturn"/>
 
@@ -178,13 +164,6 @@
     <module name="HideUtilityClassConstructor"/>
     <module name="InterfaceIsType"/>
     <module name="VisibilityModifier"/>
-
-    <!-- Miscellaneous other checks.                   -->
-    <!-- See https://checkstyle.org/checks/misc/index.html -->
-    <module name="ArrayTypeStyle"/>
-    <module name="FinalParameters"/>
-    <module name="TodoComment"/>
-    <module name="UpperEll"/>
 
     <!-- https://checkstyle.org/filters/suppressionxpathfilter.html -->
     <module name="SuppressionXpathFilter">

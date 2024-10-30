@@ -1,9 +1,11 @@
 package edu.cmu.f24qa.loveletter;
 
+/**
+ * Represents a player in the Love Letter game.
+ */
 public class Player {
     private String name;
     private Hand hand;
-
     private DiscardPile discarded;
 
     /**
@@ -16,14 +18,22 @@ public class Player {
      */
     private int tokens;
 
-    public Player(String name) {
-        this.name = name;
+    /**
+     * Constructs a new player with the specified name.
+     *
+     * @param playerName The name of the player
+     */
+    public Player(String playerName) {
+        this.name = playerName;
         this.hand = new Hand();
         this.discarded = new DiscardPile();
         this.isProtected = false;
         this.tokens = 0;
     }
 
+    /**
+     * Adds a token.
+     */
     public void addToken() {
         this.tokens++;
     }
@@ -42,31 +52,56 @@ public class Player {
         this.isProtected = !this.isProtected;
     }
 
+    /**
+     * Gets the player's hand of cards.
+     *
+     * @return the player's hand
+     */
     public Hand getHand() {
         return this.hand;
     }
 
+    /**
+     * Gets the player's discarded pile.
+     *
+     * @return the player's discarded pile
+     */
     public DiscardPile getDiscarded() {
         return this.discarded;
     }
 
     /**
-     * Checks to see if the user is protected by a handmaiden.
+     * Checks to see if the player is protected by a handmaiden.
      *
-     * @return true, if the player is protected, false if not
+     * @return true if the player is protected, false otherwise
      */
     public boolean isProtected() {
         return this.isProtected;
     }
 
+    /**
+     * Gets the number of tokens the player has.
+     *
+     * @return the number of tokens the player has
+     */
     public int getTokens() {
         return this.tokens;
     }
 
+    /**
+     * Gets the player's name.
+     *
+     * @return the player's name
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Returns a string of the player's name and token count.
+     *
+     * @return the string representation of the player
+     */
     @Override
     public String toString() {
         return this.name + " (" + this.tokens + " tokens)";

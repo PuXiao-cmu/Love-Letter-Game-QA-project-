@@ -10,6 +10,9 @@ public class PlayerList {
 
     private LinkedList<Player> players;
 
+    /**
+     * Initializes a PlayerList.
+     */
     public PlayerList() {
         this.players = new LinkedList<>();
     }
