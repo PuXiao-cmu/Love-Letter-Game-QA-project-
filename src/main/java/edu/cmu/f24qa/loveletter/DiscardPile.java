@@ -5,11 +5,11 @@ import java.util.ArrayList;
 /**
  * Class representing cards discarded for the round.
  */
-public final class DiscardPile {
+public class DiscardPile {
     /**
      * The list of discarded cards.
      */
-    private final ArrayList<Card> cards;
+    private ArrayList<Card> cards;
 
     /**
      * Constructs an empty discard pile.

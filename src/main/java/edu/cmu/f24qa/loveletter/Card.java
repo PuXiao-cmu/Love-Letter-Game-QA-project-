@@ -16,12 +16,12 @@ public enum Card {
     /**
      * The name of the card.
      */
-    private final String name;
+    private String name;
 
     /**
      * The value of the card.
      */
-    private final int value;
+    private int value;
 
     /**
      * All possible card names.
@@ -55,7 +55,7 @@ public enum Card {
      *
      * @return the value of the card
      */
-    public int getValue() {
+    public int value() {
         return this.value;
     }
 

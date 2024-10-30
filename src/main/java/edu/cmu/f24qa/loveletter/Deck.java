@@ -6,11 +6,11 @@ import java.util.Stack;
 /**
  * Represents a deck of cards used in the Love Letter game.
  */
-public final class Deck {
+public class Deck {
     /**
      * The stack of cards representing the deck.
      */
-    private final Stack<Card> deck;
+    private Stack<Card> deck;
 
     /**
      * Constructor for creating an empty deck.

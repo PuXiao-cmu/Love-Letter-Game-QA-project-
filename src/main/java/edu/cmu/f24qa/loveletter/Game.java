@@ -101,7 +101,7 @@ public class Game {
      */
     private void playCard(Card card, Player user) {
         String name = card.getName();
-        int value = card.getValue();
+        int value = card.value();
         user.getDiscarded().add(card);
 
         if (value < 4 || value == 5 || value == 6) {
@@ -138,7 +138,6 @@ public class Game {
      *
      * @param user
      *      the current player
-     *
      * @return the chosen card
      */
     private Card getCard(Player user) {
@@ -154,7 +153,8 @@ public class Game {
      * Allows the user to guess a card that a player's hand contains (excluding another guard).
      * If the user is correct, the opponent loses the round and must lay down their card.
      * If the user is incorrect, the opponent is not affected.
-     * @param in
+     *
+     * @param inputScanner
      *          the input stream
      * @param opponent
      *          the targeted player
@@ -177,6 +177,7 @@ public class Game {
      * If the user's card is of higher value, the opposing player loses the round and their card.
      * If the user's card is of lower value, the user loses the round and their card.
      * If the two players have the same card, their used pile values are compared in the same manner.
+     *
      * @param user
      *          the initiator of the comparison
      * @param opponent
@@ -186,7 +187,7 @@ public class Game {
         Card userCard = user.getHand().peek(0);
         Card opponentCard = opponent.getHand().peek(0);
 
-        int cardComparison = Integer.compare(userCard.getValue(), opponentCard.getValue());
+        int cardComparison = Integer.compare(userCard.value(), opponentCard.value());
         if (cardComparison > 0) {
             System.out.println("You have won the comparison!");
             opponent.eliminate();
@@ -208,6 +209,7 @@ public class Game {
     /**
      * Allows the user to switch cards with an opponent.
      * Swaps the user's hand for the opponent's.
+     *
      * @param user
      *          the initiator of the swap
      * @param opponent
@@ -222,7 +224,8 @@ public class Game {
 
     /**
      * Useful method for obtaining a chosen target from the player list.
-     * @param in
+     *
+     * @param inputScanner
      *          the input stream
      * @param playerList
      *          the list of players
