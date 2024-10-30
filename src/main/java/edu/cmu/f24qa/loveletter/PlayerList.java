@@ -11,6 +11,9 @@ public class PlayerList {
 
     private Deque<Player> players;
 
+    /**
+     * Initializes a PlayerList.
+     */
     public PlayerList() {
         this.players = new LinkedList<>();
     }

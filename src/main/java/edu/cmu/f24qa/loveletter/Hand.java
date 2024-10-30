@@ -4,8 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hand {
+
+    /** The cards in the hand. */
     private List<Card> hand;
 
+    /**
+     * Creates an empty hand.
+     */
     public Hand() {
         this.hand  = new ArrayList<>();
     }
@@ -22,6 +27,11 @@ public class Hand {
         return this.hand.get(idx);
     }
 
+    /**
+     * Adds a card to the player's hand.
+     *
+     * @param card the card to add
+     */
     public void add(Card card) {
         this.hand.add(card);
     }
@@ -52,14 +62,26 @@ public class Hand {
         return -1;
     }
 
+    /**
+     * Checks if the hand is empty.
+     *
+     * @return true if the hand has at least one card, false if empty
+     */
     public boolean hasCards() {
         return !this.hand.isEmpty();
     }
 
+    /**
+     * Clears all the cards from the hand.
+     */
     public void clear() {
         this.hand.clear();
     }
 
+
+    /**
+     * Prints each card in the hand to the console.
+     */
     public void print() {
         for (Card c : this.hand) {
             System.out.println(c);

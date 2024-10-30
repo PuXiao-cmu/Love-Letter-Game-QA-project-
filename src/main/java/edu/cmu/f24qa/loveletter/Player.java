@@ -1,9 +1,11 @@
 package edu.cmu.f24qa.loveletter;
 
+/**
+ * Represents a player in the Love Letter game.
+ */
 public class Player {
     private String name;
     private Hand hand;
-
     private DiscardPile discarded;
 
     /**
@@ -16,14 +18,22 @@ public class Player {
      */
     private int tokens;
 
-    public Player(String name) {
-        this.name = name;
+    /**
+     * Constructs a new player with the specified name.
+     *
+     * @param playerName The name of the player
+     */
+    public Player(String playerName) {
+        this.name = playerName;
         this.hand = new Hand();
         this.discarded = new DiscardPile();
         this.protectedStatus = false;
         this.tokens = 0;
     }
 
+    /**
+     * Adds a token.
+     */
     public void addToken() {
         this.tokens++;
     }
@@ -44,7 +54,7 @@ public class Player {
 
     /**
      * Removes the card at the given index from the player's hand.
-     * 
+     *
      * @param index the index of the card to remove
      * @return the card that was removed
      */
@@ -54,16 +64,16 @@ public class Player {
 
     /**
      * Adds a card to the player's hand.
-     * 
+     *
      * @param card the card to add
      */
     public void receiveHandCard(Card card) {
         this.hand.add(card);
     }
 
-    /**     
+    /**
      * Returns the card at the given index in the player's hand.
-     * 
+     *
      * @param index the index of the card to return
      * @return the card at the given index
      */
@@ -73,7 +83,7 @@ public class Player {
 
     /**
      * Checks if the player has any cards in their hand.
-     * 
+     *
      * @return true if the player has any cards, false if not
      */
     public boolean hasHandCards() {
@@ -89,7 +99,7 @@ public class Player {
 
     /**
      * Finds the position of a royal card in the hand.
-     * 
+     *
      * @return the position of a royal card, -1 if no royal card is in hand
      */
     public int handRoyaltyPos() {
@@ -114,7 +124,7 @@ public class Player {
 
     /**
      * Calculates the total value of the cards in the player's discard pile.
-     * 
+     *
      * @return the total value of the discarded cards
      */
     public int discardedValue() {
@@ -136,22 +146,37 @@ public class Player {
     }
 
     /**
-     * Checks to see if the user is protected by a handmaiden.
+     * Checks to see if the player is protected by a handmaiden.
      *
-     * @return true, if the player is protected, false if not
+     * @return true if the player is protected, false otherwise
      */
     public boolean isProtected() {
         return this.protectedStatus;
     }
 
+    /**
+     * Gets the number of tokens the player has.
+     *
+     * @return the number of tokens the player has
+     */
     public int getTokens() {
         return this.tokens;
     }
 
+    /**
+     * Gets the player's name.
+     *
+     * @return the player's name
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Returns a string of the player's name and token count.
+     *
+     * @return the string representation of the player
+     */
     @Override
     public String toString() {
         return this.name + " (" + this.tokens + " tokens)";
