@@ -108,37 +108,14 @@ public class Game {
      *          the player of the card
      */
     private void playCard(Card card, Player user) {
-        String name = card.getName();
         int value = card.getValue();
         user.discardCard(card);
 
         if (value < 4 || value == 5 || value == 6) {
-            executeActionCard(name, user);
-        } else if (value == 4) {
-            System.out.println("You are now protected until your next turn");
-        } else if (value == 8) {
-            user.eliminate();
-        }
-    }
-
-    /**
-     * Executes the action associated with an action card.
-     * Depending on the card's name, performs specific actions
-     * involving the user and an opponent.
-     *
-     * @param name the name of the action card
-     * @param user the player playing the card
-     */
-    private void executeActionCard(String name, Player user) {
-        Player opponent = getOpponent(in, players, user);
-
-        switch (name) {
-            case "guard" -> useGuard(in, opponent);
-            case "preist" -> System.out.println(opponent.getName() + " shows you a " + opponent.viewHandCard(0));
-            case "baron" -> useBaron(user, opponent);
-            case "prince" -> opponent.eliminate();
-            case "king" -> useKing(opponent, user);
-            default -> System.out.println("Invalid card");
+            Player opponent = getOpponent(in, players, user);
+            card.execute(in, user, opponent);
+        } else {
+            card.execute(in, user, null);
         }
     }
 
@@ -156,79 +133,6 @@ public class Game {
         String cardPosition = in.nextLine();
         int idx = Integer.parseInt(cardPosition);
         return user.playHandCard(idx);
-    }
-
-    /**
-     * Allows the user to guess a card that a player's hand contains (excluding another guard).
-     * If the user is correct, the opponent loses the round and must lay down their card.
-     * If the user is incorrect, the opponent is not affected.
-     *
-     * @param inputScanner
-     *          the input stream
-     * @param opponent
-     *          the targeted player
-     */
-    private void useGuard(Scanner inputScanner, Player opponent) {
-        System.out.print("Which card would you like to guess: ");
-        String cardName = inputScanner.nextLine();
-
-        Card opponentCard = opponent.viewHandCard(0);
-        if (opponentCard.getName().equalsIgnoreCase(cardName)) {
-            System.out.println("You have guessed correctly!");
-            opponent.eliminate();
-        } else {
-            System.out.println("You have guessed incorrectly");
-        }
-    }
-
-    /**
-     * Allows the user to compare cards with an opponent.
-     * If the user's card is of higher value, the opposing player loses the round and their card.
-     * If the user's card is of lower value, the user loses the round and their card.
-     * If the two players have the same card, their used pile values are compared in the same manner.
-     *
-     * @param user
-     *          the initiator of the comparison
-     * @param opponent
-     *          the targeted player
-     */
-    private void useBaron(Player user, Player opponent) {
-        Card userCard = user.viewHandCard(0);
-        Card opponentCard = opponent.viewHandCard(0);
-
-        int cardComparison = Integer.compare(userCard.getValue(), opponentCard.getValue());
-        if (cardComparison > 0) {
-            System.out.println("You have won the comparison!");
-            opponent.eliminate();
-        } else if (cardComparison < 0) {
-            System.out.println("You have lost the comparison");
-            user.eliminate();
-        } else {
-            System.out.println("You have the same card!");
-            if (opponent.discardedValue() > user.discardedValue()) {
-                System.out.println("You have lost the used pile comparison");
-                opponent.eliminate();
-            } else {
-                System.out.println("You have won the used pile comparison");
-                user.eliminate();
-            }
-        }
-    }
-
-    /**
-     * Allows the user to switch cards with an opponent.
-     * Swaps the user's hand for the opponent's.
-     *
-     * @param user
-     *          the initiator of the swap
-     * @param opponent
-     *          the targeted player
-     */
-    private void useKing(Player user, Player opponent) {
-        Card userCard = user.playHandCard(0);
-        Card opponentCard = opponent.playHandCard(0);
-        user.receiveHandCard(opponentCard);
-        opponent.receiveHandCard(userCard);
     }
 
     /**
