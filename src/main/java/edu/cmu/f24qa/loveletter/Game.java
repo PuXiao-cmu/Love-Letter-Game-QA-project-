@@ -5,23 +5,19 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 public class Game {
-    private PlayerList players;
-    private Deck deck;
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "It's fine for console reads")
     private Scanner in;
-    @SuppressFBWarnings(value = "URF_UNREAD_FIELD", justification = "Might be used later")
-    private int round;
+    private GameState gameState;
 
     /**
      * Constructor for the Game class.
      *
      * @param scannerInput the input scanner
+     * @param curGameState the current game state
      */
-    public Game(Scanner scannerInput) {
-        this.players = new PlayerList();
-        this.deck = new Deck();
+    public Game(Scanner scannerInput, GameState curGameState) {
         this.in = scannerInput;
-        this.round = 0;
+        this.gameState = curGameState;
     }
 
     /**
@@ -31,7 +27,7 @@ public class Game {
         System.out.print("Enter player name (empty when done): ");
         String name = in.nextLine();
         while (!name.isBlank()) {
-            this.players.addPlayer(name);
+            gameState.getPlayers().addPlayer(name);
             System.out.print("Enter player name (empty when done): ");
             name = in.nextLine();
         }
@@ -41,10 +37,13 @@ public class Game {
      * The main game loop.
      */
     public void start() {
+        PlayerList players = gameState.getPlayers();
+        Deck deck = gameState.getDeck();
+
         while (players.getGameWinner() == null) {
-            players.reset();
-            setDeck();
+            gameState.resetGameState();
             players.dealCards(deck);
+
             while (!players.checkForRoundWinner() && deck.hasMoreCards()) {
                 Player turn = players.getCurrentPlayer();
 
@@ -76,13 +75,14 @@ public class Game {
      *      the player whose turn it is
      */
     private void executeTurn(Player turn) {
-        players.printUsedPiles();
+        gameState.getPlayers().printUsedPiles();
         System.out.println("\n" + turn.getName() + "'s turn:");
         if (turn.isProtected()) {
             turn.switchProtection();
         }
 
-        turn.receiveHandCard(deck.draw());
+        turn.receiveHandCard(gameState.getDeck().draw());
+
         int royaltyPos = turn.handRoyaltyPos();
 
         if (royaltyPos == 0 && turn.viewHandCard(1).getValue() == 7) {
@@ -92,11 +92,6 @@ public class Game {
         } else {
             playCard(getCard(turn), turn);
         }
-    }
-
-    private void setDeck() {
-        this.deck.build();
-        this.deck.shuffle();
     }
 
     /**
@@ -130,7 +125,7 @@ public class Game {
      * @param user the player playing the card
      */
     private void executeActionCard(String name, Player user) {
-        Player opponent = getOpponent(in, players, user);
+        Player opponent = getOpponent(in, gameState.getPlayers(), user);
 
         switch (name) {
             case "guard" -> useGuard(in, opponent);
