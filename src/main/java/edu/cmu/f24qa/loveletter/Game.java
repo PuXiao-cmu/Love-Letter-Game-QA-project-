@@ -49,6 +49,7 @@ public class Game {
 
     /**
      * Checks if the game has ended.
+     * @return true if there is a winner, false if there is no winner now
      */
     private boolean isGameOver() {
         return players.getGameWinner() != null;
@@ -78,6 +79,7 @@ public class Game {
 
     /**
      * Determines the winner of the current round.
+     * @return the Player who won this round
      */
     private Player determineRoundWinner() {
         if (players.checkForRoundWinner() && players.getRoundWinner() != null) {
@@ -91,6 +93,7 @@ public class Game {
 
     /**
      * Handles the round winner announcement and token award.
+     * @param winner the Player who won this round
      */
     private void handleRoundWinner(Player winner) {
         winner.addToken();
