@@ -7,6 +7,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 public class Game {
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "It's fine for console reads")
     private Scanner in;
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "It's fine for console reads")
     private GameState gameState;
 
     /**

@@ -4,7 +4,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 public class GameState {
     @SuppressFBWarnings(value = "URF_UNREAD_FIELD", justification = "Might be used later")
     private int round;
+    @SuppressFBWarnings(value = {"EI_EXPOSE_REP", "EI_EXPOSE_REP2"}, justification = "It's fine for console reads")
     private PlayerList players;
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "It's fine for console reads")
     private Deck deck;
 
     /**
