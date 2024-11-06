@@ -28,11 +28,9 @@ public interface UserInput {
     String getCardName();
 
     /**
-     * Prompts the user to choose an opponent from the player list.
-     *
-     * @param playerList the list of players in the game
-     * @param user the player making the selection
-     * @return the chosen opponent Player
+     * Get the opponent name from user input.
+     * 
+     * @return the name of the opponent
      */
-    Player getOpponent(PlayerList playerList, Player user);
+    String getOpponentName();
 }

@@ -63,28 +63,9 @@ public class CommandLineUserInput implements UserInput {
 
     /**
      * Prompts the user to choose an opponent from the player list.
-     *
-     * @param playerList the list of players in the game
-     * @param user the player making the selection
-     * @return the chosen opponent Player
      */
     @Override
-    public Player getOpponent(PlayerList playerList, Player user) {
-        while (true) {
-            System.out.print("Who would you like to target: ");
-            String opponentName = scanner.nextLine();
-            Player opponent = playerList.getPlayer(opponentName);
-            if (opponent == null) {
-                System.out.println("Invalid player name. Please try again.");
-                continue;
-            }
-
-            if (opponent == user) {
-                System.out.println("You cannot target yourself. Please choose another player.");
-                continue;
-            }
-
-            return opponent;
-        }
+    public String getOpponentName() {
+        return scanner.nextLine();
     }
 }

@@ -6,7 +6,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 public class Game {
     private PlayerList players;
     private Deck deck;
-    private UserInput userInput;
+    private UserInput commandLineUserInput;
     @SuppressFBWarnings(value = "URF_UNREAD_FIELD", justification = "Might be used later")
     private int round;
 
@@ -16,7 +16,7 @@ public class Game {
     public Game() {
         this.players = new PlayerList();
         this.deck = new Deck();
-        this.userInput = new CommandLineUserInput();
+        this.commandLineUserInput = new CommandLineUserInput();
         this.round = 0;
     }
 
@@ -24,7 +24,7 @@ public class Game {
      * Sets players for the game.
      */
     public void setPlayers() {
-        this.players = userInput.getPlayers();
+        this.players = commandLineUserInput.getPlayers();
     }
 
     /**
@@ -140,7 +140,7 @@ public class Game {
      * @return the chosen card
      */
     private Card getCard(Player user) {
-        int idx = Integer.parseInt(userInput.getCardIndex(user));
+        int idx = Integer.parseInt(commandLineUserInput.getCardIndex(user));
         return user.playHandCard(idx);
     }
 
@@ -154,7 +154,7 @@ public class Game {
      */
     // changed useGuard params
     private void useGuard(Player opponent) {
-        String cardName = userInput.getCardName();
+        String cardName = commandLineUserInput.getCardName();
 
         Card opponentCard = opponent.viewHandCard(0);
         if (opponentCard.getName().equalsIgnoreCase(cardName)) {
@@ -225,7 +225,21 @@ public class Game {
      * @return the chosen target player
      */
     private @NonNull Player getOpponent(PlayerList playerList, Player user) {
-        Player opponent = userInput.getOpponent(playerList, user);
-        return opponent;
+        while (true) {
+            System.out.print("Who would you like to target: ");
+            String opponentName = commandLineUserInput.getOpponentName();
+            Player opponent = playerList.getPlayer(opponentName);
+            if (opponent == null) {
+                System.out.println("Invalid player name. Please try again.");
+                continue;
+            }
+
+            if (opponent == user) {
+                System.out.println("You cannot target yourself. Please choose another player.");
+                continue;
+            }
+
+            return opponent;
+        }
     }
 }
