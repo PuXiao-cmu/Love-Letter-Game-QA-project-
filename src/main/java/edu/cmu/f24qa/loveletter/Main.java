@@ -17,9 +17,10 @@ public final class Main {
         value = "DM_DEFAULT_ENCODING",
         justification = "It's fine for console reads to rely on default encoding")
     public static void main(String[] args) {
+        UserInput curUserInput = new CommandLineUserInput();
         PlayerList players = new PlayerList();
         Deck deck = new Deck();
-        Game g = new Game(players, deck);
+        Game g = new Game(curUserInput, players, deck);
         g.setPlayers();
         g.start();
     }

@@ -1,11 +1,10 @@
 package edu.cmu.f24qa.loveletter;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 public class Game {
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "It's fine for console reads")
-    private UserInput commandLineUserInput;
+    private UserInput userInput;
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "DI is required for testing purposes")
     private PlayerList players;
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "DI is required for testing purposes")
@@ -16,11 +15,12 @@ public class Game {
     /**
      * Constructor for the Game class.
      *
+     * @param curUserInput an object used to handle user input
      * @param curPlayers the current players
      * @param curDeck the current deck
      */
-    public Game(PlayerList curPlayers, Deck curDeck) {
-        this.commandLineUserInput = new CommandLineUserInput();
+    public Game(UserInput curUserInput, PlayerList curPlayers, Deck curDeck) {
+        this.userInput = curUserInput;
         this.players = curPlayers;
         this.deck = curDeck;
         this.round = 0;
@@ -30,7 +30,7 @@ public class Game {
      * Sets players for the game.
      */
     public void setPlayers() {
-        this.players = commandLineUserInput.getPlayers();
+        this.players = userInput.getPlayers();
     }
 
     /**
@@ -152,10 +152,10 @@ public class Game {
         user.discardCard(card);
 
         if (value < 4 || value == 5 || value == 6) {
-            Player opponent = getOpponent(players, user);
-            card.execute(commandLineUserInput, user, opponent);
+            Player opponent = userInput.getOpponent(players, user);
+            card.execute(userInput, user, opponent);
         } else {
-            card.execute(commandLineUserInput, user, null);
+            card.execute(userInput, user, null);
         }
     }
 
@@ -167,35 +167,7 @@ public class Game {
      * @return the chosen card
      */
     private Card getCard(Player user) {
-        int idx = Integer.parseInt(commandLineUserInput.getCardIndex(user));
+        int idx = Integer.parseInt(userInput.getCardIndex(user));
         return user.playHandCard(idx);
-    }
-
-    /**
-     * Useful method for obtaining a chosen target from the player list.
-     *
-     * @param playerList
-     *          the list of players
-     * @param user
-     *          the player choosing an opponent
-     * @return the chosen target player
-     */
-    private @NonNull Player getOpponent(PlayerList playerList, Player user) {
-        while (true) {
-            System.out.print("Who would you like to target: ");
-            String opponentName = commandLineUserInput.getOpponentName();
-            Player opponent = playerList.getPlayer(opponentName);
-            if (opponent == null) {
-                System.out.println("Invalid player name. Please try again.");
-                continue;
-            }
-
-            if (opponent == user) {
-                System.out.println("You cannot target yourself. Please choose another player.");
-                continue;
-            }
-
-            return opponent;
-        }
     }
 }
