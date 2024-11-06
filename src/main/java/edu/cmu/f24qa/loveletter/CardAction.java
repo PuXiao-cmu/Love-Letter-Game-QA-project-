@@ -1,7 +1,5 @@
 package edu.cmu.f24qa.loveletter;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 public interface CardAction {
 
     /**
@@ -11,8 +9,8 @@ public interface CardAction {
      *          the input stream
      * @param user
      *          the player playing the card
-     * @param opponent
-     *          the player targeted by the card
+     * @param players
+     *          the player list
      */
-    void execute(UserInput userInput, Player user, @Nullable Player opponent);
+    void execute(UserInput userInput, Player user, PlayerList players);
 }

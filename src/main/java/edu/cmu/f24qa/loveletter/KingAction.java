@@ -1,7 +1,5 @@
 package edu.cmu.f24qa.loveletter;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class KingAction implements CardAction {
 
     /**
@@ -12,14 +10,12 @@ public class KingAction implements CardAction {
      *          the input stream
      * @param user
      *          the initiator of the swap
-     * @param opponent
-     *          the targeted player
+     * @param players
+     *          the player list
      */
     @Override
-    public void execute(UserInput userInput, Player user, @Nullable Player opponent) {
-        if (opponent == null) {
-            throw new IllegalArgumentException();
-        }
+    public void execute(UserInput userInput, Player user, PlayerList players) {
+        Player opponent = userInput.getOpponent(players, user);
 
         Card userCard = user.playHandCard(0);
         Card opponentCard = opponent.playHandCard(0);

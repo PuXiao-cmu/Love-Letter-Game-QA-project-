@@ -135,7 +135,8 @@ public class Game {
         } else if (royaltyPos == 1 && turn.viewHandCard(0).getValue() == 7) {
             playCard(turn.playHandCard(0), turn);
         } else {
-            playCard(getCard(turn), turn);
+            int idx = Integer.parseInt(userInput.getCardIndex(turn));
+            playCard(turn.playHandCard(idx), turn);
         }
     }
 
@@ -148,26 +149,7 @@ public class Game {
      *          the player of the card
      */
     private void playCard(Card card, Player user) {
-        int value = card.getValue();
         user.discardCard(card);
-
-        if (value < 4 || value == 5 || value == 6) {
-            Player opponent = userInput.getOpponent(players, user);
-            card.execute(userInput, user, opponent);
-        } else {
-            card.execute(userInput, user, null);
-        }
-    }
-
-    /**
-     * Allows for the user to pick a card from their hand to play.
-     *
-     * @param user
-     *      the current player
-     * @return the chosen card
-     */
-    private Card getCard(Player user) {
-        int idx = Integer.parseInt(userInput.getCardIndex(user));
-        return user.playHandCard(idx);
+        card.execute(userInput, user, players);
     }
 }

@@ -1,7 +1,5 @@
 package edu.cmu.f24qa.loveletter;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 /**
  * Enumeration for different types of cards with names and values.
  */
@@ -85,11 +83,11 @@ public enum Card {
      *          the input stream
      * @param user
      *          the player playing the card
-     * @param opponent
-     *          the targeted player
+     * @param players
+     *          the player list
      */
-    public void execute(UserInput userInput, Player user, @Nullable Player opponent) {
-        this.action.execute(userInput, user, opponent);
+    public void execute(UserInput userInput, Player user, PlayerList players) {
+        this.action.execute(userInput, user, players);
     }
 
     /**
