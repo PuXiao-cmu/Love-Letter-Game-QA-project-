@@ -4,19 +4,25 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 public class Game {
-    private PlayerList players;
-    private Deck deck;
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "It's fine for console reads")
     private UserInput commandLineUserInput;
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "DI is required for testing purposes")
+    private PlayerList players;
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "DI is required for testing purposes")
+    private Deck deck;
     @SuppressFBWarnings(value = "URF_UNREAD_FIELD", justification = "Might be used later")
     private int round;
 
     /**
      * Constructor for the Game class.
+     *
+     * @param curPlayers the current players
+     * @param curDeck the current deck
      */
-    public Game() {
-        this.players = new PlayerList();
-        this.deck = new Deck();
+    public Game(PlayerList curPlayers, Deck curDeck) {
         this.commandLineUserInput = new CommandLineUserInput();
+        this.players = curPlayers;
+        this.deck = curDeck;
         this.round = 0;
     }
 
@@ -25,6 +31,16 @@ public class Game {
      */
     public void setPlayers() {
         this.players = commandLineUserInput.getPlayers();
+    }
+
+    /**
+     * Reset players, rebuild deck, shuffle and deal cards.
+     */
+    public void resetGame() {
+        players.reset();
+        deck.build();
+        deck.shuffle();
+        players.dealCards(deck);
     }
 
     /**
@@ -50,9 +66,7 @@ public class Game {
      */
     private void playRound() {
         // Initialize round
-        players.reset();
-        setDeck();
-        players.dealCards(deck);
+        resetGame();
 
         // Play turns until round ends
         while (!players.checkForRoundWinner() && deck.hasMoreCards()) {
@@ -113,6 +127,7 @@ public class Game {
         }
 
         turn.receiveHandCard(deck.draw());
+
         int royaltyPos = turn.handRoyaltyPos();
 
         if (royaltyPos == 0 && turn.viewHandCard(1).getValue() == 7) {
@@ -122,11 +137,6 @@ public class Game {
         } else {
             playCard(getCard(turn), turn);
         }
-    }
-
-    private void setDeck() {
-        this.deck.build();
-        this.deck.shuffle();
     }
 
     /**
