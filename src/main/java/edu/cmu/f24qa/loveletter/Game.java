@@ -41,32 +41,72 @@ public class Game {
      * The main game loop.
      */
     public void start() {
-        while (players.getGameWinner() == null) {
-            players.reset();
-            setDeck();
-            players.dealCards(deck);
-            while (!players.checkForRoundWinner() && deck.hasMoreCards()) {
-                Player turn = players.getCurrentPlayer();
-
-                if (turn.hasHandCards()) {
-                    executeTurn(turn);
-                }
-            }
-
-            Player winner;
-            if (players.checkForRoundWinner() && players.getRoundWinner() != null) {
-                winner = players.getRoundWinner();
-            } else {
-                winner = players.compareUsedPiles();
-                winner.addToken();
-            }
-            winner.addToken();
-            System.out.println(winner.getName() + " has won this round!");
-            players.print();
+        while (!isGameOver()) {
+            playRound();
         }
-        Player gameWinner  = players.getGameWinner();
-        System.out.println(gameWinner  + " has won the game and the heart of the princess!");
+        announceGameWinner();
+    }
 
+    /**
+     * Checks if the game has ended.
+     * @return true if there is a winner, false if there is no winner now
+     */
+    private boolean isGameOver() {
+        return players.getGameWinner() != null;
+    }
+
+    /**
+     * Handles a complete round of the game.
+     */
+    private void playRound() {
+        // Initialize round
+        players.reset();
+        setDeck();
+        players.dealCards(deck);
+
+        // Play turns until round ends
+        while (!players.checkForRoundWinner() && deck.hasMoreCards()) {
+            Player turn = players.getCurrentPlayer();
+            if (turn.hasHandCards()) {
+                executeTurn(turn);
+            }
+        }
+
+        // Handle round end
+        Player winner = determineRoundWinner();
+        handleRoundWinner(winner);
+    }
+
+    /**
+     * Determines the winner of the current round.
+     * @return the Player who won this round
+     */
+    private Player determineRoundWinner() {
+        if (players.checkForRoundWinner() && players.getRoundWinner() != null) {
+            return players.getRoundWinner();
+        } else {
+            Player winner = players.compareUsedPiles();
+            winner.addToken();
+            return winner;
+        }
+    }
+
+    /**
+     * Handles the round winner announcement and token award.
+     * @param winner the Player who won this round
+     */
+    private void handleRoundWinner(Player winner) {
+        winner.addToken();
+        System.out.println(winner.getName() + " has won this round!");
+        players.print();
+    }
+
+    /**
+     * Announces the game winner.
+     */
+    private void announceGameWinner() {
+        Player gameWinner = players.getGameWinner();
+        System.out.println(gameWinner + " has won the game and the heart of the princess!");
     }
 
     /**
