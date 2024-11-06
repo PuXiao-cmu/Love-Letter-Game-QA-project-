@@ -28,9 +28,11 @@ public interface UserInput {
     String getCardName();
 
     /**
-     * Get the opponent name from user input.
+     * Get the opponent from user input.
      *
-     * @return the name of the opponent
+     * @param playerList the list of players in the game
+     * @param user the player making the selection
+     * @return the opponent Player
      */
-    String getOpponentName();
+    Player getOpponent(PlayerList playerList, Player user);
 }

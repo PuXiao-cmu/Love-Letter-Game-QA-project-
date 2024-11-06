@@ -1,7 +1,5 @@
 package edu.cmu.f24qa.loveletter;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 public class HandmaidAction implements CardAction {
 
     /**
@@ -13,14 +11,11 @@ public class HandmaidAction implements CardAction {
      *          the input stream
      * @param user
      *          the player playing the card
-     * @param opponent
-     *          the targeted player
+     * @param players
+     *          the player list
      */
     @Override
-    public void execute(UserInput userInput, Player user, @Nullable Player opponent) {
-        if (opponent != null) {
-            throw new IllegalArgumentException();
-        }
+    public void execute(UserInput userInput, Player user, PlayerList players) {
         if (!user.isProtected()) {
             user.switchProtection();
         }
