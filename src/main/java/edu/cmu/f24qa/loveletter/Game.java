@@ -1,26 +1,22 @@
 package edu.cmu.f24qa.loveletter;
 
-import java.util.Scanner;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 public class Game {
     private PlayerList players;
     private Deck deck;
-    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "It's fine for console reads")
-    private Scanner in;
+    private UserInput commandLineUserInput;
     @SuppressFBWarnings(value = "URF_UNREAD_FIELD", justification = "Might be used later")
     private int round;
 
     /**
      * Constructor for the Game class.
-     *
-     * @param scannerInput the input scanner
      */
-    public Game(Scanner scannerInput) {
+    public Game() {
         this.players = new PlayerList();
         this.deck = new Deck();
-        this.in = scannerInput;
+        this.commandLineUserInput = new CommandLineUserInput();
         this.round = 0;
     }
 
@@ -28,13 +24,7 @@ public class Game {
      * Sets players for the game.
      */
     public void setPlayers() {
-        System.out.print("Enter player name (empty when done): ");
-        String name = in.nextLine();
-        while (!name.isBlank()) {
-            this.players.addPlayer(name);
-            System.out.print("Enter player name (empty when done): ");
-            name = in.nextLine();
-        }
+        this.players = commandLineUserInput.getPlayers();
     }
 
     /**
@@ -170,10 +160,10 @@ public class Game {
      * @param user the player playing the card
      */
     private void executeActionCard(String name, Player user) {
-        Player opponent = getOpponent(in, players, user);
+        Player opponent = getOpponent(players, user);
 
         switch (name) {
-            case "guard" -> useGuard(in, opponent);
+            case "guard" -> useGuard(opponent);
             case "preist" -> System.out.println(opponent.getName() + " shows you a " + opponent.viewHandCard(0));
             case "baron" -> useBaron(user, opponent);
             case "prince" -> opponent.eliminate();
@@ -190,11 +180,7 @@ public class Game {
      * @return the chosen card
      */
     private Card getCard(Player user) {
-        user.printHand();
-        System.out.println();
-        System.out.print("Which card would you like to play (0 for first, 1 for second): ");
-        String cardPosition = in.nextLine();
-        int idx = Integer.parseInt(cardPosition);
+        int idx = Integer.parseInt(commandLineUserInput.getCardIndex(user));
         return user.playHandCard(idx);
     }
 
@@ -203,14 +189,12 @@ public class Game {
      * If the user is correct, the opponent loses the round and must lay down their card.
      * If the user is incorrect, the opponent is not affected.
      *
-     * @param inputScanner
-     *          the input stream
      * @param opponent
      *          the targeted player
      */
-    private void useGuard(Scanner inputScanner, Player opponent) {
-        System.out.print("Which card would you like to guess: ");
-        String cardName = inputScanner.nextLine();
+    // changed useGuard params
+    private void useGuard(Player opponent) {
+        String cardName = commandLineUserInput.getCardName();
 
         Card opponentCard = opponent.viewHandCard(0);
         if (opponentCard.getName().equalsIgnoreCase(cardName)) {
@@ -274,18 +258,16 @@ public class Game {
     /**
      * Useful method for obtaining a chosen target from the player list.
      *
-     * @param inputScanner
-     *          the input stream
      * @param playerList
      *          the list of players
      * @param user
      *          the player choosing an opponent
      * @return the chosen target player
      */
-    private @NonNull Player getOpponent(Scanner inputScanner, PlayerList playerList, Player user) {
+    private @NonNull Player getOpponent(PlayerList playerList, Player user) {
         while (true) {
             System.out.print("Who would you like to target: ");
-            String opponentName = inputScanner.nextLine();
+            String opponentName = commandLineUserInput.getOpponentName();
             Player opponent = playerList.getPlayer(opponentName);
             if (opponent == null) {
                 System.out.println("Invalid player name. Please try again.");
