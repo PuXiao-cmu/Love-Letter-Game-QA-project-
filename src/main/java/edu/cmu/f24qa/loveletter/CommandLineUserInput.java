@@ -1,5 +1,6 @@
 package edu.cmu.f24qa.loveletter;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /**
@@ -8,7 +9,14 @@ import java.util.Scanner;
  */
 public class CommandLineUserInput implements UserInput {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
+
+    /**
+     * Constructor of the CommandLineUserInput class.
+     */
+    public CommandLineUserInput() {
+        scanner = new Scanner(System.in, StandardCharsets.UTF_8);
+    }
 
     /**
      * Prompts the user to enter player names and returns a PlayerList.
