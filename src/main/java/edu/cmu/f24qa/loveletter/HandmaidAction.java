@@ -11,7 +11,7 @@ public class HandmaidAction implements CardAction {
      *          the input stream
      * @param user
      *          the player playing the card
-     * @param palyers
+     * @param players
      *          the player list
      */
     @Override

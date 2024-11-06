@@ -9,8 +9,8 @@ public class PrinceAction implements CardAction {
      *          the input stream
      * @param user
      *          the player playing the card
-     * @param opponent
-     *          the player targeted by the card
+     * @param players
+     *          the player list
      */
     @Override
     public void execute(UserInput userInput, Player user, PlayerList players) {
