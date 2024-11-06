@@ -7,9 +7,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public class CountessAction implements CardAction {
 
     /**
-     * If the user has the King or Prince in their hand, the user
-     * cannot play the Countess. Otherwise, the Countess acts as a
-     * null card and does nothing.
+     * If a player has the King or Prince in hand, 
+     * they must discard the Countess card
      *
      * @param inputScanner
      *          the input stream
@@ -20,6 +19,6 @@ public class CountessAction implements CardAction {
      */
     @Override
     public void execute(Scanner inputScanner, Player user, @Nullable Player opponent) {
-        throw new UnsupportedOperationException();
+        assert true;
     }
 }
