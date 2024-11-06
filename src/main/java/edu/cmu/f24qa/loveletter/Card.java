@@ -1,17 +1,19 @@
 package edu.cmu.f24qa.loveletter;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 /**
  * Enumeration for different types of cards with names and values.
  */
 public enum Card {
-    GUARD("Guard", 1),
-    PRIEST("Priest", 2),
-    BARON("Baron", 3),
-    HANDMAIDEN("Handmaiden", 4),
-    PRINCE("Prince", 5),
-    KING("King", 6),
-    COUNTESS("Countess", 7),
-    PRINCESS("Princess", 8);
+    GUARD("Guard", 1, new GuardAction()),
+    PRIEST("Priest", 2, new PriestAction()),
+    BARON("Baron", 3, new BaronAction()),
+    HANDMAIDEN("Handmaiden", 4, new HandmaidAction()),
+    PRINCE("Prince", 5, new PrinceAction()),
+    KING("King", 6, new KingAction()),
+    COUNTESS("Countess", 7, new CountessAction()),
+    PRINCESS("Princess", 8, new PrincessAction());
 
     /**
      * The name of the card.
@@ -22,6 +24,11 @@ public enum Card {
      * The value of the card.
      */
     private final int value;
+
+    /**
+     * The action associated with the card.
+     */
+    private final CardAction action;
 
     /**
      * All possible card names.
@@ -44,10 +51,13 @@ public enum Card {
      *          the name of the card
      * @param cardValue
      *          the value of the card
+     * @param cardAction
+     *          the action associated with the card
      */
-    Card(String cardName, int cardValue) {
+    Card(String cardName, int cardValue, CardAction cardAction) {
         this.name = cardName;
         this.value = cardValue;
+        this.action = cardAction;
     }
 
     /**
@@ -66,6 +76,20 @@ public enum Card {
      */
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Executes the action associated with the card.
+     *
+     * @param userInput
+     *          the input stream
+     * @param user
+     *          the player playing the card
+     * @param opponent
+     *          the targeted player
+     */
+    public void execute(UserInput userInput, Player user, @Nullable Player opponent) {
+        this.action.execute(userInput, user, opponent);
     }
 
     /**
