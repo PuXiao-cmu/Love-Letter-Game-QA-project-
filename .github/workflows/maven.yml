@@ -21,11 +21,11 @@ jobs:
     - name: Run the Maven tests
       run: mvn clean compile test
     
+    - name: Run Checkstyle Analysis
+      run: mvn checkstyle:check
+    
     - name: Run SpotBugs
       run: mvn spotbugs:check
     
     - name: Run PMD
       run: mvn pmd:check
-
-    - name: Run Checkstyle Analysis
-      run: mvn checkstyle:check
