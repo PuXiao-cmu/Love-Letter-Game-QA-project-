@@ -29,7 +29,7 @@ public interface UserInput {
 
     /**
      * Get the opponent name from user input.
-     * 
+     *
      * @return the name of the opponent
      */
     String getOpponentName();
