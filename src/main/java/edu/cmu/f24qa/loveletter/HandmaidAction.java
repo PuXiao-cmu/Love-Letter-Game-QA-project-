@@ -1,7 +1,5 @@
 package edu.cmu.f24qa.loveletter;
 
-import java.util.Scanner;
-
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class HandmaidAction implements CardAction {
@@ -11,7 +9,7 @@ public class HandmaidAction implements CardAction {
      * If the user is not already protected, they are protected from being
      * targeted by another player's card until their next turn.
      *
-     * @param inputScanner
+     * @param userInput
      *          the input stream
      * @param user
      *          the player playing the card
@@ -19,7 +17,7 @@ public class HandmaidAction implements CardAction {
      *          the targeted player
      */
     @Override
-    public void execute(Scanner inputScanner, Player user, @Nullable Player opponent) {
+    public void execute(UserInput userInput, Player user, @Nullable Player opponent) {
         if (opponent != null) {
             throw new IllegalArgumentException();
         }

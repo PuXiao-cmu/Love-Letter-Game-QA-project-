@@ -1,7 +1,5 @@
 package edu.cmu.f24qa.loveletter;
 
-import java.util.Scanner;
-
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class GuardAction implements CardAction {
@@ -11,7 +9,7 @@ public class GuardAction implements CardAction {
      * If the user is correct, the opponent loses the round and must lay down their card.
      * If the user is incorrect, the opponent is not affected.
      *
-     * @param inputScanner
+     * @param userInput
      *          the input stream
      * @param user
      *          the player playing the card
@@ -19,13 +17,12 @@ public class GuardAction implements CardAction {
      *          the player targeted by the card
      */
     @Override
-    public void execute(Scanner inputScanner, Player user, @Nullable Player opponent) {
+    public void execute(UserInput userInput, Player user, @Nullable Player opponent) {
         if (opponent == null) {
             throw new IllegalArgumentException();
         }
 
-        System.out.print("Which card would you like to guess: ");
-        String cardName = inputScanner.nextLine();
+        String cardName = userInput.getCardName();
 
         Card opponentCard = opponent.viewHandCard(0);
         if (opponentCard.getName().equalsIgnoreCase(cardName)) {

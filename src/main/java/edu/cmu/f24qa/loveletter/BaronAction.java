@@ -1,7 +1,5 @@
 package edu.cmu.f24qa.loveletter;
 
-import java.util.Scanner;
-
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 
@@ -13,7 +11,7 @@ public class BaronAction implements CardAction {
      * If the user's card is of lower value, the user loses the round and their card.
      * If the two players have the same card, their used pile values are compared in the same manner.
      *
-     * @param inputScanner
+     * @param userInput
      *          the input stream
      * @param user
      *          the player playing the card
@@ -21,7 +19,7 @@ public class BaronAction implements CardAction {
      *          the player targeted by the card
      */
     @Override
-    public void execute(Scanner inputScanner, Player user, @Nullable Player opponent) {
+    public void execute(UserInput userInput, Player user, @Nullable Player opponent) {
         if (opponent == null) {
             throw new IllegalArgumentException();
         }

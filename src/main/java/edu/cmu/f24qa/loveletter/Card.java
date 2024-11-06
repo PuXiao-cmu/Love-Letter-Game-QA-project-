@@ -1,7 +1,5 @@
 package edu.cmu.f24qa.loveletter;
 
-import java.util.Scanner;
-
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -83,15 +81,15 @@ public enum Card {
     /**
      * Executes the action associated with the card.
      *
-     * @param inputScanner
-     *          the scanner for reading user input
+     * @param userInput
+     *          the input stream
      * @param user
      *          the player playing the card
      * @param opponent
      *          the targeted player
      */
-    public void execute(Scanner inputScanner, Player user, @Nullable Player opponent) {
-        this.action.execute(inputScanner, user, opponent);
+    public void execute(UserInput userInput, Player user, @Nullable Player opponent) {
+        this.action.execute(userInput, user, opponent);
     }
 
     /**
