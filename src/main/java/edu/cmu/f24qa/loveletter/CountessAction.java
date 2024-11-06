@@ -7,8 +7,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public class CountessAction implements CardAction {
 
     /**
-     * If a player has the King or Prince in hand, 
-     * they must discard the Countess card
+     * If a player has the King or Prince in hand, they must discard the Countess card.
      *
      * @param inputScanner
      *          the input stream
