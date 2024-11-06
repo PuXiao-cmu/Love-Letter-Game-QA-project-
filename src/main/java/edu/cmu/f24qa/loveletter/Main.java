@@ -21,8 +21,7 @@ public final class Main {
         Scanner in = new Scanner(System.in);
         PlayerList players = new PlayerList();
         Deck deck = new Deck();
-        GameState gameState = new GameState(players, deck);
-        Game g = new Game(in, gameState);
+        Game g = new Game(in, players, deck);
         g.setPlayers();
         g.start();
     }

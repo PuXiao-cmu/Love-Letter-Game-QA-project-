@@ -7,18 +7,25 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 public class Game {
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "It's fine for console reads")
     private Scanner in;
-    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "It's fine for console reads")
-    private GameState gameState;
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Dependency injection is required for testing purposes")
+    private PlayerList players;
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Dependency injection is required for testing purposes")
+    private Deck deck;
+    @SuppressFBWarnings(value = "URF_UNREAD_FIELD", justification = "Might be used later")
+    private int round;
 
     /**
      * Constructor for the Game class.
      *
      * @param scannerInput the input scanner
-     * @param curGameState the current game state
+     * @param curPlayers the current players
+     * @param curDeck the current deck
      */
-    public Game(Scanner scannerInput, GameState curGameState) {
+    public Game(Scanner scannerInput, PlayerList curPlayers, Deck curDeck) {
         this.in = scannerInput;
-        this.gameState = curGameState;
+        this.players = curPlayers;
+        this.deck = curDeck;
+        this.round = 0;
     }
 
     /**
@@ -28,22 +35,29 @@ public class Game {
         System.out.print("Enter player name (empty when done): ");
         String name = in.nextLine();
         while (!name.isBlank()) {
-            gameState.getPlayers().addPlayer(name);
+            players.addPlayer(name);
             System.out.print("Enter player name (empty when done): ");
             name = in.nextLine();
         }
     }
 
     /**
+     * Reset players, rebuild deck, shuffle and deal cards.
+     */
+    public void resetGame() {
+        players.reset();
+        deck.build();
+        deck.shuffle();
+        players.dealCards(deck);
+    }
+
+    /**
      * The main game loop.
      */
     public void start() {
-        PlayerList players = gameState.getPlayers();
-        Deck deck = gameState.getDeck();
-
         while (players.getGameWinner() == null) {
-            gameState.resetGameState();
-            players.dealCards(deck);
+
+            resetGame();
 
             while (!players.checkForRoundWinner() && deck.hasMoreCards()) {
                 Player turn = players.getCurrentPlayer();
@@ -76,13 +90,13 @@ public class Game {
      *      the player whose turn it is
      */
     private void executeTurn(Player turn) {
-        gameState.getPlayers().printUsedPiles();
+        players.printUsedPiles();
         System.out.println("\n" + turn.getName() + "'s turn:");
         if (turn.isProtected()) {
             turn.switchProtection();
         }
 
-        turn.receiveHandCard(gameState.getDeck().draw());
+        turn.receiveHandCard(deck.draw());
 
         int royaltyPos = turn.handRoyaltyPos();
 
@@ -126,7 +140,7 @@ public class Game {
      * @param user the player playing the card
      */
     private void executeActionCard(String name, Player user) {
-        Player opponent = getOpponent(in, gameState.getPlayers(), user);
+        Player opponent = getOpponent(in, players, user);
 
         switch (name) {
             case "guard" -> useGuard(in, opponent);
