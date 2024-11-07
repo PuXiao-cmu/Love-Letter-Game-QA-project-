@@ -51,6 +51,10 @@ class PriestActionTest {
         // Execute the Priest action
         priestAction.execute(mockUserInput, mockUser, mockPlayerList);
 
+        //verify getOpponenet() and viewHandCard(0) was called
+        verify(mockUserInput).getOpponent(mockPlayerList, mockUser);
+        verify(mockOpponent).viewHandCard(0);
+
         // Verify that the output matches the expected reveal message
         String expectedOutput = "Opponent shows you a Guard (1)";
         String actualOutput = outputStream.toString().trim();
