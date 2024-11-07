@@ -7,11 +7,17 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+/**
+* Tests for verifying the re-prompt behavior when selecting a non-existent opponent.
+*/
 public class NonExistentOpponentSelectionTest {
    private PlayerList mockPlayerList;
    private Player mockUser;
    private ByteArrayOutputStream outputStream;
 
+   /**
+    * Sets up the test environment before each test.
+    */
    @BeforeEach
    void setUp() {
        mockPlayerList = mock(PlayerList.class);
@@ -20,6 +26,10 @@ public class NonExistentOpponentSelectionTest {
        System.setOut(new PrintStream(outputStream));
    }
 
+   /**
+    * Tests that the system re-prompts when a non-existent opponent is selected.
+    * Verifies both the error message and the number of attempts to get player.
+    */
    @Test
    void testNonExistentOpponentReprompts() {
        String input = "NonExistentPlayer\nValidPlayer\n";
