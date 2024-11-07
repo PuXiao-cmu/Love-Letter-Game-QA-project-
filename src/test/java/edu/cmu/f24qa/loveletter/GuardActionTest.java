@@ -43,6 +43,6 @@ class GuardActionTest {
 
         guardAction.execute(mockUserInput, mockUser, mockPlayerList);
 
-        verify(mockUserInput).getOpponent(mockPlayerList, mockUser);
+        verify(mockUserInput, times(1)).getOpponent(mockPlayerList, mockUser);
     }
 }
