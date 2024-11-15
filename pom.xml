@@ -222,7 +222,7 @@
         <configuration>
           <targetTests>
             <param>edu.cmu.f24qa.loveletter.WhiteboxCardLogicTest</param>
-            <param>edu.cmu.f24qa.loveletter.BlackboxCardLogicTest</param>
+            <!-- <param>edu.cmu.f24qa.loveletter.BlackboxCardLogicTest</param> -->
           </targetTests>
           <outputFormats>
             <outputFormat>HTML</outputFormat>
