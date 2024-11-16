@@ -31,14 +31,7 @@ public class BaronAction implements CardAction {
             System.out.println("You have lost the comparison");
             user.eliminate();
         } else {
-            System.out.println("You have the same card!");
-            if (opponent.discardedValue() > user.discardedValue()) {
-                System.out.println("You have lost the used pile comparison");
-                opponent.eliminate();
-            } else {
-                System.out.println("You have won the used pile comparison");
-                user.eliminate();
-            }
+            System.out.println("You have the same card - no one is eliminated!");
         }
     }
 }
