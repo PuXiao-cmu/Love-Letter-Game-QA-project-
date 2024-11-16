@@ -16,6 +16,10 @@ public class KingAction implements CardAction {
     @Override
     public void execute(UserInput userInput, Player user, PlayerList players) {
         Player opponent = userInput.getOpponent(players, user);
+        if (opponent == null) {
+            System.out.println("No valid opponent selected.");
+            return;
+        }
 
         Card userCard = user.playHandCard(0);
         Card opponentCard = opponent.playHandCard(0);
