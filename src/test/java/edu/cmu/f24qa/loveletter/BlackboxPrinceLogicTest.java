@@ -48,6 +48,11 @@ class BlackboxPrinceLogicTest {
 
     }
 
+    /**
+     * Rule 1
+     * Tests that when a player selects a valid player with a Princess card,
+     * the opponent is eliminated.
+     */
     @Test
     void testRule1_PlayerSelectsValidPlayerWithPrincessCard() {
         // Setup opponent with Princess card
@@ -63,6 +68,11 @@ class BlackboxPrinceLogicTest {
         verify(spyOpponent).eliminate();
     }
 
+    /**
+     * Rule 2
+     * Tests that when a player selects a valid player with a non-Princess card,
+     * the opponent discards and redraws a card.
+     */
     @Test
     void testRule2_PlayerSelectsValidPlayerWithNonPrincessCard() {
         // Setup opponent with a non-Princess card
@@ -79,6 +89,10 @@ class BlackboxPrinceLogicTest {
         verify(spyOpponent).receiveHandCard(any(Card.class));
     }
 
+    /**
+     * Rule 3
+     * Tests that when a player selects themselves, they discard and redraw a card.
+     */
     @Test
     void testRule3_PlayerSelectsThemselves() {
         // Setup player with a non-Princess card
@@ -96,6 +110,12 @@ class BlackboxPrinceLogicTest {
         verify(spyPlayer).receiveHandCard(any(Card.class));
     }
 
+    /**
+     * Rule 4
+     * Tests that when a player selects a non-existent player, they are re-prompted to select an opponent.
+     * Verifies that the retry logic works by validating that the opponent is discarded and redrawn a card,
+     * and that nextLine was called twice.
+     */
     @Test
     void testRule4_PlayerSelectsNonExistentPlayer() {
         PrinceAction princeAction = new PrinceAction();
@@ -111,6 +131,12 @@ class BlackboxPrinceLogicTest {
         verify(mockScanner, times(2)).nextLine();
     }
 
+    /**
+     * Rule 5
+     * Tests that when a player selects a protected player, they are re-prompted to select an opponent.
+     * Verifies that the retry logic works by validating that the opponent is discarded and redrawn a card,
+     * and that nextLine was called twice.
+     */
     @Test
     void testRule5_PlayerSelectsProtectedPlayer() {
         PrinceAction princeAction = new PrinceAction();
