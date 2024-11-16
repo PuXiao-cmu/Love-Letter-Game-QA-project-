@@ -2,7 +2,6 @@ package edu.cmu.f24qa.loveletter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.lang.reflect.Field;
 import java.util.Scanner;
@@ -10,7 +9,7 @@ import java.util.Scanner;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class BlackBoxGetOpponentTest {
+class BlackboxGetOpponentTest {
 
     private CommandLineUserInput commandLineUserInput;
     private Scanner mockScanner;
