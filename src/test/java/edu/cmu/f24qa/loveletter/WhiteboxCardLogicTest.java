@@ -19,7 +19,7 @@ public class WhiteboxCardLogicTest {
     /**
      * Test ID: HT1
      * Branch ID: Handmaid-W1
-     * Tests that playing Handmaid card results in protecting current player.
+     * Tests that playing Handmaid card results in protecting unprotected player.
      */
     @Test
     void testHandmaidActionNotProtected() {    // HT1
@@ -34,7 +34,7 @@ public class WhiteboxCardLogicTest {
     /**
      * Test ID: HT2
      * Branch ID: Handmaid-W2
-     * Tests that playing Handmaid card results in protecting current player.
+     * Tests that playing Handmaid card do noting for protected player.
      */
     @Test
     void testHandmaidActionProtected() {    // HT2
