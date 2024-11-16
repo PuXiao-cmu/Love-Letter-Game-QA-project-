@@ -1,46 +1,49 @@
 package edu.cmu.f24qa.loveletter;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BlackboxCardLogicTest {
     private UserInput userInput;
-    private Player user;
+    private Player player;
     private PlayerList playerList;
 
     @BeforeEach
     void setUp() {
         userInput = mock(UserInput.class);
-        user = mock(Player.class);
+        player = mock(Player.class);
         playerList = mock(PlayerList.class);
     }
 
     /**
-     * Handmaid Card Test: Rule 1-2
+     * Handmaid Card Test: Rule 1: If Player plays Handmaid card, then this player is protected.
      */
-
-    // Rule 1: Normal case - the player is initially unprotected.
     @Test
-    void testHandmaidProtectionGain() {
+    void testHandmaidProtectPlayer() {
         HandmaidAction handmaidAction = new HandmaidAction();
+        Player realUser = new Player("testPlayer");
+        player = spy(realUser); 
 
-        when(user.isProtected()).thenReturn(false);
+        handmaidAction.execute(userInput, player, playerList);
 
-        handmaidAction.execute(userInput, user, playerList);
-
-        verify(user).switchProtection();  // Verify protection is enabled
+        assertTrue(player.isProtected(), "The user should be protected after playing the Handmaid card."); // Verify protection is enabled
     }
 
-    // Rule 2: Edge case - the player is already protected.
+    /**
+     * Countess Card Test: Rule 1: Play Countess Card do not trigger any action.
+     */
     @Test
-    void testHandmaidAlreadyProtected() {
-        HandmaidAction handmaidAction = new HandmaidAction();
+    void testCountessAction() {
+        CountessAction countessAction = new CountessAction();
 
-        when(user.isProtected()).thenReturn(true);
+        countessAction.execute(userInput, player, playerList);
 
-        handmaidAction.execute(userInput, user, playerList);
+        // Verify that no actions are triggered:
+        verifyNoInteractions(player);
+        verifyNoInteractions(userInput);
+        verifyNoInteractions(playerList);
 
-        verify(user, never()).switchProtection();  // Verify no protection change
     }
 }
