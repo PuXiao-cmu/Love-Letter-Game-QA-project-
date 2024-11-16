@@ -108,4 +108,38 @@ public class BlackboxCardLogicTest {
         verify(user, never()).receiveHandCard(any(Card.class));
         verify(opponent, never()).receiveHandCard(any(Card.class));
     }
+
+    /**
+     * Prince card tests - Rules 1-4
+     */
+    // Rule 1: Opponent discards a Princess card and is eliminated
+    @Test
+    void testPrinceEliminatesOpponent() {
+        PrinceAction princeAction = new PrinceAction();
+        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
+        when(opponent.viewHandCard(0)).thenReturn(Card.PRINCESS);
+
+        // Execute
+        princeAction.execute(userInput, user, playerList);
+
+        // Verify opponent is eliminated
+        verify(opponent).playHandCard(0);
+        verify(opponent).eliminate();
+    }
+
+    // Opponent discards a non-Princess card and redraws a new card
+    @Test
+    void testPrinceRedrawsCard() {
+        PrinceAction princeAction = new PrinceAction();
+        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
+        when(opponent.viewHandCard(0)).thenReturn(Card.GUARD);
+
+        // Execute 
+        princeAction.execute(userInput, user, playerList);
+
+        // Verify opponent receives a new card
+        verify(opponent).playHandCard(0);
+        verify(opponent).receiveHandCard(any(Card.class));
+    }
+
 }
