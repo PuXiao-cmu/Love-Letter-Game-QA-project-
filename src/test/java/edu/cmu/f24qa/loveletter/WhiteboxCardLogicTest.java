@@ -1,6 +1,11 @@
 package edu.cmu.f24qa.loveletter;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,9 +31,24 @@ public class WhiteboxCardLogicTest {
         HandmaidAction handmaidAction = new HandmaidAction();
 
         when(player.isProtected()).thenReturn(false);
-        handmaidAction.execute(userInput, player, playerList);
 
-        verify(player).switchProtection();
+        // Redirect System.out for capturing output
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out; // Save original System.out
+        System.setOut(new PrintStream(outputStreamCaptor));
+
+        try {
+            handmaidAction.execute(userInput, player, playerList);
+
+            verify(player).switchProtection();
+
+            String output = outputStreamCaptor.toString().trim();
+            assertTrue(output.contains("You are now protected until your next turn"),
+                    "Expected output message was not printed.");
+        } finally {
+            // Restore original System.out
+            System.setOut(originalOut);
+        }
     }
 
     /**
@@ -41,9 +61,24 @@ public class WhiteboxCardLogicTest {
         HandmaidAction handmaidAction = new HandmaidAction();
 
         when(player.isProtected()).thenReturn(true);
-        handmaidAction.execute(userInput, player, playerList);
 
-        verify(player, never()).switchProtection();
+        // Redirect System.out for capturing output
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out; // Save original System.out
+        System.setOut(new PrintStream(outputStreamCaptor));
+
+        try {
+            handmaidAction.execute(userInput, player, playerList);
+
+            verify(player, never()).switchProtection();
+
+            String output = outputStreamCaptor.toString().trim();
+            assertTrue(output.contains("You are now protected until your next turn"),
+                    "Expected output message was not printed.");
+        } finally {
+            // Restore original System.out
+            System.setOut(originalOut);
+        }
     }
 
     /**
