@@ -174,4 +174,24 @@ public class WhiteboxCardLogicTest {
         // Verify that the opponent was not eliminated
         verify(opponent, never()).eliminate();
     }
+
+    /**
+     * Test ID: PrinceT1
+     * Branch ID: Prince-W1
+     * Tests that playing Prince card forces the opponent to be eliminated.
+     * Verifies that getOpponent is called and opponent is eliminated.
+     */
+    @Test
+    void testPrinceAction() {
+        PrinceAction princeAction = new PrinceAction();
+        // Setup opponent
+        when(userInput.getOpponent(playerList, player)).thenReturn(opponent);
+
+        // Execute
+        princeAction.execute(userInput, player, playerList);
+
+        // Verify the opponent was selected and eliminated
+        verify(userInput).getOpponent(playerList, player);
+        verify(opponent).eliminate();
+    }
 }
