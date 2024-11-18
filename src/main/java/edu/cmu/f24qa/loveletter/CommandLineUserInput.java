@@ -84,6 +84,11 @@ public class CommandLineUserInput implements UserInput {
                 continue;
             }
 
+            if (opponent.isProtected()) {
+                System.out.println("You cannot choose protected player!");
+                continue;
+            }
+
             return opponent;
         }
     }
