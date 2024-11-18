@@ -13,17 +13,17 @@ import org.junit.jupiter.api.Test;
  */
 public class WhiteboxCardLogicTest {
     private UserInput userInput;
-    private Player user;
+    private Player player;
     private PlayerList playerList;
-    private Player opponent;  // Add opponent as a member variable
+    private Player opponent;
 
     @BeforeEach
     void setUp() {
         // Initialize mock objects needed for all test cases
         userInput = mock(UserInput.class);
-        user = mock(Player.class);
+        player = mock(Player.class);
         playerList = mock(PlayerList.class);
-        opponent = mock(Player.class);  // Initialize opponent
+        opponent = mock(Player.class);
     }
 
     /**
@@ -32,11 +32,11 @@ public class WhiteboxCardLogicTest {
      * Tests that playing Princess card results in immediate elimination.
      */
     @Test
-    void testPrincessActionElimination() {  // PT1
+    void testPrincessActionElimination() {
         PrincessAction princessAction = new PrincessAction();
-        princessAction.execute(userInput, user, playerList);
+        princessAction.execute(userInput, player, playerList);
 
-        verify(user).eliminate();
+        verify(player).eliminate();
         verify(userInput, never()).getOpponent(any(), any());
         verifyNoMoreInteractions(playerList);
     }
@@ -50,74 +50,74 @@ public class WhiteboxCardLogicTest {
      * 2. Exchange cards between players
      */
     @Test
-    void testKingActionCardSwap() {  // KT1
+    void testKingActionCardSwap() {
         // Setup
         KingAction kingAction = new KingAction();
-        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
+        when(userInput.getOpponent(playerList, player)).thenReturn(opponent);
 
         // Set user and opponent cards
         Card userCard = Card.KING;
         Card opponentCard = Card.GUARD;
-        when(user.playHandCard(0)).thenReturn(userCard);
+        when(player.playHandCard(0)).thenReturn(userCard);
         when(opponent.playHandCard(0)).thenReturn(opponentCard);
 
         // Execute
-        kingAction.execute(userInput, user, playerList);
+        kingAction.execute(userInput, player, playerList);
 
         // Verify
-        verify(userInput).getOpponent(playerList, user);  // Verify opponent selection
-        verify(user).playHandCard(0);  // Verify user plays card
-        verify(opponent).playHandCard(0);  // Verify opponent plays card
-        verify(user).receiveHandCard(opponentCard);  // Verify user receives opponent's card
-        verify(opponent).receiveHandCard(userCard);  // Verify opponent receives user's card
+        verify(userInput).getOpponent(playerList, player);
+        verify(player).playHandCard(0);
+        verify(opponent).playHandCard(0);
+        verify(player).receiveHandCard(opponentCard);
+        verify(opponent).receiveHandCard(userCard);
     }
 
     /**
      * Test ID: BT1
      * Branch ID: Baron-W1
-     * Tests when user's card value is higher
+     * Tests when player's card value is higher
      */
     @Test
     void testBaronActionUserWinsComparison() {
         // Setup
         BaronAction baronAction = new BaronAction();
-        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
+        when(userInput.getOpponent(playerList, player)).thenReturn(opponent);
         
         // Simulate user's card value higher than opponent's
-        when(user.viewHandCard(0)).thenReturn(Card.KING);  // Value 6
+        when(player.viewHandCard(0)).thenReturn(Card.KING);  // Value 6
         when(opponent.viewHandCard(0)).thenReturn(Card.GUARD);  // Value 1
         
         // Execute
-        baronAction.execute(userInput, user, playerList);
+        baronAction.execute(userInput, player, playerList);
         
         // Verify
-        verify(userInput).getOpponent(playerList, user);
-        verify(opponent).eliminate();  // Opponent is eliminated
-        verify(user, never()).eliminate();  // User is not eliminated
+        verify(userInput).getOpponent(playerList, player);
+        verify(opponent).eliminate();
+        verify(player, never()).eliminate();
     }
 
     /**
      * Test ID: BT2
      * Branch ID: Baron-W2
-     * Tests when user's card value is lower
+     * Tests when player's card value is lower
      */
     @Test
     void testBaronActionUserLosesComparison() {
         // Setup
         BaronAction baronAction = new BaronAction();
-        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
+        when(userInput.getOpponent(playerList, player)).thenReturn(opponent);
         
         // Simulate user's card value lower than opponent's
-        when(user.viewHandCard(0)).thenReturn(Card.GUARD);  // Value 1
+        when(player.viewHandCard(0)).thenReturn(Card.GUARD);  // Value 1
         when(opponent.viewHandCard(0)).thenReturn(Card.KING);  // Value 6
         
         // Execute
-        baronAction.execute(userInput, user, playerList);
+        baronAction.execute(userInput, player, playerList);
         
         // Verify
-        verify(userInput).getOpponent(playerList, user);
-        verify(user).eliminate();  // User is eliminated
-        verify(opponent, never()).eliminate();  // Opponent is not eliminated
+        verify(userInput).getOpponent(playerList, player);
+        verify(player).eliminate();
+        verify(opponent, never()).eliminate();
     }
 
     /**
@@ -130,23 +130,23 @@ public class WhiteboxCardLogicTest {
     void testBaronActionEqualCardsOpponentWins() {
         // Setup
         BaronAction baronAction = new BaronAction();
-        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
+        when(userInput.getOpponent(playerList, player)).thenReturn(opponent);
         
         // Simulate equal card values
-        when(user.viewHandCard(0)).thenReturn(Card.GUARD);
+        when(player.viewHandCard(0)).thenReturn(Card.GUARD);
         when(opponent.viewHandCard(0)).thenReturn(Card.GUARD);
         
         // Simulate discard pile value comparison
         when(opponent.discardedValue()).thenReturn(5);
-        when(user.discardedValue()).thenReturn(3);
+        when(player.discardedValue()).thenReturn(3);
         
         // Execute
-        baronAction.execute(userInput, user, playerList);
+        baronAction.execute(userInput, player, playerList);
         
         // Verify
-        verify(userInput).getOpponent(playerList, user);
+        verify(userInput).getOpponent(playerList, player);
         verify(opponent).eliminate();
-        verify(user, never()).eliminate();
+        verify(player, never()).eliminate();
     }
 
     /**
@@ -159,21 +159,45 @@ public class WhiteboxCardLogicTest {
     void testBaronActionEqualCardsUserWins() {
         // Setup
         BaronAction baronAction = new BaronAction();
-        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
+        when(userInput.getOpponent(playerList, player)).thenReturn(opponent);
         
         // Simulate equal card values
-        when(user.viewHandCard(0)).thenReturn(Card.GUARD);
+        when(player.viewHandCard(0)).thenReturn(Card.GUARD);
         when(opponent.viewHandCard(0)).thenReturn(Card.GUARD);
         
-        // Simulate discard pile value comparison (user higher)
+        // Simulate discard pile value comparison (player higher)
         when(opponent.discardedValue()).thenReturn(3);
-        when(user.discardedValue()).thenReturn(5);
+        when(player.discardedValue()).thenReturn(5);
         
         // Execute
-        baronAction.execute(userInput, user, playerList);
+        baronAction.execute(userInput, player, playerList);
         
-        verify(userInput).getOpponent(playerList, user);
-        verify(user).eliminate();
+        verify(userInput).getOpponent(playerList, player);
+        verify(player).eliminate();
+        verify(opponent, never()).eliminate();
+    }
+
+    /**
+     * Test ID: BT5
+     * Branch ID: Baron-W5
+     * Tests when cards are equal with no elimination check
+     */
+    @Test
+    void testBaronActionEqualCardsNoElimination() {
+        // Setup
+        BaronAction baronAction = new BaronAction();
+        when(userInput.getOpponent(playerList, player)).thenReturn(opponent);
+        
+        // Simulate equal card values
+        when(player.viewHandCard(0)).thenReturn(Card.GUARD); 
+        when(opponent.viewHandCard(0)).thenReturn(Card.GUARD);
+        
+        // Execute
+        baronAction.execute(userInput, player, playerList);
+        
+        // Verify
+        verify(userInput).getOpponent(playerList, player);
+        verify(player, never()).eliminate();
         verify(opponent, never()).eliminate();
     }
 }
