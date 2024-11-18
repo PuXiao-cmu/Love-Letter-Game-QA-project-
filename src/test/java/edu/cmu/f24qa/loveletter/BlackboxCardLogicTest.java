@@ -91,7 +91,7 @@ public class BlackboxCardLogicTest {
     }
 
     // Rule 3: No-existed opponent selected
-    @Disabled("Test needs to be updated due to whether we should check null in cardAction")
+    @Disabled("Verified in getOpponent, so we don't need to check null in cardAction")
     @Test
     void testKingNoOpponentSelected() {
         KingAction kingAction = new KingAction();
@@ -186,7 +186,6 @@ public class BlackboxCardLogicTest {
      * - No one is eliminated
      * - Show comparison result
      */
-    @Disabled("Test needs to be updated due to rule changes - equal cards no longer check discard values")
     @Test
     void testRule3_EqualCardValues() throws IOException {
         BaronAction baronAction = new BaronAction();
@@ -221,7 +220,7 @@ public class BlackboxCardLogicTest {
      * Result:
      * - Action fails
      */
-    @Disabled("Test needs to be updated due to whether we should check null in cardAction")
+    @Disabled("Verified in getOpponent, so we don't need to check null in cardAction")
     @Test
     void testRule4_InvalidOpponentSelection() throws IOException {
         BaronAction baronAction = new BaronAction();
