@@ -10,7 +10,7 @@ import java.util.Scanner;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class BlackBoxGetOpponentTest {
+class BlackboxGetOpponentTest {
 
     private CommandLineUserInput commandLineUserInput;
     private Scanner mockScanner;
