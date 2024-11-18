@@ -7,8 +7,6 @@ import org.mockito.Mockito;
 
 public class WhiteboxCardLogicTest {
 
-    private PriestAction priestAction;
-    private GuardAction guardAction;
     private UserInput mockUserInput;
     private Player mockPlayer;
     private Player mockOpponent;
@@ -18,8 +16,6 @@ public class WhiteboxCardLogicTest {
 
     @BeforeEach
     public void setUp() {
-        priestAction = new PriestAction();
-        guardAction = new GuardAction();
         mockUserInput = Mockito.mock(UserInput.class);
         mockPlayer = Mockito.mock(Player.class);
         mockOpponent = Mockito.mock(Player.class);
@@ -28,9 +24,15 @@ public class WhiteboxCardLogicTest {
         mockOpponentCard = Mockito.mock(Card.class);
     }
 
-    // PriestAction Tests
+    /**
+     * Test ID: PriestT1
+     * Branch ID: Priest-W1
+     * Tests that playing Priest on an opponent results in viewing that opponent's handcard.
+     */
     @Test
     public void testExecuteWithValidOpponentAndCardInHand() {
+        PriestAction priestAction = new PriestAction();
+
         // Set up a valid opponent with a card
         Mockito.when(mockUserInput.getOpponent(mockPlayerList, mockPlayer)).thenReturn(mockOpponent);
         Mockito.when(mockOpponent.getName()).thenReturn("Opponent");
@@ -44,33 +46,17 @@ public class WhiteboxCardLogicTest {
         Mockito.verify(mockOpponent).viewHandCard(0);
     }
 
-    // @Test
-    // public void testExecuteWithOpponentNoCardsInHand() {
-    //     // Set up a valid opponent with no cards
-    //     Mockito.when(mockUserInput.getOpponent(mockPlayerList, mockPlayer)).thenReturn(mockOpponent);
-    //     Mockito.when(mockOpponent.getName()).thenReturn("Opponent");
-    //     Mockito.when(mockOpponent.viewHandCard(0)).thenThrow(new IndexOutOfBoundsException("No cards in hand"));
-
-    //     // Check that an exception is thrown if there are no cards in hand
-    //     Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-    //         priestAction.execute(mockUserInput, mockPlayer, mockPlayerList);
-    //     });
-    // }
-
-    // @Test
-    // public void testExecuteWithNullOpponent() {
-    //     // Set up the user input to return a null opponent
-    //     Mockito.when(mockUserInput.getOpponent(mockPlayerList, mockPlayer)).thenReturn(null);
-
-    //     // NullPointerException
-    //     Assertions.assertThrows(NullPointerException.class, () -> {
-    //         priestAction.execute(mockUserInput, mockPlayer, mockPlayerList);
-    //     });
-    // }
-
+    /**
+     * Test ID: GuardT1
+     * Branch ID: Guard-W1
+     * Tests that playing Guard on an opponent and haveing a correct guess results in
+     * eliminating that opponent.
+     */
     // GuardAction Tests
     @Test
     public void testGuardExecuteWithCorrectGuess() {
+        GuardAction guardAction = new GuardAction();
+
         // Set up a valid opponent and correct guess
         Mockito.when(mockUserInput.getOpponent(mockPlayerList, mockPlayer)).thenReturn(mockOpponent);
         Mockito.when(mockUserInput.getCardName()).thenReturn("Priest");
@@ -85,8 +71,16 @@ public class WhiteboxCardLogicTest {
         Mockito.verify(mockOpponent).eliminate();
     }
 
+    /**
+     * Test ID: GuardT2
+     * BranchID: Guard-W2
+     * Tests that playing Guard on an opponent and haveing an incorrect guess results in
+     * not eliminating that opponent.
+     */
     @Test
     public void testGuardExecuteWithIncorrectGuess() {
+        GuardAction guardAction = new GuardAction();
+
         // Set up a valid opponent and incorrect guess
         Mockito.when(mockUserInput.getOpponent(mockPlayerList, mockPlayer)).thenReturn(mockOpponent);
         Mockito.when(mockUserInput.getCardName()).thenReturn("Baron");
@@ -100,15 +94,4 @@ public class WhiteboxCardLogicTest {
         // Verify that the opponent was not eliminated
         Mockito.verify(mockOpponent, Mockito.never()).eliminate();
     }
-
-    // @Test
-    // public void testGuardExecuteWithNullOpponent() {
-    //     // Set up the user input to return a null opponent
-    //     Mockito.when(mockUserInput.getOpponent(mockPlayerList, mockPlayer)).thenReturn(null);
-
-    //     // NullPointerException
-    //     Assertions.assertThrows(NullPointerException.class, () -> {
-    //         guardAction.execute(mockUserInput, mockPlayer, mockPlayerList);
-    //     });
-    // }
 }
