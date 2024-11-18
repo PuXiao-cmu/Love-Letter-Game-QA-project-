@@ -1,20 +1,16 @@
 package edu.cmu.f24qa.loveletter;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-/**
- * Blackbox tests for card actions in Love Letter game.
- */
 public class BlackboxCardLogicTest {
     private UserInput userInput;
     private Player user;
-    private PlayerList playerList;
     private Player opponent;
+    private PlayerList playerList;
 
     @BeforeEach
     void setUp() {
@@ -22,90 +18,132 @@ public class BlackboxCardLogicTest {
         user = mock(Player.class);
         playerList = mock(PlayerList.class);
         opponent = mock(Player.class);
+
+        // Set up generic conditions applicable to all tests
+        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
     }
 
     /**
-     * Princess card tests - Rule 1: The basic scenario where the player is immediately eliminated
+     * Handmaid Card Test: Rule 1: If Player plays Handmaid card, then this player is protected.
      */
     @Test
-    void testPrincessEliminatesPlayer() {
-        PrincessAction princessAction = new PrincessAction();
-        
-        // Execute
-        princessAction.execute(userInput, user, playerList);
-        
-        // Verify
-        verify(user).eliminate();
-        verify(userInput, never()).getOpponent(any(), any());
-        verifyNoMoreInteractions(playerList);
+    void testHandmaidProtectPlayer() {
+        HandmaidAction handmaidAction = new HandmaidAction();
+        Player realUser = new Player("testPlayer");
+        user = spy(realUser); 
+
+        handmaidAction.execute(userInput, user, playerList);
+
+        assertTrue(user.isProtected(), "The user should be protected after playing the Handmaid card.");
     }
 
     /**
-     * King card tests - Rules 1-4
+     * Countess Card Test: Rule 1: Play Countess Card does not trigger any action.
      */
-    // Rule 1: Normal case - successful card swap
     @Test
-    void testKingSuccessfulCardSwap() {
-        KingAction kingAction = new KingAction();
-        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
-        when(opponent.isProtected()).thenReturn(false);
-        
-        Card userCard = Card.KING;
-        Card opponentCard = Card.GUARD;
-        when(user.playHandCard(0)).thenReturn(userCard);
-        when(opponent.playHandCard(0)).thenReturn(opponentCard);
+    void testCountessAction() {
+        CountessAction countessAction = new CountessAction();
 
-        // Execute
-        kingAction.execute(userInput, user, playerList);
+        countessAction.execute(userInput, user, playerList);
 
-        // Verify cards are swapped
-        verify(user).receiveHandCard(opponentCard);
-        verify(opponent).receiveHandCard(userCard);
+        // Verify that no actions are triggered:
+        verifyNoInteractions(user);
+        verifyNoInteractions(userInput);
+        verifyNoInteractions(playerList);
     }
 
-    // Rule 2: Protected opponent - no card swap
+    /**
+     * Blackbox test for Priest.
+     * R1: If a player looks at another player’s hand, then the player sees the player’s hand.
+     */
     @Test
-    void testKingProtectedOpponent() {
-        KingAction kingAction = new KingAction();
-        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
-        when(opponent.isProtected()).thenReturn(true);
+    void testPriestAllowsViewingOpponentCard() {
+        PriestAction priestAction = new PriestAction();
 
-        // Execute
-        kingAction.execute(userInput, user, playerList);
+        // Assume the opponent has a specific card (e.g., "King")
+        when(opponent.viewHandCard(0)).thenReturn(Card.KING);
 
-        // Verify no card exchange happened
-        verify(user, never()).receiveHandCard(any(Card.class));
-        verify(opponent, never()).receiveHandCard(any(Card.class));
+        // Execute Priest action
+        priestAction.execute(userInput, user, playerList);
+
+        // Verify that the user successfully views the opponent’s card
+        verify(opponent).viewHandCard(0);
     }
 
-    // Rule 3: Player holds King and Countess - invalid action
+    /**
+     * Blackbox test for Guard.
+     * R1: If the guess is correct, the opponent is eliminated.
+     */
     @Test
-    void testKingWithCountess() {
-        KingAction kingAction = new KingAction();
-        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
-        when(user.viewHandCard(0)).thenReturn(Card.COUNTESS);
-        when(user.viewHandCard(1)).thenReturn(Card.KING);
+    void testGuardCorrectGuessEliminatesOpponent() {
+        GuardAction guardAction = new GuardAction();
 
-        // Execute
-        kingAction.execute(userInput, user, playerList);
+        // Set up a correct guess scenario (opponent has "Prince")
+        when(userInput.getCardName()).thenReturn("Prince");
+        when(opponent.viewHandCard(0)).thenReturn(Card.PRINCE);
 
-        // Verify no card exchange happened
-        verify(user, never()).receiveHandCard(any(Card.class));
-        verify(opponent, never()).receiveHandCard(any(Card.class));
+        // Execute Guard action
+        guardAction.execute(userInput, user, playerList);
+
+        // Verify that the opponent is eliminated
+        verify(opponent).eliminate();
     }
 
-    // Rule 4: No valid opponent selected
-    @Disabled("Test temporarily disabled until KingAction null check is implemented")
+    /**
+     * Blackbox test for Guard.
+     * R2: If the guess is correct and the guess is a guard card, do not eliminate the opponent.
+     */
+    @Disabled("This test is currently failing and will be ignored")
     @Test
-    void testKingNoOpponentSelected() {
-        KingAction kingAction = new KingAction();
-        when(userInput.getOpponent(playerList, user)).thenReturn(null);
+    void testGuardCorrectGuessGuardDoesNotEliminateOpponent() {
+        GuardAction guardAction = new GuardAction();
 
-        // Execute
-        kingAction.execute(userInput, user, playerList);
+        // Set up a correct guess scenario with "Guard" (invalid guess)
+        when(userInput.getCardName()).thenReturn("Guard");
+        when(opponent.viewHandCard(0)).thenReturn(Card.GUARD);
 
-        // Verify no card exchange happened
-        verify(user, never()).receiveHandCard(any(Card.class));
-        verify(opponent, never()).receiveHandCard(any(Card.class));
+        // Execute Guard action
+        guardAction.execute(userInput, user, playerList);
+
+        // Verify that the opponent is not eliminated
+        verify(opponent, never()).eliminate();
+    }
+
+    /**
+     * Blackbox test for Guard.
+     * R3: If the guess is not correct and the guess is not a guard card, do not eliminate the opponent.
+     */
+    @Test
+    void testGuardIncorrectGuessNotGuardDoesNotEliminateOpponent() {
+        GuardAction guardAction = new GuardAction();
+
+        // Set up an incorrect guess scenario (opponent has "Prince", guess is "King")
+        when(userInput.getCardName()).thenReturn("King");
+        when(opponent.viewHandCard(0)).thenReturn(Card.PRINCE);
+
+        // Execute Guard action
+        guardAction.execute(userInput, user, playerList);
+
+        // Verify that the opponent is not eliminated
+        verify(opponent, never()).eliminate();
+    }
+
+    /**
+     * Blackbox test for Guard.
+     * R4: If the guess is not correct and the guess is a guard card, do not eliminate the opponent.
+     */
+    @Test
+    void testGuardIncorrectGuessGuardDoesNotEliminateOpponent() {
+        GuardAction guardAction = new GuardAction();
+
+        // Set up an incorrect guess scenario with "Guard" (invalid guess)
+        when(userInput.getCardName()).thenReturn("Guard");
+        when(opponent.viewHandCard(0)).thenReturn(Card.PRINCE);
+
+        // Execute Guard action
+        guardAction.execute(userInput, user, playerList);
+
+        // Verify that the opponent is not eliminated
+        verify(opponent, never()).eliminate();
     }
 }

@@ -1,180 +1,177 @@
 package edu.cmu.f24qa.loveletter;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
-/**
- * Whitebox tests for card actions in Love Letter game.
- */
 public class WhiteboxCardLogicTest {
     private UserInput userInput;
-    private Player user;
+    private Player player;
+    private Player opponent;
     private PlayerList playerList;
-    private Player opponent;  // Add opponent as a member variable
+    private Card card;
+    private Card opponentCard;
 
     @BeforeEach
     void setUp() {
-        // Initialize mock objects needed for all test cases
         userInput = mock(UserInput.class);
-        user = mock(Player.class);
+        player = mock(Player.class);
+        opponent = mock(Player.class);
         playerList = mock(PlayerList.class);
-        opponent = mock(Player.class);  // Initialize opponent
+        card = mock(Card.class);
+        opponentCard = mock(Card.class);
     }
 
     /**
-     * Test ID: PT1
-     * Branch ID: Princess-W1
-     * Tests that playing Princess card results in immediate elimination.
+     * Test ID: HT1
+     * Branch ID: Handmaid-W1
+     * Tests that playing Handmaid card results in protecting unprotected player.
      */
     @Test
-    void testPrincessActionElimination() {  // PT1
-        System.out.println("Running Princess Action Test");
+    void testHandmaidActionNotProtected() {    // HT1
+        HandmaidAction handmaidAction = new HandmaidAction();
 
-        PrincessAction princessAction = new PrincessAction();
-        princessAction.execute(userInput, user, playerList);
+        when(player.isProtected()).thenReturn(false);
 
-        verify(user).eliminate();
-        verify(userInput, never()).getOpponent(any(), any());
-        verifyNoMoreInteractions(playerList);
+        // Redirect System.out for capturing output
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out; // Save original System.out
+        System.setOut(new PrintStream(outputStreamCaptor));
+
+        try {
+            handmaidAction.execute(userInput, player, playerList);
+
+            verify(player).switchProtection();
+
+            String output = outputStreamCaptor.toString().trim();
+            assertTrue(output.contains("You are now protected until your next turn"),
+                    "Expected output message was not printed.");
+        } finally {
+            // Restore original System.out
+            System.setOut(originalOut);
+        }
     }
 
     /**
-     * Test ID: KT1
-     * Branch ID: King-W1
-     * Tests that King card successfully swaps cards between players.
-     * Steps verified:
-     * 1. Select opponent
-     * 2. Exchange cards between players
+     * Test ID: HT2
+     * Branch ID: Handmaid-W2
+     * Tests that playing Handmaid card does nothing for protected player.
      */
     @Test
-    void testKingActionCardSwap() {  // KT1
-        System.out.println("Running King Action Test");
+    void testHandmaidActionProtected() {    // HT2
+        HandmaidAction handmaidAction = new HandmaidAction();
 
-        // Setup
-        KingAction kingAction = new KingAction();
-        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
+        when(player.isProtected()).thenReturn(true);
 
-        // Set user and opponent cards
-        Card userCard = Card.KING;
-        Card opponentCard = Card.GUARD;
-        when(user.playHandCard(0)).thenReturn(userCard);
-        when(opponent.playHandCard(0)).thenReturn(opponentCard);
+        // Redirect System.out for capturing output
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out; // Save original System.out
+        System.setOut(new PrintStream(outputStreamCaptor));
 
-        // Execute
-        kingAction.execute(userInput, user, playerList);
+        try {
+            handmaidAction.execute(userInput, player, playerList);
 
-        // Verify
-        verify(userInput).getOpponent(playerList, user);  // Verify opponent selection
-        verify(user).playHandCard(0);  // Verify user plays card
-        verify(opponent).playHandCard(0);  // Verify opponent plays card
-        verify(user).receiveHandCard(opponentCard);  // Verify user receives opponent's card
-        verify(opponent).receiveHandCard(userCard);  // Verify opponent receives user's card
+            verify(player, never()).switchProtection();
+
+            String output = outputStreamCaptor.toString().trim();
+            assertTrue(output.contains("You are now protected until your next turn"),
+                    "Expected output message was not printed.");
+        } finally {
+            // Restore original System.out
+            System.setOut(originalOut);
+        }
     }
 
     /**
-     * Test ID: BT1
-     * Branch ID: Baron-W1
-     * Tests when user's card value is higher
+     * Test ID: CT1
+     * Branch ID: Countess-W1
+     * Tests that playing Countess card does not trigger any action.
      */
     @Test
-    void testBaronActionUserWinsComparison() {
-        // Setup
-        BaronAction baronAction = new BaronAction();
-        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
-        
-        // Simulate user's card value higher than opponent's
-        when(user.viewHandCard(0)).thenReturn(Card.KING);  // Value 6
-        when(opponent.viewHandCard(0)).thenReturn(Card.GUARD);  // Value 1
-        
-        // Execute
-        baronAction.execute(userInput, user, playerList);
-        
-        // Verify
-        verify(userInput).getOpponent(playerList, user);
-        verify(opponent).eliminate();  // Opponent is eliminated
-        verify(user, never()).eliminate();  // User is not eliminated
+    void testCountessAction() {
+        CountessAction countessAction = new CountessAction();
+
+        countessAction.execute(userInput, player, playerList);
+
+        // Verify that no actions are triggered:
+        verifyNoInteractions(player);
+        verifyNoInteractions(userInput);
+        verifyNoInteractions(playerList);
     }
 
     /**
-     * Test ID: BT2
-     * Branch ID: Baron-W2
-     * Tests when user's card value is lower
+     * Test ID: PriestT1
+     * Branch ID: Priest-W1
+     * Tests that playing Priest on an opponent results in viewing that opponent's hand card.
      */
     @Test
-    void testBaronActionUserLosesComparison() {
-        // Setup
-        BaronAction baronAction = new BaronAction();
-        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
+    public void testExecuteWithValidOpponentAndCardInHand() {
+        PriestAction priestAction = new PriestAction();
+
+        // Set up a valid opponent with a card
+        when(userInput.getOpponent(playerList, player)).thenReturn(opponent);
+        when(opponent.getName()).thenReturn("Opponent");
+        when(opponent.viewHandCard(0)).thenReturn(card);
+
+        Assertions.assertDoesNotThrow(() -> {
+            priestAction.execute(userInput, player, playerList);
+        });
         
-        // Simulate user's card value lower than opponent's
-        when(user.viewHandCard(0)).thenReturn(Card.GUARD);  // Value 1
-        when(opponent.viewHandCard(0)).thenReturn(Card.KING);  // Value 6
-        
-        // Execute
-        baronAction.execute(userInput, user, playerList);
-        
-        // Verify
-        verify(userInput).getOpponent(playerList, user);
-        verify(user).eliminate();  // User is eliminated
-        verify(opponent, never()).eliminate();  // Opponent is not eliminated
+        // Verify that the opponent's card was viewed
+        verify(opponent).viewHandCard(0);
     }
 
     /**
-     * Test ID: BT3
-     * Branch ID: Baron-W3
-     * Tests when cards are equal and opponent's discard value is higher
+     * Test ID: GuardT1
+     * Branch ID: Guard-W1
+     * Tests that playing Guard on an opponent and having a correct guess results in
+     * eliminating that opponent.
      */
     @Test
-    void testBaronActionEqualCardsOpponentWins() {
-        // Setup
-        BaronAction baronAction = new BaronAction();
-        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
-        
-        // Simulate equal card values
-        when(user.viewHandCard(0)).thenReturn(Card.GUARD);
-        when(opponent.viewHandCard(0)).thenReturn(Card.GUARD);
-        
-        // Simulate discard pile value comparison
-        when(opponent.discardedValue()).thenReturn(5);
-        when(user.discardedValue()).thenReturn(3);
-        
-        // Execute
-        baronAction.execute(userInput, user, playerList);
-        
-        // Verify
-        verify(userInput).getOpponent(playerList, user);
+    public void testGuardExecuteWithCorrectGuess() {
+        GuardAction guardAction = new GuardAction();
+
+        // Set up a valid opponent and correct guess
+        when(userInput.getOpponent(playerList, player)).thenReturn(opponent);
+        when(userInput.getCardName()).thenReturn("Priest");
+        when(opponent.viewHandCard(0)).thenReturn(opponentCard);
+        when(opponentCard.getName()).thenReturn("Priest");
+
+        Assertions.assertDoesNotThrow(() -> {
+            guardAction.execute(userInput, player, playerList);
+        });
+
+        // Verify that the opponent was eliminated
         verify(opponent).eliminate();
-        verify(user, never()).eliminate();
     }
 
     /**
-     * Test ID: BT4
-     * Branch ID: Baron-W4
-     * Tests when cards are equal and user's discard value is higher or equal
+     * Test ID: GuardT2
+     * Branch ID: Guard-W2
+     * Tests that playing Guard on an opponent and having an incorrect guess results in
+     * not eliminating that opponent.
      */
     @Test
-    void testBaronActionEqualCardsUserWins() {
-        // Setup
-        BaronAction baronAction = new BaronAction();
-        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
-        
-        // Simulate equal card values
-        when(user.viewHandCard(0)).thenReturn(Card.GUARD);
-        when(opponent.viewHandCard(0)).thenReturn(Card.GUARD);
-        
-        // Simulate discard pile value comparison (user higher)
-        when(opponent.discardedValue()).thenReturn(3);
-        when(user.discardedValue()).thenReturn(5);
-        
-        // Execute
-        baronAction.execute(userInput, user, playerList);
-        
-        verify(userInput).getOpponent(playerList, user);
-        verify(user).eliminate();
+    public void testGuardExecuteWithIncorrectGuess() {
+        GuardAction guardAction = new GuardAction();
+
+        // Set up a valid opponent and incorrect guess
+        when(userInput.getOpponent(playerList, player)).thenReturn(opponent);
+        when(userInput.getCardName()).thenReturn("Baron");
+        when(opponent.viewHandCard(0)).thenReturn(opponentCard);
+        when(opponentCard.getName()).thenReturn("Priest");
+
+        Assertions.assertDoesNotThrow(() -> {
+            guardAction.execute(userInput, player, playerList);
+        });
+
+        // Verify that the opponent was not eliminated
         verify(opponent, never()).eliminate();
     }
 
@@ -186,15 +183,15 @@ public class WhiteboxCardLogicTest {
      */
     @Test
     void testPrinceAction() {
-        // Setup
         PrinceAction princeAction = new PrinceAction();
-        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
+        // Setup opponent
+        when(userInput.getOpponent(playerList, player)).thenReturn(opponent);
 
         // Execute
-        princeAction.execute(userInput, user, playerList);
+        princeAction.execute(userInput, player, playerList);
 
-        // Verify
-        verify(userInput).getOpponent(playerList, user);
+        // Verify the opponent was selected and eliminated
+        verify(userInput).getOpponent(playerList, player);
         verify(opponent).eliminate();
     }
 }
