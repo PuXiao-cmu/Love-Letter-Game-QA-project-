@@ -1,12 +1,12 @@
 package edu.cmu.f24qa.loveletter;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
-class BlackboxCardLogicTest {
-
+public class BlackboxCardLogicTest {
     private UserInput userInput;
     private Player user;
     private Player opponent;
@@ -14,13 +14,42 @@ class BlackboxCardLogicTest {
 
     @BeforeEach
     void setUp() {
-        userInput = Mockito.mock(UserInput.class);
-        user = Mockito.mock(Player.class);
-        playerList = Mockito.mock(PlayerList.class);
-        opponent = Mockito.mock(Player.class);
+        userInput = mock(UserInput.class);
+        user = mock(Player.class);
+        playerList = mock(PlayerList.class);
+        opponent = mock(Player.class);
 
         // Set up generic conditions applicable to all tests
-        Mockito.when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
+        when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
+    }
+
+    /**
+     * Handmaid Card Test: Rule 1: If Player plays Handmaid card, then this player is protected.
+     */
+    @Test
+    void testHandmaidProtectPlayer() {
+        HandmaidAction handmaidAction = new HandmaidAction();
+        Player realUser = new Player("testPlayer");
+        user = spy(realUser); 
+
+        handmaidAction.execute(userInput, user, playerList);
+
+        assertTrue(user.isProtected(), "The user should be protected after playing the Handmaid card.");
+    }
+
+    /**
+     * Countess Card Test: Rule 1: Play Countess Card does not trigger any action.
+     */
+    @Test
+    void testCountessAction() {
+        CountessAction countessAction = new CountessAction();
+
+        countessAction.execute(userInput, user, playerList);
+
+        // Verify that no actions are triggered:
+        verifyNoInteractions(user);
+        verifyNoInteractions(userInput);
+        verifyNoInteractions(playerList);
     }
 
     /**
@@ -32,13 +61,13 @@ class BlackboxCardLogicTest {
         PriestAction priestAction = new PriestAction();
 
         // Assume the opponent has a specific card (e.g., "King")
-        Mockito.when(opponent.viewHandCard(0)).thenReturn(Card.KING);
+        when(opponent.viewHandCard(0)).thenReturn(Card.KING);
 
         // Execute Priest action
         priestAction.execute(userInput, user, playerList);
 
         // Verify that the user successfully views the opponent’s card
-        Mockito.verify(opponent).viewHandCard(0);
+        verify(opponent).viewHandCard(0);
     }
 
     /**
@@ -50,14 +79,14 @@ class BlackboxCardLogicTest {
         GuardAction guardAction = new GuardAction();
 
         // Set up a correct guess scenario (opponent has "Prince")
-        Mockito.when(userInput.getCardName()).thenReturn("Prince");
-        Mockito.when(opponent.viewHandCard(0)).thenReturn(Card.PRINCE);
+        when(userInput.getCardName()).thenReturn("Prince");
+        when(opponent.viewHandCard(0)).thenReturn(Card.PRINCE);
 
         // Execute Guard action
         guardAction.execute(userInput, user, playerList);
 
         // Verify that the opponent is eliminated
-        Mockito.verify(opponent).eliminate();
+        verify(opponent).eliminate();
     }
 
     /**
@@ -70,14 +99,14 @@ class BlackboxCardLogicTest {
         GuardAction guardAction = new GuardAction();
 
         // Set up a correct guess scenario with "Guard" (invalid guess)
-        Mockito.when(userInput.getCardName()).thenReturn("Guard");
-        Mockito.when(opponent.viewHandCard(0)).thenReturn(Card.GUARD);
+        when(userInput.getCardName()).thenReturn("Guard");
+        when(opponent.viewHandCard(0)).thenReturn(Card.GUARD);
 
         // Execute Guard action
         guardAction.execute(userInput, user, playerList);
 
         // Verify that the opponent is not eliminated
-        Mockito.verify(opponent, Mockito.never()).eliminate();
+        verify(opponent, never()).eliminate();
     }
 
     /**
@@ -89,14 +118,14 @@ class BlackboxCardLogicTest {
         GuardAction guardAction = new GuardAction();
 
         // Set up an incorrect guess scenario (opponent has "Prince", guess is "King")
-        Mockito.when(userInput.getCardName()).thenReturn("King");
-        Mockito.when(opponent.viewHandCard(0)).thenReturn(Card.PRINCE);
+        when(userInput.getCardName()).thenReturn("King");
+        when(opponent.viewHandCard(0)).thenReturn(Card.PRINCE);
 
         // Execute Guard action
         guardAction.execute(userInput, user, playerList);
 
         // Verify that the opponent is not eliminated
-        Mockito.verify(opponent, Mockito.never()).eliminate();
+        verify(opponent, never()).eliminate();
     }
 
     /**
@@ -108,13 +137,13 @@ class BlackboxCardLogicTest {
         GuardAction guardAction = new GuardAction();
 
         // Set up an incorrect guess scenario with "Guard" (invalid guess)
-        Mockito.when(userInput.getCardName()).thenReturn("Guard");
-        Mockito.when(opponent.viewHandCard(0)).thenReturn(Card.PRINCE);
+        when(userInput.getCardName()).thenReturn("Guard");
+        when(opponent.viewHandCard(0)).thenReturn(Card.PRINCE);
 
         // Execute Guard action
         guardAction.execute(userInput, user, playerList);
 
         // Verify that the opponent is not eliminated
-        Mockito.verify(opponent, Mockito.never()).eliminate();
+        verify(opponent, never()).eliminate();
     }
 }

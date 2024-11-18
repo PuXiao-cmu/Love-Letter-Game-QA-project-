@@ -1,80 +1,160 @@
 package edu.cmu.f24qa.loveletter;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
-import org.mockito.Mockito;
 
 public class WhiteboxCardLogicTest {
-
-    private UserInput mockUserInput;
-    private Player mockPlayer;
-    private Player mockOpponent;
-    private PlayerList mockPlayerList;
-    private Card mockCard;
-    private Card mockOpponentCard;
+    private UserInput userInput;
+    private Player player;
+    private Player opponent;
+    private PlayerList playerList;
+    private Card card;
+    private Card opponentCard;
 
     @BeforeEach
-    public void setUp() {
-        mockUserInput = Mockito.mock(UserInput.class);
-        mockPlayer = Mockito.mock(Player.class);
-        mockOpponent = Mockito.mock(Player.class);
-        mockPlayerList = Mockito.mock(PlayerList.class);
-        mockCard = Mockito.mock(Card.class);
-        mockOpponentCard = Mockito.mock(Card.class);
+    void setUp() {
+        userInput = mock(UserInput.class);
+        player = mock(Player.class);
+        opponent = mock(Player.class);
+        playerList = mock(PlayerList.class);
+        card = mock(Card.class);
+        opponentCard = mock(Card.class);
+    }
+
+    /**
+     * Test ID: HT1
+     * Branch ID: Handmaid-W1
+     * Tests that playing Handmaid card results in protecting unprotected player.
+     */
+    @Test
+    void testHandmaidActionNotProtected() {    // HT1
+        HandmaidAction handmaidAction = new HandmaidAction();
+
+        when(player.isProtected()).thenReturn(false);
+
+        // Redirect System.out for capturing output
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out; // Save original System.out
+        System.setOut(new PrintStream(outputStreamCaptor));
+
+        try {
+            handmaidAction.execute(userInput, player, playerList);
+
+            verify(player).switchProtection();
+
+            String output = outputStreamCaptor.toString().trim();
+            assertTrue(output.contains("You are now protected until your next turn"),
+                    "Expected output message was not printed.");
+        } finally {
+            // Restore original System.out
+            System.setOut(originalOut);
+        }
+    }
+
+    /**
+     * Test ID: HT2
+     * Branch ID: Handmaid-W2
+     * Tests that playing Handmaid card does nothing for protected player.
+     */
+    @Test
+    void testHandmaidActionProtected() {    // HT2
+        HandmaidAction handmaidAction = new HandmaidAction();
+
+        when(player.isProtected()).thenReturn(true);
+
+        // Redirect System.out for capturing output
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out; // Save original System.out
+        System.setOut(new PrintStream(outputStreamCaptor));
+
+        try {
+            handmaidAction.execute(userInput, player, playerList);
+
+            verify(player, never()).switchProtection();
+
+            String output = outputStreamCaptor.toString().trim();
+            assertTrue(output.contains("You are now protected until your next turn"),
+                    "Expected output message was not printed.");
+        } finally {
+            // Restore original System.out
+            System.setOut(originalOut);
+        }
+    }
+
+    /**
+     * Test ID: CT1
+     * Branch ID: Countess-W1
+     * Tests that playing Countess card does not trigger any action.
+     */
+    @Test
+    void testCountessAction() {
+        CountessAction countessAction = new CountessAction();
+
+        countessAction.execute(userInput, player, playerList);
+
+        // Verify that no actions are triggered:
+        verifyNoInteractions(player);
+        verifyNoInteractions(userInput);
+        verifyNoInteractions(playerList);
     }
 
     /**
      * Test ID: PriestT1
      * Branch ID: Priest-W1
-     * Tests that playing Priest on an opponent results in viewing that opponent's handcard.
+     * Tests that playing Priest on an opponent results in viewing that opponent's hand card.
      */
     @Test
     public void testExecuteWithValidOpponentAndCardInHand() {
         PriestAction priestAction = new PriestAction();
 
         // Set up a valid opponent with a card
-        Mockito.when(mockUserInput.getOpponent(mockPlayerList, mockPlayer)).thenReturn(mockOpponent);
-        Mockito.when(mockOpponent.getName()).thenReturn("Opponent");
-        Mockito.when(mockOpponent.viewHandCard(0)).thenReturn(mockCard);
+        when(userInput.getOpponent(playerList, player)).thenReturn(opponent);
+        when(opponent.getName()).thenReturn("Opponent");
+        when(opponent.viewHandCard(0)).thenReturn(card);
 
         Assertions.assertDoesNotThrow(() -> {
-            priestAction.execute(mockUserInput, mockPlayer, mockPlayerList);
+            priestAction.execute(userInput, player, playerList);
         });
         
         // Verify that the opponent's card was viewed
-        Mockito.verify(mockOpponent).viewHandCard(0);
+        verify(opponent).viewHandCard(0);
     }
 
     /**
      * Test ID: GuardT1
      * Branch ID: Guard-W1
-     * Tests that playing Guard on an opponent and haveing a correct guess results in
+     * Tests that playing Guard on an opponent and having a correct guess results in
      * eliminating that opponent.
      */
-    // GuardAction Tests
     @Test
     public void testGuardExecuteWithCorrectGuess() {
         GuardAction guardAction = new GuardAction();
 
         // Set up a valid opponent and correct guess
-        Mockito.when(mockUserInput.getOpponent(mockPlayerList, mockPlayer)).thenReturn(mockOpponent);
-        Mockito.when(mockUserInput.getCardName()).thenReturn("Priest");
-        Mockito.when(mockOpponent.viewHandCard(0)).thenReturn(mockOpponentCard);
-        Mockito.when(mockOpponentCard.getName()).thenReturn("Priest");
+        when(userInput.getOpponent(playerList, player)).thenReturn(opponent);
+        when(userInput.getCardName()).thenReturn("Priest");
+        when(opponent.viewHandCard(0)).thenReturn(opponentCard);
+        when(opponentCard.getName()).thenReturn("Priest");
 
         Assertions.assertDoesNotThrow(() -> {
-            guardAction.execute(mockUserInput, mockPlayer, mockPlayerList);
+            guardAction.execute(userInput, player, playerList);
         });
 
         // Verify that the opponent was eliminated
-        Mockito.verify(mockOpponent).eliminate();
+        verify(opponent).eliminate();
     }
 
     /**
      * Test ID: GuardT2
-     * BranchID: Guard-W2
-     * Tests that playing Guard on an opponent and haveing an incorrect guess results in
+     * Branch ID: Guard-W2
+     * Tests that playing Guard on an opponent and having an incorrect guess results in
      * not eliminating that opponent.
      */
     @Test
@@ -82,16 +162,16 @@ public class WhiteboxCardLogicTest {
         GuardAction guardAction = new GuardAction();
 
         // Set up a valid opponent and incorrect guess
-        Mockito.when(mockUserInput.getOpponent(mockPlayerList, mockPlayer)).thenReturn(mockOpponent);
-        Mockito.when(mockUserInput.getCardName()).thenReturn("Baron");
-        Mockito.when(mockOpponent.viewHandCard(0)).thenReturn(mockOpponentCard);
-        Mockito.when(mockOpponentCard.getName()).thenReturn("Priest");
+        when(userInput.getOpponent(playerList, player)).thenReturn(opponent);
+        when(userInput.getCardName()).thenReturn("Baron");
+        when(opponent.viewHandCard(0)).thenReturn(opponentCard);
+        when(opponentCard.getName()).thenReturn("Priest");
 
         Assertions.assertDoesNotThrow(() -> {
-            guardAction.execute(mockUserInput, mockPlayer, mockPlayerList);
+            guardAction.execute(userInput, player, playerList);
         });
 
         // Verify that the opponent was not eliminated
-        Mockito.verify(mockOpponent, Mockito.never()).eliminate();
+        verify(opponent, never()).eliminate();
     }
 }
