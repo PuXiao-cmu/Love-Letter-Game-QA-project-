@@ -11,6 +11,7 @@ public class PrincessActionTest {
     private Player mockPlayer;
     private PrincessAction princessAction;
     private PlayerList mockPlayerList;
+    private Deck deck;
 
     /**
      * Sets up the mock objects for the tests, including a UserInput for
@@ -20,6 +21,9 @@ public class PrincessActionTest {
      */
     @BeforeEach
     public void setup() {
+        deck = new Deck();
+        deck.build();
+        deck.shuffle();
         mockUserInput = mock(UserInput.class);
         mockPlayer = mock(Player.class);
         mockPlayerList = mock(PlayerList.class);
@@ -33,7 +37,7 @@ public class PrincessActionTest {
     @Test
     public void testPrincessAction_EliminatePlayerWithoutSelectingOpponent() {
         // Execute the Princess action
-        princessAction.execute(mockUserInput, mockPlayer, mockPlayerList);
+        princessAction.execute(mockUserInput, mockPlayer, mockPlayerList, deck);
 
         // Verify that eliminate is called on the player holding the card
         verify(mockPlayer, times(1)).eliminate();

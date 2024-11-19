@@ -85,9 +85,11 @@ public enum Card {
      *          the player playing the card
      * @param players
      *          the player list
+     * @param deck
+     *          the deck
      */
-    public void execute(UserInput userInput, Player user, PlayerList players) {
-        this.action.execute(userInput, user, players);
+    public void execute(UserInput userInput, Player user, PlayerList players, Deck deck) {
+        this.action.execute(userInput, user, players, deck);
     }
 
     /**

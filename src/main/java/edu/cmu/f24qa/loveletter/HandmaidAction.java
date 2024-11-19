@@ -13,9 +13,11 @@ public class HandmaidAction implements CardAction {
      *          the player playing the card
      * @param players
      *          the player list
+     * @param deck
+     *          the deck
      */
     @Override
-    public void execute(UserInput userInput, Player user, PlayerList players) {
+    public void execute(UserInput userInput, Player user, PlayerList players, Deck deck) {
         if (!user.isProtected()) {
             user.switchProtection();
         }

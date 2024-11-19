@@ -150,6 +150,6 @@ public class Game {
      */
     private void playCard(Card card, Player user) {
         user.discardCard(card);
-        card.execute(userInput, user, players);
+        card.execute(userInput, user, players, deck);
     }
 }

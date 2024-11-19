@@ -35,4 +35,14 @@ public interface UserInput {
      * @return the opponent Player
      */
     Player getOpponent(PlayerList playerList, Player user);
+
+    /**
+     * Get the opponent from user input.
+     *
+     * @param playerList the list of players in the game
+     * @param user the player making the selection
+     * @param selectSelf whether to allow the user to select themselves
+     * @return the opponent Player
+     */
+    Player getOpponent(PlayerList playerList, Player user, boolean selectSelf);
 }

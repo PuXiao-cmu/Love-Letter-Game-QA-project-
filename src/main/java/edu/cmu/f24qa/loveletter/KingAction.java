@@ -12,9 +12,11 @@ public class KingAction implements CardAction {
      *          the initiator of the swap
      * @param players
      *          the player list
+     * @param deck
+     *          the deck
      */
     @Override
-    public void execute(UserInput userInput, Player user, PlayerList players) {
+    public void execute(UserInput userInput, Player user, PlayerList players, Deck deck) {
         Player opponent = userInput.getOpponent(players, user);
 
         Card userCard = user.playHandCard(0);

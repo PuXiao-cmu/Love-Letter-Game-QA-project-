@@ -18,6 +18,7 @@ class PriestActionTest {
     private PriestAction priestAction;
     private PlayerList mockPlayerList;
     private Player mockOpponent;
+    private Deck deck;
 
     /**
      * Sets up the mock objects and the PriestAction instance before each test.
@@ -26,6 +27,9 @@ class PriestActionTest {
      */
     @BeforeEach
     void setUp() {
+        deck = new Deck();
+        deck.build();
+        deck.shuffle();
         mockUserInput = mock(UserInput.class);
         mockUser = mock(Player.class);
         mockPlayerList = mock(PlayerList.class);
@@ -49,7 +53,7 @@ class PriestActionTest {
         System.setOut(new java.io.PrintStream(outputStream));
 
         // Execute the Priest action
-        priestAction.execute(mockUserInput, mockUser, mockPlayerList);
+        priestAction.execute(mockUserInput, mockUser, mockPlayerList, deck);
 
         //verify getOpponenet() and viewHandCard(0) was called
         verify(mockUserInput).getOpponent(mockPlayerList, mockUser);
