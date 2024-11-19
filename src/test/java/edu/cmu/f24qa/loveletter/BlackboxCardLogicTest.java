@@ -18,6 +18,7 @@ public class BlackboxCardLogicTest {
     private PlayerList playerList;
     private Player user;
     private Player opponent;
+    private Deck deck;
     
     private final PrintStream originalOut = System.out;
 
@@ -27,6 +28,7 @@ public class BlackboxCardLogicTest {
         user = mock(Player.class);
         playerList = mock(PlayerList.class);
         opponent = mock(Player.class);
+        deck = new Deck();
 
         // Set up generic conditions applicable to all tests
         when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
@@ -46,7 +48,7 @@ public class BlackboxCardLogicTest {
         Player realUser = new Player("testPlayer");
         user = spy(realUser); 
 
-        handmaidAction.execute(userInput, user, playerList);
+        handmaidAction.execute(userInput, user, playerList, deck);
 
         assertTrue(user.isProtected(), "The user should be protected after playing the Handmaid card.");
     }
@@ -59,7 +61,7 @@ public class BlackboxCardLogicTest {
         PrincessAction princessAction = new PrincessAction();
         
         // Execute
-        princessAction.execute(userInput, user, playerList);
+        princessAction.execute(userInput, user, playerList, deck);
         
         // Verify
         verify(user).eliminate();
@@ -83,7 +85,7 @@ public class BlackboxCardLogicTest {
         when(opponent.playHandCard(0)).thenReturn(opponentCard);
 
         // Execute
-        kingAction.execute(userInput, user, playerList);
+        kingAction.execute(userInput, user, playerList, deck);
 
         // Verify cards are swapped
         verify(user).receiveHandCard(opponentCard);
@@ -98,7 +100,7 @@ public class BlackboxCardLogicTest {
         when(opponent.isProtected()).thenReturn(true);
 
         // Execute
-        kingAction.execute(userInput, user, playerList);
+        kingAction.execute(userInput, user, playerList, deck);
 
         // Verify no card exchange happened
         verify(user, never()).receiveHandCard(any(Card.class));
@@ -113,7 +115,7 @@ public class BlackboxCardLogicTest {
         when(userInput.getOpponent(playerList, user)).thenReturn(null);
 
         // Execute
-        kingAction.execute(userInput, user, playerList);
+        kingAction.execute(userInput, user, playerList, deck);
 
         // Verify no card exchange happened
         verify(user, never()).receiveHandCard(any(Card.class));
@@ -142,7 +144,7 @@ public class BlackboxCardLogicTest {
             System.setOut(temporaryOut);
         
             // Execute
-            baronAction.execute(userInput, user, playerList);
+            baronAction.execute(userInput, user, playerList, deck);
             
             // Verify
             verify(userInput).getOpponent(playerList, user);
@@ -178,7 +180,7 @@ public class BlackboxCardLogicTest {
             System.setOut(temporaryOut);
         
             // Execute
-            baronAction.execute(userInput, user, playerList);
+            baronAction.execute(userInput, user, playerList, deck);
             
             // Verify
             verify(userInput).getOpponent(playerList, user);
@@ -214,7 +216,7 @@ public class BlackboxCardLogicTest {
             System.setOut(temporaryOut);
         
             // Execute
-            baronAction.execute(userInput, user, playerList);
+            baronAction.execute(userInput, user, playerList, deck);
             
             // Verify
             verify(userInput).getOpponent(playerList, user);
@@ -247,7 +249,7 @@ public class BlackboxCardLogicTest {
             System.setOut(temporaryOut);
         
             // Execute
-            baronAction.execute(userInput, user, playerList);
+            baronAction.execute(userInput, user, playerList, deck);
             
             // Verify
             verify(userInput).getOpponent(playerList, user);
@@ -268,7 +270,7 @@ public class BlackboxCardLogicTest {
     void testCountessAction() {
         CountessAction countessAction = new CountessAction();
 
-        countessAction.execute(userInput, user, playerList);
+        countessAction.execute(userInput, user, playerList, deck);
 
         // Verify that no actions are triggered:
         verifyNoInteractions(user);
@@ -288,7 +290,7 @@ public class BlackboxCardLogicTest {
         when(opponent.viewHandCard(0)).thenReturn(Card.KING);
 
         // Execute Priest action
-        priestAction.execute(userInput, user, playerList);
+        priestAction.execute(userInput, user, playerList, deck);
 
         // Verify that the user successfully views the opponent’s card
         verify(opponent).viewHandCard(0);
@@ -307,7 +309,7 @@ public class BlackboxCardLogicTest {
         when(opponent.viewHandCard(0)).thenReturn(Card.PRINCE);
 
         // Execute Guard action
-        guardAction.execute(userInput, user, playerList);
+        guardAction.execute(userInput, user, playerList, deck);
 
         // Verify that the opponent is eliminated
         verify(opponent).eliminate();
@@ -327,7 +329,7 @@ public class BlackboxCardLogicTest {
         when(opponent.viewHandCard(0)).thenReturn(Card.GUARD);
 
         // Execute Guard action
-        guardAction.execute(userInput, user, playerList);
+        guardAction.execute(userInput, user, playerList, deck);
 
         // Verify that the opponent is not eliminated
         verify(opponent, never()).eliminate();
@@ -346,7 +348,7 @@ public class BlackboxCardLogicTest {
         when(opponent.viewHandCard(0)).thenReturn(Card.PRINCE);
 
         // Execute Guard action
-        guardAction.execute(userInput, user, playerList);
+        guardAction.execute(userInput, user, playerList, deck);
 
         // Verify that the opponent is not eliminated
         verify(opponent, never()).eliminate();
@@ -365,7 +367,7 @@ public class BlackboxCardLogicTest {
         when(opponent.viewHandCard(0)).thenReturn(Card.PRINCE);
 
         // Execute Guard action
-        guardAction.execute(userInput, user, playerList);
+        guardAction.execute(userInput, user, playerList, deck);
 
         // Verify that the opponent is not eliminated
         verify(opponent, never()).eliminate();

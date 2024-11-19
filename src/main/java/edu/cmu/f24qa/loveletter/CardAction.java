@@ -12,5 +12,5 @@ public interface CardAction {
      * @param players
      *          the player list
      */
-    void execute(UserInput userInput, Player user, PlayerList players);
+    void execute(UserInput userInput, Player user, PlayerList players, Deck deck);
 }

@@ -13,7 +13,7 @@ public class CountessAction implements CardAction {
      *          the player list
      */
     @Override
-    public void execute(UserInput userInput, Player user, PlayerList players) {
+    public void execute(UserInput userInput, Player user, PlayerList players, Deck deck) {
         assert true;
     }
 }

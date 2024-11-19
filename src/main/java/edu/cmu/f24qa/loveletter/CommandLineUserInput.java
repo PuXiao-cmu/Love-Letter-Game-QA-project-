@@ -92,4 +92,29 @@ public class CommandLineUserInput implements UserInput {
             return opponent;
         }
     }
+
+    @Override
+    public Player getOpponent(PlayerList playerList, Player user, boolean selectSelf) {
+        while (true) {
+            System.out.print("Who would you like to target: ");
+            String opponentName = scanner.nextLine();
+            Player opponent = playerList.getPlayer(opponentName);
+            if (opponent == null) {
+                System.out.println("Invalid player name. Please try again.");
+                continue;
+            }
+
+            if (opponent == user && !selectSelf) {
+                System.out.println("You cannot target yourself. Please choose another player.");
+                continue;
+            }
+
+            if (opponent.isProtected()) {
+                System.out.println("You cannot choose protected player!");
+                continue;
+            }
+
+            return opponent;
+        }
+    }
 }

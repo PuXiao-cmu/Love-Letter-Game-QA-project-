@@ -16,6 +16,7 @@ class GuardActionTest {
     private GuardAction guardAction;
     private PlayerList mockPlayerList;
     private Player mockOpponent;
+    private Deck deck;
 
     /**
      * Sets up the mock objects and the GuardAction instance before each test.
@@ -23,6 +24,7 @@ class GuardActionTest {
      */
     @BeforeEach
     void setUp() {
+        deck = new Deck();
         mockUserInput = mock(UserInput.class);
         mockUser = mock(Player.class);
         mockPlayerList = mock(PlayerList.class);
@@ -41,7 +43,7 @@ class GuardActionTest {
     void testPlayingGuardCardAllowsOpponentSelection() {
         when(mockUserInput.getOpponent(mockPlayerList, mockUser)).thenReturn(mockOpponent);
 
-        guardAction.execute(mockUserInput, mockUser, mockPlayerList);
+        guardAction.execute(mockUserInput, mockUser, mockPlayerList, deck);
 
         verify(mockUserInput, times(1)).getOpponent(mockPlayerList, mockUser);
     }

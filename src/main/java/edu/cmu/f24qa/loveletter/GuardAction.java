@@ -15,7 +15,7 @@ public class GuardAction implements CardAction {
      *          the player list
      */
     @Override
-    public void execute(UserInput userInput, Player user, PlayerList players) {
+    public void execute(UserInput userInput, Player user, PlayerList players, Deck deck) {
         Player opponent = userInput.getOpponent(players, user);
 
         String cardName = userInput.getCardName();

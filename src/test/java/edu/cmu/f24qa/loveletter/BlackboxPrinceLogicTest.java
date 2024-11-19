@@ -18,9 +18,11 @@ class BlackboxPrinceLogicTest {
     private Player spyOpponent;
     private Player spyProtectedOpponent;
     private PlayerList mockPlayerList;
+    private Deck deck;
 
     @BeforeEach
     void setup() throws Exception {
+        deck = new Deck();
         // Initialize CommandLineUserInput without DI
         commandLineUserInput = new CommandLineUserInput();
 
@@ -63,7 +65,7 @@ class BlackboxPrinceLogicTest {
         // Mock input to select the opponent
         doReturn("Opponent").when(mockScanner).nextLine();
 
-        princeAction.execute(commandLineUserInput, spyPlayer, mockPlayerList);
+        princeAction.execute(commandLineUserInput, spyPlayer, mockPlayerList, deck);
 
         // Validate that the opponent is eliminated
         verify(spyOpponent).eliminate();
@@ -84,7 +86,7 @@ class BlackboxPrinceLogicTest {
         // Mock input to select the opponent
         doReturn("Opponent").when(mockScanner).nextLine();
 
-        princeAction.execute(commandLineUserInput, spyPlayer, mockPlayerList);
+        princeAction.execute(commandLineUserInput, spyPlayer, mockPlayerList, deck);
 
         // Validate that the opponent discards and redraws a card
         verify(spyOpponent).playHandCard(0);
@@ -106,7 +108,7 @@ class BlackboxPrinceLogicTest {
         // Mock input to select themselves
         doReturn("Player", "Opponent").when(mockScanner).nextLine();
 
-        princeAction.execute(commandLineUserInput, spyPlayer, mockPlayerList);
+        princeAction.execute(commandLineUserInput, spyPlayer, mockPlayerList, deck);
 
         // Validate that the player discards and redraws a card
         verify(spyPlayer).playHandCard(0);
@@ -130,7 +132,7 @@ class BlackboxPrinceLogicTest {
         // Mock input to first select a non-existent player, then a valid opponent
         doReturn("NonExistentPlayer", "Opponent").when(mockScanner).nextLine();        
 
-        princeAction.execute(commandLineUserInput, spyPlayer, mockPlayerList);
+        princeAction.execute(commandLineUserInput, spyPlayer, mockPlayerList, deck);
 
         // Validate that the opponent discards and redraws a card
         verify(spyOpponent).playHandCard(0);
@@ -155,7 +157,7 @@ class BlackboxPrinceLogicTest {
         // Mock input to first select the protected player, then a valid opponent
         doReturn("ProtectedOpponent", "Opponent").when(mockScanner).nextLine();
 
-        princeAction.execute(commandLineUserInput, spyPlayer, mockPlayerList);
+        princeAction.execute(commandLineUserInput, spyPlayer, mockPlayerList, deck);
 
         // Validate that the protected opponent never discards a card
         verify(spyProtectedOpponent, never()).playHandCard(0);
