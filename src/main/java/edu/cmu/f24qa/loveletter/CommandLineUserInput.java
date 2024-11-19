@@ -93,6 +93,14 @@ public class CommandLineUserInput implements UserInput {
         }
     }
 
+    /**
+     * Prompts the user to choose an opponent from the player list.
+     *
+     * @param playerList the list of players in the game
+     * @param user the player making the selection
+     * @param selectSelf whether to allow the user to select themselves
+     * @return the opponent Player
+     */
     @Override
     public Player getOpponent(PlayerList playerList, Player user, boolean selectSelf) {
         while (true) {

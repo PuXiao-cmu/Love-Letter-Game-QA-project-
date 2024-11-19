@@ -19,6 +19,9 @@ class BlackboxGetOpponentTest {
     private Player opponent;
     private Player protectedOpponent;
 
+    /**
+     * Sets up the test environment before each test.
+     */
     @BeforeEach
     void setup() throws Exception {
         // Create a real instance of CommandLineUserInput
@@ -44,6 +47,13 @@ class BlackboxGetOpponentTest {
         players.getPlayer("ProtectedOpponent").switchProtection();
     }
 
+    /**
+     * Tests the behavior when selecting a non-existent opponent.
+     * Mocks user inputs to first choose a non-existent player, 
+     * followed by a valid opponent. Verifies that the correct 
+     * opponent is selected after a retry and that the input 
+     * prompt is called twice.
+     */
     @Test
     void testGetOpponentWithNonExistentPlayer() {
         // Mock inputs to first select a non-existent player, then the valid opponent
@@ -58,7 +68,14 @@ class BlackboxGetOpponentTest {
         verify(mockScanner, times(2)).nextLine();
     }
 
-    //@Disabled("This test is currently failing and will be ignored")
+    
+    /**
+     * Tests the behavior when selecting a protected opponent.
+     * Mocks user inputs to first choose a protected player, 
+     * followed by a valid opponent. Verifies that the correct 
+     * opponent is selected after a retry and that the input 
+     * prompt is called twice.
+     */
     @Test
     void testGetOpponentWithProtectedPlayer() {
         // Mock inputs to first select the protected player, then the valid opponent
@@ -72,6 +89,11 @@ class BlackboxGetOpponentTest {
         verify(mockScanner, times(2)).nextLine();
     }
 
+    /**
+     * Tests the behavior when selecting a valid opponent on the first try.
+     * Mocks user inputs to select the valid opponent. Verifies that the correct
+     * opponent is selected and that the input prompt is only called once.
+     */
     @Test
     void testGetOpponentWithValidPlayerFirstTry() {
         // Mock input to select the valid opponent on the first try
