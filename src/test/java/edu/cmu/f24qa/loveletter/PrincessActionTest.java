@@ -22,6 +22,8 @@ public class PrincessActionTest {
     @BeforeEach
     public void setup() {
         deck = new Deck();
+        deck.build();
+        deck.shuffle();
         mockUserInput = mock(UserInput.class);
         mockPlayer = mock(Player.class);
         mockPlayerList = mock(PlayerList.class);

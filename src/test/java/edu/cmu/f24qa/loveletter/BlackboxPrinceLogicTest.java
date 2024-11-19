@@ -23,6 +23,8 @@ class BlackboxPrinceLogicTest {
     @BeforeEach
     void setup() throws Exception {
         deck = new Deck();
+        deck.build();
+        deck.shuffle();
         // Initialize CommandLineUserInput without DI
         commandLineUserInput = new CommandLineUserInput();
 
@@ -76,7 +78,6 @@ class BlackboxPrinceLogicTest {
      * Tests that when a player selects a valid player with a non-Princess card,
      * the opponent discards and redraws a card.
      */
-    @Disabled("This test is currently failing and will be ignored")
     @Test
     void testRule2_PlayerSelectsValidPlayerWithNonPrincessCard() {
         // Setup opponent with a non-Princess card
@@ -97,7 +98,6 @@ class BlackboxPrinceLogicTest {
      * Rule 3
      * Tests that when a player selects themselves, they discard and redraw a card.
      */
-    @Disabled("This test is currently failing and will be ignored")
     @Test
     void testRule3_PlayerSelectsThemselves() {
         // Setup player with a non-Princess card
@@ -123,7 +123,6 @@ class BlackboxPrinceLogicTest {
      * Verifies that the retry logic works by validating that the opponent is discarded and redrawn a card,
      * and that nextLine was called twice.
      */
-    @Disabled("This test is currently failing and will be ignored")
     @Test
     void testRule4_PlayerSelectsNonExistentPlayer() {
         PrinceAction princeAction = new PrinceAction();
@@ -147,7 +146,6 @@ class BlackboxPrinceLogicTest {
      * Verifies that the retry logic works by validating that the opponent is discarded and redrawn a card,
      * and that nextLine was called twice.
      */
-    @Disabled("This test is currently failing and will be ignored")
     @Test
     void testRule5_PlayerSelectsProtectedPlayer() {
         PrinceAction princeAction = new PrinceAction();

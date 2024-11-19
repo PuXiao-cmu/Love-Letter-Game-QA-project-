@@ -28,6 +28,8 @@ class PriestActionTest {
     @BeforeEach
     void setUp() {
         deck = new Deck();
+        deck.build();
+        deck.shuffle();
         mockUserInput = mock(UserInput.class);
         mockUser = mock(Player.class);
         mockPlayerList = mock(PlayerList.class);

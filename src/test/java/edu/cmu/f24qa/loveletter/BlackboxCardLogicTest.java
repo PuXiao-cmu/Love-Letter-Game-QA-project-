@@ -29,6 +29,8 @@ public class BlackboxCardLogicTest {
         playerList = mock(PlayerList.class);
         opponent = mock(Player.class);
         deck = new Deck();
+        deck.build();
+        deck.shuffle();
 
         // Set up generic conditions applicable to all tests
         when(userInput.getOpponent(playerList, user)).thenReturn(opponent);
