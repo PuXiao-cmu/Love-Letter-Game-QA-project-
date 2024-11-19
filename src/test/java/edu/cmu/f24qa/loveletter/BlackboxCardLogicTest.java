@@ -5,8 +5,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -317,7 +317,6 @@ public class BlackboxCardLogicTest {
      * Blackbox test for Guard.
      * R2: If the guess is correct and the guess is a guard card, do not eliminate the opponent.
      */
-    @Disabled("This test is currently failing and will be ignored")
     @Test
     void testGuardCorrectGuessGuardDoesNotEliminateOpponent() {
         GuardAction guardAction = new GuardAction();

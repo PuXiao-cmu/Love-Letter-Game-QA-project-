@@ -19,9 +19,10 @@ public class GuardAction implements CardAction {
         Player opponent = userInput.getOpponent(players, user);
 
         String cardName = userInput.getCardName();
-
         Card opponentCard = opponent.viewHandCard(0);
-        if (opponentCard.getName().equalsIgnoreCase(cardName)) {
+        if (cardName.equalsIgnoreCase("Guard")) {
+            System.out.println("You have guessed incorrectly");
+        } else if (opponentCard.getName().equalsIgnoreCase(cardName)) {
             System.out.println("You have guessed correctly!");
             opponent.eliminate();
         } else {
