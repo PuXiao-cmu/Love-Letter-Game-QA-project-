@@ -2,7 +2,6 @@ package edu.cmu.f24qa.loveletter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class Req24FourPlayerInitDeckTest {
@@ -27,7 +26,6 @@ public class Req24FourPlayerInitDeckTest {
      * 2. Deal 1 card to each of the 4 players.
      * Thus, it should have 16 - 1 - 4 = 11 cards in the deck after resetGame().
      */
-    @Disabled("Pending implementation: resetGame() must account for hidden and dealt cards.")
     @Test
     public void testDeckSizeAfterSetupForFourPlayers() {
         // Add 4 players

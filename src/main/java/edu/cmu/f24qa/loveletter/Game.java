@@ -44,6 +44,7 @@ public class Game {
         players.reset();
         deck.build();
         deck.shuffle();
+        deck.hideTopCard();
         players.dealCards(deck);
     }
 
