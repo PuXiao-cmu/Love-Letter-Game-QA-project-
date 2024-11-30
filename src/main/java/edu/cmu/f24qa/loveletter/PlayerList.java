@@ -1,7 +1,6 @@
 package edu.cmu.f24qa.loveletter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
@@ -83,7 +82,6 @@ public class PlayerList {
 
     /**
      * Checks the list for a single Player with remaining cards.
-     *
      * @return true if there is a winner, false if not
      */
     public boolean checkForRoundWinner() {
@@ -98,7 +96,6 @@ public class PlayerList {
 
     /**
      * Gets the winner(s) of the current round.
-     * 
      * @return List of winning players based on card values and discarded cards
      * @throws IllegalStateException if no valid players exist in game
      */
@@ -119,7 +116,6 @@ public class PlayerList {
 
     /**
      * Validates that game has active players.
-     * 
      * @throws IllegalStateException if player list is null or empty
      */
     private void validateGameState() {
@@ -130,7 +126,6 @@ public class PlayerList {
 
     /**
      * Finds all players holding the highest value card.
-     * 
      * @return List of players with highest card value
      * @throws IllegalStateException if no players have cards
      */
@@ -160,7 +155,6 @@ public class PlayerList {
 
     /**
      * Determines winners among tied players by discarded card values.
-     * 
      * @param candidates List of players tied for highest card value
      * @return List of winners with highest discarded value
      */
