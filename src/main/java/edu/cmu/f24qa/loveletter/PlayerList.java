@@ -183,8 +183,23 @@ public class PlayerList {
      * @return the game winner
      */
     public @Nullable Player getGameWinner() {
+        int playerCount = players.size();
+        int tokensNeeded;
+        
+        // Set victory condition based on number of players
+        if (playerCount == 2) {
+            tokensNeeded = 7;
+        } else if (playerCount == 3) {
+            tokensNeeded = 5;
+        } else if (playerCount == 4) {
+            tokensNeeded = 4;
+        } else {
+            return null;
+        }
+
+        // Check if any player has reached the required number of tokens
         for (Player p : players) {
-            if (p.getTokens() == 5) {
+            if (p.getTokens() == tokensNeeded) {
                 return p;
             }
         }
