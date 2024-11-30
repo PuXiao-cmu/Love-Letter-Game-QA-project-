@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-public class Requirement3Test {
+public class Req3TwoPlayerInitDeckTest {
 
     private Deck deck;
     private PlayerList players;
@@ -27,11 +27,9 @@ public class Requirement3Test {
     }
 
     /**
-     * For a 2-player game, resetGame() should:
+     * Tests that for a 2-player game, resetGame() should:
      * 1. Leave 10 cards in the deck (16 - 1 hidden - 3 face-up - 2 dealt).
      * 2. Print the 2nd, 3rd, and 4th cards from the top of the deck to the terminal.
-     *
-     * This test is currently disabled because the functionality is not yet implemented.
      */
     @Disabled("Pending implementation: resetGame() must draw and print 2nd, 3rd, and 4th top cards for a 2-player game.")
     @Test
@@ -63,7 +61,7 @@ public class Requirement3Test {
     }
 
     /**
-     * Helper method to count remaining cards in the deck using black-box principles.
+     * Helper method to count remaining cards in the deck with public methods.
      *
      * @param deck the Deck object
      * @return the number of cards remaining in the deck
