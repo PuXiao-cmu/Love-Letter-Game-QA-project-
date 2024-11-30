@@ -21,10 +21,7 @@ public class PlayerList {
 
     /**
      * Adds a new Player object with the given name to the PlayerList.
-     *
-     * @param name
-     *             the given player name
-     *
+     * @param name the given player name
      * @return true if the player is not already in the list and can be added, false
      *         if not
      */
@@ -40,7 +37,6 @@ public class PlayerList {
 
     /**
      * Gets the first player in the list and adds them to end of the list.
-     *
      * @return the first player in the list
      */
     public Player getCurrentPlayer() {
@@ -82,7 +78,6 @@ public class PlayerList {
 
     /**
      * Checks the list for a single Player with remaining cards.
-     * 
      * @return true if there is a winner, false if not
      */
     public boolean checkForRoundWinner() {
@@ -97,7 +92,6 @@ public class PlayerList {
 
     /**
      * Gets the winner(s) of the current round.
-     * 
      * @return List of winning players based on card values and discarded cards
      * @throws IllegalStateException if no valid players exist in game
      */
@@ -118,7 +112,6 @@ public class PlayerList {
 
     /**
      * Validates that game has active players.
-     * 
      * @throws IllegalStateException if player list is null or empty
      */
     private void validateGameState() {
@@ -129,7 +122,6 @@ public class PlayerList {
 
     /**
      * Finds all players holding the highest value card.
-     * 
      * @return List of players with highest card value
      * @throws IllegalStateException if no players have cards
      */
@@ -159,7 +151,6 @@ public class PlayerList {
 
     /**
      * Determines winners among tied players by discarded card values.
-     * 
      * @param candidates List of players tied for highest card value
      * @return List of winners with highest discarded value
      */
@@ -184,7 +175,6 @@ public class PlayerList {
 
     /**
      * Returns the winner of the game.
-     *
      * @return the game winner
      */
     public @Nullable Player getGameWinner() {
@@ -214,9 +204,7 @@ public class PlayerList {
 
     /**
      * Deals a card to each Player in the list.
-     *
-     * @param deck
-     *             the deck of cards
+     * @param deck the deck of cards
      */
     public void dealCards(Deck deck) {
         for (Player p : players) {
@@ -226,10 +214,7 @@ public class PlayerList {
 
     /**
      * Gets the player with the given name.
-     *
-     * @param name
-     *             the name of the desired player
-     *
+     * @param name the name of the desired player
      * @return the player with the given name or null if there is no such player
      */
     public @Nullable Player getPlayer(String name) {
@@ -243,7 +228,6 @@ public class PlayerList {
 
     /**
      * Returns the player with the highest used pile value.
-     *
      * @return the player with the highest used pile value
      */
     public Player compareUsedPiles() {
@@ -258,7 +242,6 @@ public class PlayerList {
 
     /**
      * Returns the first player found who still has cards in hand.
-     *
      * @return the first player with cards, or null if no such player exists
      */
     public @Nullable Player getFirstPlayerWithCards() {
