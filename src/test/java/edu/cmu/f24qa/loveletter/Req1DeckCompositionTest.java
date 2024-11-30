@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Field;
 import java.util.Deque;
 
-public class Requirement1Test {
+public class Req1DeckCompositionTest {
 
     private Deck deck;
 
