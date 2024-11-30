@@ -3,7 +3,6 @@ package edu.cmu.f24qa.loveletter;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class Req12RoundDeterminationRules {
@@ -29,7 +28,6 @@ public class Req12RoundDeterminationRules {
         player3.clearHand();
     }
 
-    // @Disabled("Issue #44: Round Winner Determination Logic always returns first player with cards, without comparing card values")
     @Test
     void testSingleWinnerScenario() {
         player1.receiveHandCard(Card.GUARD); // player1: value 1
@@ -53,7 +51,6 @@ public class Req12RoundDeterminationRules {
         assertEquals(Card.PRINCESS, winners.get(0).viewHandCard(0), "Winner should hold Princess card");    
 }
 
-    // @Disabled("Issue #45: Round Winner Determination Logic fails to compare discarded card values for tied hands")
     @Test
     void testHighestSumOfDiscardedValues() {
         player1.receiveHandCard(Card.KING); // value 6
@@ -77,7 +74,6 @@ public class Req12RoundDeterminationRules {
         assertEquals(player2, winners.get(0), "Player2 should win due to higher sum of discarded cards");
        }
 
-    // @Disabled("Issue #46: Round Winner Determination Logic fails to support tied winners scenario")
     @Test
     void testTiedDiscardedValues() {
         player1.receiveHandCard(Card.KING);
