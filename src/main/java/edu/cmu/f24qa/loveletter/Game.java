@@ -1,5 +1,9 @@
 package edu.cmu.f24qa.loveletter;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 public class Game {
@@ -16,8 +20,8 @@ public class Game {
      * Constructor for the Game class.
      *
      * @param curUserInput an object used to handle user input
-     * @param curPlayers the current players
-     * @param curDeck the current deck
+     * @param curPlayers   the current players
+     * @param curDeck      the current deck
      */
     public Game(UserInput curUserInput, PlayerList curPlayers, Deck curDeck) {
         this.userInput = curUserInput;
@@ -55,6 +59,7 @@ public class Game {
 
     /**
      * Checks if the game has ended.
+     * 
      * @return true if there is a winner, false if there is no winner now
      */
     private boolean isGameOver() {
@@ -77,31 +82,57 @@ public class Game {
         }
 
         // Handle round end
-        Player winner = determineRoundWinner();
-        handleRoundWinner(winner);
+        List<Player> winners = determineRoundWinner();
+        handleRoundWinner(winners);
     }
 
     /**
      * Determines the winner of the current round.
+     * 
      * @return the Player who won this round
      */
-    private Player determineRoundWinner() {
-        if (players.checkForRoundWinner() && players.getRoundWinner() != null) {
-            return players.getRoundWinner();
+    private List<Player> determineRoundWinner() {
+        // if (players.checkForRoundWinner() && players.getRoundWinner() != null) {
+        //     return players.getRoundWinner();
+        // } else {
+        //     Player winner = players.compareUsedPiles();
+        //     winner.addToken();
+        //     return Collections.singletonList(winner);
+        // }
+        if (players.checkForRoundWinner()) {
+            // case 1: only one player left
+            Player winner = players.getFirstPlayerWithCards();
+            if (winner != null) {
+                return Collections.singletonList(winner);
+            }
+            throw new IllegalStateException("No player with cards found");
         } else {
-            Player winner = players.compareUsedPiles();
-            winner.addToken();
-            return winner;
+            // case 2: multiple players, so we need to check discard cards
+            return players.getRoundWinner();
         }
     }
 
     /**
      * Handles the round winner announcement and token award.
+     * 
      * @param winner the Player who won this round
      */
-    private void handleRoundWinner(Player winner) {
-        winner.addToken();
-        System.out.println(winner.getName() + " has won this round!");
+    private void handleRoundWinner(List<Player> winners) {
+        // winner.addToken();
+        // System.out.println(winner.getName() + " has won this round!");
+        // players.print();
+        for (Player winner : winners) {
+            winner.addToken();
+        }
+
+        if (winners.size() == 1) {
+            System.out.println(winners.get(0).getName() + " has won this round!");
+        } else {
+            System.out.println("This round ended in a tie! Winners: " +
+                    winners.stream()
+                            .map(Player::getName)
+                            .collect(Collectors.joining(", ")));
+        }
         players.print();
     }
 
@@ -117,7 +148,7 @@ public class Game {
      * Executes a player's turn in the game.
      *
      * @param turn
-     *      the player whose turn it is
+     *             the player whose turn it is
      */
     private void executeTurn(Player turn) {
         players.printUsedPiles();
@@ -144,9 +175,9 @@ public class Game {
      * Plays a card from the user's hand.
      *
      * @param card
-     *          the played card
+     *             the played card
      * @param user
-     *          the player of the card
+     *             the player of the card
      */
     private void playCard(Card card, Player user) {
         user.discardCard(card);
