@@ -73,7 +73,7 @@ public class Deck {
      * @return true if the hidden card has been dealt, false otherwise.
      */
     public boolean hasHiddenCard() {
-        return topCard == null;
+        return topCard != null;
     }
 
     /**
