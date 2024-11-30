@@ -223,7 +223,7 @@ public class PlayerList {
      *
      * @return the first player with cards, or null if no such player exists
      */
-    public Player getFirstPlayerWithCards() {
+    public @Nullable Player getFirstPlayerWithCards() {
         for (Player p : players) {
             if (p.hasHandCards()) {
                 return p;
@@ -231,5 +231,4 @@ public class PlayerList {
         }
         return null;
     }
-
 }
