@@ -26,6 +26,7 @@ class BlackboxPrinceLogicTest {
         deck = new Deck();
         deck.build();
         deck.shuffle();
+        deck.hideTopCard();
         // Initialize CommandLineUserInput without DI
         commandLineUserInput = new CommandLineUserInput();
 
@@ -172,7 +173,7 @@ class BlackboxPrinceLogicTest {
      * Tests that when the player draws a card when the deck is empty, they draw the removed card.
      * Verifies that the opponent discards and redraws a card.
      */
-    @Disabled("Issue #66: This bug will be fixed in a future PR.")
+    // @Disabled("Issue #66: This bug will be fixed in a future PR.")
     @Test
     void testRule6_PlayerDrawsRemovedCardWhenDeckIsEmpty() {
         // Setup: Manually retrieve and record the top card of the deck
