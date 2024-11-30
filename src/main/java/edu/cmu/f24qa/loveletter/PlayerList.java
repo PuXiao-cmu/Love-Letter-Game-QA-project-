@@ -11,12 +11,14 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public class PlayerList {
 
     private Deque<Player> players;
+    private List<Player> originalOrder;
 
     /**
      * Initializes a PlayerList.
      */
     public PlayerList() {
         this.players = new LinkedList<>();
+        this.originalOrder = new ArrayList<>();
     }
 
     /**
@@ -34,7 +36,9 @@ public class PlayerList {
                 return false;
             }
         }
-        players.addLast(new Player(name));
+        Player newPlayer = new Player(name);
+        players.addLast(newPlayer);
+        originalOrder.add(newPlayer); // Record the original order
         return true;
     }
 
@@ -92,6 +96,33 @@ public class PlayerList {
             }
         }
         return count == 1;
+    }
+
+    /**
+     * Sets the given player as the starting player by rearranging the player order.
+     * Will set accroding to last round winners before the start of each round.
+     *
+     * @param startingPlayer the player to be set as the first in the order
+     */
+    public void setStartingPlayer(Player startingPlayer) {
+        while (!players.getFirst().equals(startingPlayer)) {
+            players.addLast(players.removeFirst());
+        }
+    }
+
+    /**
+     * Finds the earliest added player among the given list of players.
+     *
+     * @param candidates the list of players to consider
+     * @return the player who was added first to the player list
+     */
+    public Player findEarliestAddedPlayer(List<Player> candidates) {
+        for (Player player : originalOrder) { // Use the original order for comparison
+            if (candidates.contains(player)) {
+                return player; // Return the first player found in the original order
+            }
+        }
+        throw new IllegalStateException("None of the candidates are in the player list");
     }
 
     /**

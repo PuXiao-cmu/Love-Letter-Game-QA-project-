@@ -1,5 +1,6 @@
 package edu.cmu.f24qa.loveletter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ public class Game {
     private Deck deck;
     @SuppressFBWarnings(value = "URF_UNREAD_FIELD", justification = "Might be used later")
     private int round;
+    private List<Player> lastRoundWinners;
 
     /**
      * Constructor for the Game class.
@@ -28,6 +30,7 @@ public class Game {
         this.players = curPlayers;
         this.deck = curDeck;
         this.round = 0;
+        this.lastRoundWinners = new ArrayList<>();
     }
 
     /**
@@ -73,6 +76,18 @@ public class Game {
     private void playRound() {
         // Initialize round
         resetGame();
+
+        // Set starting player based on last round's winners
+        if (lastRoundWinners != null && !lastRoundWinners.isEmpty()) {
+            if (lastRoundWinners.size() == 1) {
+                // If only one winner, start with that player
+                players.setStartingPlayer(lastRoundWinners.get(0));
+            } else {
+                // If multiple winners, find the one who joined first
+                Player startingPlayer = players.findEarliestAddedPlayer(lastRoundWinners);
+                players.setStartingPlayer(startingPlayer);
+            }
+        }
 
         // Play turns until round ends
         while (!players.checkForRoundWinner() && deck.hasMoreCards()) {
@@ -122,8 +137,10 @@ public class Game {
         // winner.addToken();
         // System.out.println(winner.getName() + " has won this round!");
         // players.print();
+        lastRoundWinners.clear(); // clear last round winners
         for (Player winner : winners) {
             winner.addToken();
+            lastRoundWinners.add(winner); // add new winners
         }
 
         if (winners.size() == 1) {
