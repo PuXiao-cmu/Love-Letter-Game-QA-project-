@@ -79,9 +79,9 @@ public class Deck {
     }
 
     /**
-     * Adds three revealed cards to the list of revealed cards, and print these cards.
+     * Removes another three cards and reveals them to the players.
      */
-    public void revealThreeCards() {
+    public void removeAnotherThreeCards() {
         for (int i = 0; i < 3; i++) {
             Card temp = draw();
             revealedCards.add(temp);

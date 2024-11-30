@@ -47,7 +47,7 @@ public class Game {
         deck.hideTopCard();
 
         if (players.numPlayer() == 2) {
-            deck.revealThreeCards();
+            deck.removeAnotherThreeCards();
         }
 
         players.dealCards(deck);
