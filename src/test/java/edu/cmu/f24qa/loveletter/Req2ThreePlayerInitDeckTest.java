@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class Requirement2Test {
+public class Req2ThreePlayerInitDeckTest {
 
     private Deck deck;
     private PlayerList players;
@@ -26,8 +26,6 @@ public class Requirement2Test {
      * 1. Remove 1 card without revealing it.
      * 2. Deal 1 card to each of the 3 players.
      * Thus, it should have 16 - 1 - 3 = 12 cards in the deck after resetGame().
-     *
-     * This test is currently disabled because the functionality is not yet implemented.
      */
     @Disabled("Pending implementation: resetGame() must account for the hidden card.")
     @Test
@@ -45,33 +43,6 @@ public class Requirement2Test {
         int actualDeckSize = countRemainingCards(deck);
         assertEquals(expectedDeckSize, actualDeckSize,
             "For 3 players, the deck should contain 12 cards after setup.");
-    }
-
-    /**
-     * For a 4-player game, resetGame() should:
-     * 1. Remove 1 card without revealing it.
-     * 2. Deal 1 card to each of the 4 players.
-     * Thus, it should have 16 - 1 - 4 = 11 cards in the deck after resetGame().
-     *
-     * This test is currently disabled because the functionality is not yet implemented.
-     */
-    @Disabled("Pending implementation: resetGame() must account for hidden and dealt cards.")
-    @Test
-    public void testDeckSizeAfterSetupForFourPlayers() {
-        // Add 4 players
-        players.addPlayer("Player 1");
-        players.addPlayer("Player 2");
-        players.addPlayer("Player 3");
-        players.addPlayer("Player 4");
-
-        // Call resetGame to simulate game setup
-        game.resetGame();
-
-        // Verify that the deck contains 11 cards
-        int expectedDeckSize = 11;
-        int actualDeckSize = countRemainingCards(deck);
-        assertEquals(expectedDeckSize, actualDeckSize,
-            "For 4 players, the deck should contain 11 cards after setup.");
     }
 
     /**
