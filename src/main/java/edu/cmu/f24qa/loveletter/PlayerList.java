@@ -97,54 +97,79 @@ public class PlayerList {
     }
 
     /**
-     * Returns the winner of the round.
-     *
-     * @return the round winner
+     * Gets the winner(s) of the current round.
+     * 
+     * @return List of winning players based on card values and discarded cards
+     * @throws IllegalStateException if no valid players exist in game
      */
     public @NonNull List<Player> getRoundWinner() {
-        // for (Player p : players) {
-        // if (p.hasHandCards()) {
-        // return p;
-        // }
-        // }
-        // throw new IllegalStateException("No player with cards found");
-        // return null;
+        validateGameState();
+
+        // Find players with highest card value
+        List<Player> playersWithHighestCard = findPlayersWithHighestCard();
+
+        // If only one player has highest card, return that player
+        if (playersWithHighestCard.size() == 1) {
+            return playersWithHighestCard;
+        }
+
+        // For tied players, compare discarded card values
+        return findWinnersWithHighestDiscardedValue(playersWithHighestCard);
+    }
+
+    /**
+     * Validates that game has active players.
+     * 
+     * @throws IllegalStateException if player list is null or empty
+     */
+    private void validateGameState() {
         if (players == null || players.isEmpty()) {
             throw new IllegalStateException("No players in the game");
         }
+    }
 
+    /**
+     * Finds all players holding the highest value card.
+     * 
+     * @return List of players with highest card value
+     * @throws IllegalStateException if no players have cards
+     */
+    private List<Player> findPlayersWithHighestCard() {
         int highestCardValue = -1;
-        List<Player> playersWithHighestCard = new ArrayList<>();
+        List<Player> result = new ArrayList<>();
 
-        // find the player with highest held card
+        // Compare each player's card value
         for (Player player : players) {
             if (player.hasHandCards()) {
                 int cardValue = player.viewHandCard(0).getValue();
                 if (cardValue > highestCardValue) {
                     highestCardValue = cardValue;
-                    playersWithHighestCard.clear();
-                    playersWithHighestCard.add(player);
+                    result.clear();
+                    result.add(player);
                 } else if (cardValue == highestCardValue) {
-                    playersWithHighestCard.add(player);
+                    result.add(player);
                 }
             }
         }
 
-        if (playersWithHighestCard.isEmpty()) {
+        if (result.isEmpty()) {
             throw new IllegalStateException("No player with cards found");
         }
+        return result;
+    }
 
-        // rule 12.1: if there is only one player holding highest card
-        if (playersWithHighestCard.size() == 1) {
-            return new ArrayList<>(Collections.singletonList(playersWithHighestCard.get(0)));
-        }
-
-        // rule 12.2: If multiple players hold the highest card value,
-        // the system shall compare the sum of their discarded card values
+    /**
+     * Determines winners among tied players by discarded card values.
+     * 
+     * @param candidates List of players tied for highest card value
+     * @return List of winners with highest discarded value
+     */
+    private List<Player> findWinnersWithHighestDiscardedValue(List<Player> candidates) {
         int highestDiscardedSum = -1;
         List<Player> winners = new ArrayList<>();
 
-        for (Player player : playersWithHighestCard) {
+        // Compare discarded card values
+        for (Player player : candidates) {
             int discardedSum = player.discardedValue();
             if (discardedSum > highestDiscardedSum) {
                 highestDiscardedSum = discardedSum;
@@ -155,7 +180,6 @@ public class PlayerList {
             }
         }
 
-        // if there is a tie, return all the winners
         return winners;
     }
 
