@@ -48,6 +48,11 @@ public class Game {
         deck.build();
         deck.shuffle();
         deck.hideTopCard();
+
+        if (players.numPlayer() == 2) {
+            deck.removeAnotherThreeCards();
+        }
+
         players.dealCards(deck);
     }
 

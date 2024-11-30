@@ -15,6 +15,7 @@ public class Deck {
      */
     private Deque<Card> deck;
     private Card topCard;
+    private List<Card> revealedCards;
 
     /**
      * Constructor for creating an empty deck.
@@ -22,6 +23,7 @@ public class Deck {
     public Deck() {
         this.deck = new ArrayDeque<>();
         topCard = null;
+        revealedCards = new ArrayList<>();
     }
 
     /**
@@ -69,11 +71,22 @@ public class Deck {
     }
 
     /**
-     * Check if the hidden card has been dealt to a player.
+     * Checks if the hidden card has been dealt to a player.
      * @return true if the hidden card has not been dealt, false otherwise.
      */
     public boolean hasHiddenCard() {
         return topCard != null;
+    }
+
+    /**
+     * Removes another three cards and reveals them to the players.
+     */
+    public void removeAnotherThreeCards() {
+        for (int i = 0; i < 3; i++) {
+            Card temp = draw();
+            revealedCards.add(temp);
+            System.out.println("Face-up card: " + temp.getName());
+        }
     }
 
     /**

@@ -2,7 +2,6 @@ package edu.cmu.f24qa.loveletter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -31,7 +30,6 @@ public class Req3TwoPlayerInitDeckTest {
      * 1. Leave 10 cards in the deck (16 - 1 hidden - 3 face-up - 2 dealt).
      * 2. Print the 2nd, 3rd, and 4th cards from the top of the deck to the terminal.
      */
-    @Disabled("Pending implementation: resetGame() must draw and print 2nd, 3rd, and 4th top cards for a 2-player game.")
     @Test
     public void testDeckSizeAndFaceUpCardsPrintedToTerminal() {
         // Capture terminal output

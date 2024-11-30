@@ -43,6 +43,14 @@ public class PlayerList {
     }
 
     /**
+     * Gets the number of players in this game.
+     * @return Returns the number of players in the list.
+     */
+    public int numPlayer() {
+        return players.size();
+    }
+
+    /**
      * Gets the first player in the list and adds them to end of the list.
      *
      * @return the first player in the list
