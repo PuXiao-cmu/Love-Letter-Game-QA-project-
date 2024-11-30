@@ -5,7 +5,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class Req12RoundDeterminationRules {
+public class Req12RoundDeterminationRulesTest {
     private PlayerList playerList;
     private Player player1;
     private Player player2;
