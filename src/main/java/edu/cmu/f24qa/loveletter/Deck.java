@@ -60,8 +60,8 @@ public class Deck {
     }
 
     /**
-     * Deals user the top card of the initial deck of each round. 
-     * @return
+     * Deals user the top card of the initial deck of each round.
+     * @return Return the top card of the initial deck.
      */
     public Card useHiddenCard() {
         Card temp = topCard;
