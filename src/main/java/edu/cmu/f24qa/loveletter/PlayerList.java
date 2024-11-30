@@ -220,7 +220,7 @@ public class PlayerList {
 
     /**
      * Returns the first player found who still has cards in hand.
-     * 
+     *
      * @return the first player with cards, or null if no such player exists
      */
     public Player getFirstPlayerWithCards() {

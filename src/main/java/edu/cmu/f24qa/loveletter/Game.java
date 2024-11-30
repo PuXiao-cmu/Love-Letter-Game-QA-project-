@@ -59,7 +59,7 @@ public class Game {
 
     /**
      * Checks if the game has ended.
-     * 
+     *
      * @return true if there is a winner, false if there is no winner now
      */
     private boolean isGameOver() {
@@ -88,16 +88,16 @@ public class Game {
 
     /**
      * Determines the winner of the current round.
-     * 
+     *
      * @return the Player who won this round
      */
     private List<Player> determineRoundWinner() {
         // if (players.checkForRoundWinner() && players.getRoundWinner() != null) {
-        //     return players.getRoundWinner();
+        // return players.getRoundWinner();
         // } else {
-        //     Player winner = players.compareUsedPiles();
-        //     winner.addToken();
-        //     return Collections.singletonList(winner);
+        // Player winner = players.compareUsedPiles();
+        // winner.addToken();
+        // return Collections.singletonList(winner);
         // }
         if (players.checkForRoundWinner()) {
             // case 1: only one player left
@@ -114,8 +114,8 @@ public class Game {
 
     /**
      * Handles the round winner announcement and token award.
-     * 
-     * @param winner the Player who won this round
+     *
+     * @param winners the List of Players who won this round
      */
     private void handleRoundWinner(List<Player> winners) {
         // winner.addToken();
@@ -128,10 +128,8 @@ public class Game {
         if (winners.size() == 1) {
             System.out.println(winners.get(0).getName() + " has won this round!");
         } else {
-            System.out.println("This round ended in a tie! Winners: " +
-                    winners.stream()
-                            .map(Player::getName)
-                            .collect(Collectors.joining(", ")));
+            System.out.println("This round ended in a tie! Winners: "
+                    + winners.stream().map(Player::getName).collect(Collectors.joining(", ")));
         }
         players.print();
     }
