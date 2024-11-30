@@ -17,15 +17,19 @@ public class Req1DeckCompositionTest {
         deck.build();
     }
 
+    /**
+     * Test to verify that the deck contains the correct number and type of cards after being built.
+     * Ensures that the initial composition matches the game rules.
+     */
     @Test
     public void testDeckBuildCorrectComposition() throws NoSuchFieldException, IllegalAccessException {
-        // Access the private deck field using reflection
+        // Access the private deck field using reflection to inspect the cards
         Deque<Card> cards = getDeckField();
 
-        // Verify total number of cards
+        // Verify the total number of cards in the deck
         assertEquals(16, cards.size(), "Deck should contain 16 cards initially");
 
-        // Verify specific card counts
+        // Verify the count of each specific card type in the deck
         assertEquals(5, countCardType(cards, Card.GUARD), "Deck should contain 5 GUARD cards");
         assertEquals(2, countCardType(cards, Card.PRIEST), "Deck should contain 2 PRIEST cards");
         assertEquals(2, countCardType(cards, Card.BARON), "Deck should contain 2 BARON cards");
@@ -36,18 +40,22 @@ public class Req1DeckCompositionTest {
         assertEquals(1, countCardType(cards, Card.PRINCESS), "Deck should contain 1 PRINCESS card");
     }
 
+    /**
+     * Test to verify that shuffling the deck maintains the correct composition.
+     * Ensures that the shuffle operation does not alter the total count or composition of cards.
+     */
     @Test
     public void testDeckShuffleMaintainsComposition() throws NoSuchFieldException, IllegalAccessException {
         // Shuffle the deck
         deck.shuffle();
 
-        // Access the private deck field using reflection
+        // Access the private deck field using reflection to inspect the shuffled cards
         Deque<Card> cards = getDeckField();
 
-        // Verify total number of cards remains unchanged
+        // Verify that the total number of cards remains unchanged after shuffle
         assertEquals(16, cards.size(), "Shuffled deck should still contain 16 cards");
 
-        // Verify specific card counts remain unchanged
+        // Verify the count of each specific card type remains unchanged after shuffle
         assertEquals(5, countCardType(cards, Card.GUARD), "Shuffled deck should contain 5 GUARD cards");
         assertEquals(2, countCardType(cards, Card.PRIEST), "Shuffled deck should contain 2 PRIEST cards");
         assertEquals(2, countCardType(cards, Card.BARON), "Shuffled deck should contain 2 BARON cards");
