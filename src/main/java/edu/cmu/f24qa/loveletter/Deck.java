@@ -14,12 +14,14 @@ public class Deck {
      * The queue of cards representing the deck.
      */
     private Deque<Card> deck;
+    private Card topCard;
 
     /**
      * Constructor for creating an empty deck.
      */
     public Deck() {
         this.deck = new ArrayDeque<>();
+        topCard = null;
     }
 
     /**
@@ -48,6 +50,22 @@ public class Deck {
         Collections.shuffle(list);
         deck.clear();
         deck.addAll(list);
+    }
+
+    /**
+     * Hides the top card of each new set of card in the deck.
+     */
+    public void hideTopCard() {
+        topCard = deck.pop();
+    }
+
+    /**
+     * Deals user the top card of the initial deck of each round. 
+     * @return
+     */
+    public Card useHiddenCard() {
+        Card temp = topCard;
+        return temp;
     }
 
     /**

@@ -2,7 +2,6 @@ package edu.cmu.f24qa.loveletter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class Req2ThreePlayerInitDeckTest {
@@ -27,7 +26,6 @@ public class Req2ThreePlayerInitDeckTest {
      * 2. Deal 1 card to each of the 3 players.
      * Thus, it should have 16 - 1 - 3 = 12 cards in the deck after resetGame().
      */
-    @Disabled("Pending implementation: resetGame() must account for the hidden card.")
     @Test
     public void testDeckSizeAfterSetupForThreePlayers() {
         // Add 3 players
