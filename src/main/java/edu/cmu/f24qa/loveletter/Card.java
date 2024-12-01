@@ -92,8 +92,8 @@ public enum Card {
         // Check for valid targets before executing the card action
         boolean hasValidTarget = false;
 
-        // Special rules for Prince card
         if (this == PRINCE) {
+            // Special rules for Prince card
             // Include self in valid target check
             for (Player player : players.players) {
                 if (!player.isProtected()) {
@@ -101,9 +101,8 @@ public enum Card {
                     break;
                 }
             }
-        }
-        // General rules for King, Baron, Priest, Guard
-        else if (this == KING || this == BARON || this == PRIEST || this == GUARD) {
+        } else if (this == KING || this == BARON || this == PRIEST || this == GUARD) {
+            // General rules for King, Baron, Priest, Guard
             // Exclude self from valid target check
             for (Player player : players.players) {
                 if (player != user && !player.isProtected()) {
