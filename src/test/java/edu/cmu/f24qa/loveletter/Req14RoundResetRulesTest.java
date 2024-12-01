@@ -84,11 +84,9 @@ public class Req14RoundResetRulesTest {
         Card player3SecondCard = player3.viewHandCard(0);
 
         // Verify cards were shuffled and redistributed
-        // Note: There's a small chance cards might be the same due to random shuffle
         boolean cardsChanged = !player1FirstCard.equals(player1SecondCard) ||
                              !player2FirstCard.equals(player2SecondCard) ||
-                             !player3FirstCard.equals(player3SecondCard);
-                             
+                             !player3FirstCard.equals(player3SecondCard);                            
         assertTrue(cardsChanged, "At least some cards should be different after reset");
     }
 

@@ -1,5 +1,6 @@
 package edu.cmu.f24qa.loveletter;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -8,10 +9,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Scanner;
+import java.lang.reflect.Field;
 
 public class BlackboxCardLogicTest {
     private UserInput userInput;
@@ -19,6 +22,7 @@ public class BlackboxCardLogicTest {
     private Player user;
     private Player opponent;
     private Deck deck;
+    private Scanner mockScanner;
     
     private final PrintStream originalOut = System.out;
 
@@ -122,6 +126,58 @@ public class BlackboxCardLogicTest {
         // Verify no card exchange happened
         verify(user, never()).receiveHandCard(any(Card.class));
         verify(opponent, never()).receiveHandCard(any(Card.class));
+    }
+
+    // Rule 4: Eliminated opponent - no card swap
+    @Test
+    void testCannotSelectEliminatedPlayer() throws Exception {
+        CommandLineUserInput commandLineUserInput = new CommandLineUserInput();
+        Scanner mockScanner = mock(Scanner.class);
+        
+        // Inject mock scanner
+        Field scannerField = CommandLineUserInput.class.getDeclaredField("scanner");
+        scannerField.setAccessible(true);
+        scannerField.set(commandLineUserInput, mockScanner);
+ 
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+ 
+        try {
+            // Create different player objects 
+            Player currentPlayer = mock(Player.class);
+            Player eliminatedPlayer = mock(Player.class);
+            Player validPlayer = mock(Player.class);
+            PlayerList mockPlayerList = mock(PlayerList.class);
+            
+            // Set player status
+            when(eliminatedPlayer.hasHandCards()).thenReturn(false);
+            when(validPlayer.hasHandCards()).thenReturn(true);
+            
+            // Set player query results
+            when(mockPlayerList.getPlayer("EliminatedPlayer")).thenReturn(eliminatedPlayer);
+            when(mockPlayerList.getPlayer("ValidPlayer")).thenReturn(validPlayer);
+            
+            // Mock user input sequence: first enter eliminated player, then enter valid player
+            when(mockScanner.nextLine())
+                .thenReturn("EliminatedPlayer")  // First input
+                .thenReturn("ValidPlayer");      // Second input
+            
+            // Execute test
+            Player selectedPlayer = commandLineUserInput.getOpponent(mockPlayerList, currentPlayer);
+            
+            // Verify output contains expected error message 
+            String output = outputStream.toString();
+            System.err.println("Actual output: " + output);
+            
+            // Verify
+            // Should call nextLine twice
+            verify(mockScanner, times(2)).nextLine();
+            assertTrue(output.contains("You cannot choose eliminated player!"));
+            // Should finally return valid player
+            assertEquals(validPlayer, selectedPlayer);        
+        } finally {
+            System.setOut(System.out);
+        }
     }
 
     /**
