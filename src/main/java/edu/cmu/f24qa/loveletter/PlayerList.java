@@ -23,10 +23,7 @@ public class PlayerList {
 
     /**
      * Adds a new Player object with the given name to the PlayerList.
-     *
-     * @param name
-     *             the given player name
-     *
+     * @param name the given player name
      * @return true if the player is not already in the list and can be added, false
      *         if not
      */
@@ -52,7 +49,6 @@ public class PlayerList {
 
     /**
      * Gets the first player in the list and adds them to end of the list.
-     *
      * @return the first player in the list
      */
     public Player getCurrentPlayer() {
@@ -218,12 +214,26 @@ public class PlayerList {
 
     /**
      * Returns the winner of the game.
-     *
      * @return the game winner
      */
     public @Nullable Player getGameWinner() {
+        int playerCount = players.size();
+        int tokensNeeded;
+
+        // Set victory condition based on number of players
+        if (playerCount == 2) {
+            tokensNeeded = 7;
+        } else if (playerCount == 3) {
+            tokensNeeded = 5;
+        } else if (playerCount == 4) {
+            tokensNeeded = 4;
+        } else {
+            return null;
+        }
+
+        // Check if any player has reached the required number of tokens
         for (Player p : players) {
-            if (p.getTokens() == 5) {
+            if (p.getTokens() == tokensNeeded) {
                 return p;
             }
         }
@@ -233,9 +243,7 @@ public class PlayerList {
 
     /**
      * Deals a card to each Player in the list.
-     *
-     * @param deck
-     *             the deck of cards
+     * @param deck the deck of cards
      */
     public void dealCards(Deck deck) {
         for (Player p : players) {
@@ -245,10 +253,7 @@ public class PlayerList {
 
     /**
      * Gets the player with the given name.
-     *
-     * @param name
-     *             the name of the desired player
-     *
+     * @param name the name of the desired player
      * @return the player with the given name or null if there is no such player
      */
     public @Nullable Player getPlayer(String name) {
@@ -262,7 +267,6 @@ public class PlayerList {
 
     /**
      * Returns the player with the highest used pile value.
-     *
      * @return the player with the highest used pile value
      */
     public Player compareUsedPiles() {
@@ -277,7 +281,6 @@ public class PlayerList {
 
     /**
      * Returns the first player found who still has cards in hand.
-     *
      * @return the first player with cards, or null if no such player exists
      */
     public @Nullable Player getFirstPlayerWithCards() {
