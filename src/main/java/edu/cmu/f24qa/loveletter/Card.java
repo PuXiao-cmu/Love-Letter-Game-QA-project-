@@ -77,6 +77,27 @@ public enum Card {
     }
 
     /**
+     * Checks if there is at least one valid target for the current card.
+     *
+     * A valid target is a player who:
+     * 1. Is not protected by the Handmaid card.
+     * 2. (Optional) May or may not include the player using the card, based on the `includeSelf` parameter.
+     *
+     * @param players    the list of all players in the game
+     * @param user       the player who is using the card
+     * @param includeSelf whether to include the user as a potential target
+     * @return true if at least one valid target is found; false otherwise
+     */
+    private boolean hasValidTarget(PlayerList players, Player user, boolean includeSelf) {
+        for (Player player : players.players) {
+            if ((includeSelf || player != user) && !player.isProtected()) {
+                return true; // A valid target is found
+            }
+        }
+        return false; // No valid targets
+    }
+
+    /**
      * Executes the action associated with the card.
      *
      * @param userInput
@@ -89,35 +110,23 @@ public enum Card {
      *          the deck
      */
     public void execute(UserInput userInput, Player user, PlayerList players, Deck deck) {
-        // Check for valid targets before executing the card action
         boolean hasValidTarget = false;
 
+        // Determine if the card has valid targets
         if (this == PRINCE) {
-            // Special rules for Prince card
-            // Include self in valid target check
-            for (Player player : players.players) {
-                if (!player.isProtected()) {
-                    hasValidTarget = true;
-                    break;
-                }
-            }
+            hasValidTarget = hasValidTarget(players, user, true); // Include self
         } else if (this == KING || this == BARON || this == PRIEST || this == GUARD) {
-            // General rules for King, Baron, Priest, Guard
-            // Exclude self from valid target check
-            for (Player player : players.players) {
-                if (player != user && !player.isProtected()) {
-                    hasValidTarget = true;
-                    break;
-                }
-            }
+            hasValidTarget = hasValidTarget(players, user, false); // Exclude self
         }
 
         // If no valid targets are available, discard the card without applying the effect
         if (!hasValidTarget) {
             System.out.println("No valid targets available. Card discarded without effect.");
+            user.discardCard(this);
             return;
         }
 
+        // Execute the card action if there are valid targets
         this.action.execute(userInput, user, players, deck);
     }
 
