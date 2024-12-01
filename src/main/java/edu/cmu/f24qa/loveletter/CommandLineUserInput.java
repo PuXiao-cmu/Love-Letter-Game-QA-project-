@@ -89,6 +89,11 @@ public class CommandLineUserInput implements UserInput {
                 continue;
             }
 
+            if (!opponent.hasHandCards()) {
+                System.out.println("You cannot choose eliminated player!");
+                continue;
+            }
+
             return opponent;
         }
     }
@@ -119,6 +124,11 @@ public class CommandLineUserInput implements UserInput {
 
             if (opponent.isProtected()) {
                 System.out.println("You cannot choose protected player!");
+                continue;
+            }
+
+            if (!opponent.hasHandCards()) {
+                System.out.println("You cannot choose eliminated player!");
                 continue;
             }
 
