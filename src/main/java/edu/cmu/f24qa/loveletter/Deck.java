@@ -14,12 +14,16 @@ public class Deck {
      * The queue of cards representing the deck.
      */
     private Deque<Card> deck;
+    private Card topCard;
+    private List<Card> revealedCards;
 
     /**
      * Constructor for creating an empty deck.
      */
     public Deck() {
         this.deck = new ArrayDeque<>();
+        topCard = null;
+        revealedCards = new ArrayList<>();
     }
 
     /**
@@ -48,6 +52,41 @@ public class Deck {
         Collections.shuffle(list);
         deck.clear();
         deck.addAll(list);
+    }
+
+    /**
+     * Hides the top card of each new set of card in the deck.
+     */
+    public void hideTopCard() {
+        topCard = deck.pop();
+    }
+
+    /**
+     * Deals user the top card of the initial deck of each round.
+     * @return Return the top card of the initial deck.
+     */
+    public Card useHiddenCard() {
+        Card temp = topCard;
+        return temp;
+    }
+
+    /**
+     * Checks if the hidden card has been dealt to a player.
+     * @return true if the hidden card has not been dealt, false otherwise.
+     */
+    public boolean hasHiddenCard() {
+        return topCard != null;
+    }
+
+    /**
+     * Removes another three cards and reveals them to the players.
+     */
+    public void removeAnotherThreeCards() {
+        for (int i = 0; i < 3; i++) {
+            Card temp = draw();
+            revealedCards.add(temp);
+            System.out.println("Face-up card: " + temp.getName());
+        }
     }
 
     /**

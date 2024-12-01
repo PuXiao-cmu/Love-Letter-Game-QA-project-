@@ -3,10 +3,9 @@ package edu.cmu.f24qa.loveletter;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class Req12RoundDeterminationRules {
+public class Req12RoundDeterminationRulesTest {
     private PlayerList playerList;
     private Player player1;
     private Player player2;
@@ -29,7 +28,6 @@ public class Req12RoundDeterminationRules {
         player3.clearHand();
     }
 
-    @Disabled("Issue #44: Round Winner Determination Logic always returns first player with cards, without comparing card values")
     @Test
     void testSingleWinnerScenario() {
         player1.receiveHandCard(Card.GUARD); // player1: value 1
@@ -44,15 +42,15 @@ public class Req12RoundDeterminationRules {
         assertEquals(Card.PRINCESS, player2.viewHandCard(0), "Player2 should have Princess");
         assertEquals(Card.BARON, player3.viewHandCard(0), "Player3 should have Baron");
 
-        Player winner = playerList.getRoundWinner();
+        List<Player> winners = playerList.getRoundWinner();
 
-        assertNotNull(winner, "Winner should not be null");
-        assertEquals(player2, winner, "Player2 should be the winner");
-        assertEquals("Player2", winner.getName(), "Winner should be Player2");
-        assertEquals(Card.PRINCESS, winner.viewHandCard(0), "Winner should hold Princess card");
-    }
+        assertNotNull(winners, "Winners list should not be null");
+        assertEquals(1, winners.size(), "Should have exactly one winner");
+        assertEquals(player2, winners.get(0), "Player2 should be the winner");
+        assertEquals("Player2", winners.get(0).getName(), "Winner should be Player2");
+        assertEquals(Card.PRINCESS, winners.get(0).viewHandCard(0), "Winner should hold Princess card");    
+}
 
-    @Disabled("Issue #45: Round Winner Determination Logic fails to compare discarded card values for tied hands")
     @Test
     void testHighestSumOfDiscardedValues() {
         player1.receiveHandCard(Card.KING); // value 6
@@ -71,11 +69,11 @@ public class Req12RoundDeterminationRules {
         assertEquals(3, player1.discardedValue(), "Player1 should have discarded value 3");
         assertEquals(7, player2.discardedValue(), "Player2 should have discarded value 7");
 
-        Player winner = playerList.getRoundWinner();
-        assertEquals(player2, winner, "Player2 should win due to higher sum of discarded cards");
-    }
+        List<Player> winners = playerList.getRoundWinner();
+        assertEquals(1, winners.size(), "Should have exactly one winner");
+        assertEquals(player2, winners.get(0), "Player2 should win due to higher sum of discarded cards");
+       }
 
-    @Disabled("Issue #46: Round Winner Determination Logic fails to support tied winners scenario")
     @Test
     void testTiedDiscardedValues() {
         player1.receiveHandCard(Card.KING);
@@ -93,7 +91,10 @@ public class Req12RoundDeterminationRules {
         assertEquals(3, player1.discardedValue(), "Player1 should have discarded value 3");
         assertEquals(3, player2.discardedValue(), "Player2 should have discarded value 3");
     
-        Player winner = playerList.getRoundWinner();
-        assertNotNull(winner, "There should be a winner");
+        List<Player> winners = playerList.getRoundWinner();
+        assertNotNull(winners, "Winners list should not be null");
+        assertEquals(2, winners.size(), "Should have two winners for a tie");
+        assertTrue(winners.contains(player1), "Player1 should be one of the winners");
+        assertTrue(winners.contains(player2), "Player2 should be one of the winners");    
     }
 }

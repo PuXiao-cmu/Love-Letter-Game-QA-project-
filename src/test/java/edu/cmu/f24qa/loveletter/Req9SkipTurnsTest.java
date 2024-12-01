@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Req9SkipTurnsTest {
@@ -56,7 +57,9 @@ public class Req9SkipTurnsTest {
         // Stub game methods
         doReturn(false).when(playerList).checkForRoundWinner(); // Round never ends based on players
         doReturn(true, true, true, false).when(mockDeck).hasMoreCards(); // Deck has cards initially, then runs out
-        doReturn(spyBob).when(game).determineRoundWinner(); // Bob always wins the round
+        List<Player> winners = new ArrayList<>();
+        winners.add(spyBob);
+        doReturn(winners).when(game).determineRoundWinner(); // Bob always wins the round
     }
 
     /**
