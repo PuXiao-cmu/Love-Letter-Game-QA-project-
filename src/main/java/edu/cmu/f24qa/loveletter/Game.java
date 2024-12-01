@@ -113,13 +113,6 @@ public class Game {
      * @return the Player who won this round
      */
     protected List<Player> determineRoundWinner() {
-        // if (players.checkForRoundWinner() && players.getRoundWinner() != null) {
-        // return players.getRoundWinner();
-        // } else {
-        // Player winner = players.compareUsedPiles();
-        // winner.addToken();
-        // return Collections.singletonList(winner);
-        // }
         if (players.checkForRoundWinner()) {
             // case 1: only one player left
             Player winner = players.getFirstPlayerWithCards();
