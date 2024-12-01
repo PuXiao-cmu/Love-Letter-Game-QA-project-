@@ -47,7 +47,7 @@ public class Req10DiscardNoEffectDueToProtectionTest {
     /*
      *  Requirement 10: If all valid targets are unavailable, the system shall discard the card with no effect applied.
      */
-    @Disabled("Issue #93: If all valid targets are protected, the system does not discard the card and goes into a infinite loop.")
+    //@Disabled("Issue #93: If all valid targets are protected, the system does not discard the card and goes into a infinite loop.")
     @Test
     void testExecuteCardWithoutCallingGetOpponent() {
         //Create a case that spyGuard.execute() can end normally
