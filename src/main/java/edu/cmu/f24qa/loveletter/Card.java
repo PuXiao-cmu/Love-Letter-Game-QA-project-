@@ -89,6 +89,36 @@ public enum Card {
      *          the deck
      */
     public void execute(UserInput userInput, Player user, PlayerList players, Deck deck) {
+        // Check for valid targets before executing the card action
+        boolean hasValidTarget = false;
+
+        // Special rules for Prince card
+        if (this == PRINCE) {
+            // Include self in valid target check
+            for (Player player : players.players) {
+                if (!player.isProtected()) {
+                    hasValidTarget = true;
+                    break;
+                }
+            }
+        }
+        // General rules for King, Baron, Priest, Guard
+        else if (this == KING || this == BARON || this == PRIEST || this == GUARD) {
+            // Exclude self from valid target check
+            for (Player player : players.players) {
+                if (player != user && !player.isProtected()) {
+                    hasValidTarget = true;
+                    break;
+                }
+            }
+        }
+
+        // If no valid targets are available, discard the card without applying the effect
+        if (!hasValidTarget) {
+            System.out.println("No valid targets available. Card discarded without effect.");
+            return;
+        }
+
         this.action.execute(userInput, user, players, deck);
     }
 

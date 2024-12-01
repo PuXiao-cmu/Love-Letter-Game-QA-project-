@@ -9,7 +9,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class PlayerList {
 
-    private Deque<Player> players;
+    protected Deque<Player> players;
 
     /**
      * Initializes a PlayerList.
