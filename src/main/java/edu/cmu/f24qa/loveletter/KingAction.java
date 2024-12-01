@@ -19,8 +19,17 @@ public class KingAction implements CardAction {
     public void execute(UserInput userInput, Player user, PlayerList players, Deck deck) {
         Player opponent = userInput.getOpponent(players, user);
 
+        Card opponentCard = opponent.viewHandCard(0);
+
+        // Check if either card is Princess
+        if (opponentCard == Card.PRINCESS) {
+            opponent.eliminate();
+            return;
+        }
+
+        // Proceed with normal exchange if no Princess
         Card userCard = user.playHandCard(0);
-        Card opponentCard = opponent.playHandCard(0);
+        opponentCard = opponent.playHandCard(0);
         user.receiveHandCard(opponentCard);
         opponent.receiveHandCard(userCard);
     }
