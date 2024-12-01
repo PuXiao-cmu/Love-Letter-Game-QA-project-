@@ -42,7 +42,6 @@ class PrincessDiscardRulesTest {
         verify(spyOpponent, never()).discardCard(any(Card.class));
     }
 
-    @Disabled("Issue #[104]: This bug will be fixed in a future PR")
     @Test
     void testKingActionWithPrincessCausesEliminationAndStopsEffect() {
         Player realPlayer = new Player("Player");
