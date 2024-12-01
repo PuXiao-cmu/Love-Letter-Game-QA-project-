@@ -78,7 +78,7 @@ public class Game {
     /**
      * Handles a complete round of the game.
      */
-    private void playRound() {
+    protected void playRound() {
         // Initialize round
         resetGame();
 
@@ -112,14 +112,7 @@ public class Game {
      *
      * @return the Player who won this round
      */
-    private List<Player> determineRoundWinner() {
-        // if (players.checkForRoundWinner() && players.getRoundWinner() != null) {
-        // return players.getRoundWinner();
-        // } else {
-        // Player winner = players.compareUsedPiles();
-        // winner.addToken();
-        // return Collections.singletonList(winner);
-        // }
+    protected List<Player> determineRoundWinner() {
         if (players.checkForRoundWinner()) {
             // case 1: only one player left
             Player winner = players.getFirstPlayerWithCards();
@@ -171,7 +164,7 @@ public class Game {
      * @param turn
      *             the player whose turn it is
      */
-    private void executeTurn(Player turn) {
+    protected void executeTurn(Player turn) {
         players.printUsedPiles();
         System.out.println("\n" + turn.getName() + "'s turn:");
         if (turn.isProtected()) {
