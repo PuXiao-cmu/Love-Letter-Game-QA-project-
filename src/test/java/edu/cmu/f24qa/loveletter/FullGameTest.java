@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,8 +14,6 @@ public class FullGameTest {
     private Deck mockDeck;
     private UserInput mockUserInput;
     private Game game;
-    private Player spyAlice;
-    private Player spyBob;
     private Player alice;
     private Player bob;
 
@@ -27,10 +26,6 @@ public class FullGameTest {
 
         alice = playerList.getPlayer("Alice");
         bob = playerList.getPlayer("Bob");
-
-        // Create spies for players
-        spyAlice = spy(playerList.getPlayer("Alice"));
-        spyBob = spy(playerList.getPlayer("Bob"));
 
         // Use spy for Deck
         mockDeck = spy(new Deck());
@@ -47,23 +42,23 @@ public class FullGameTest {
 
     @Test
     void testCompleteGame() {
-        // Step 1: Mock the deck to return predefined card order for all rounds
+        // Mock the deck to return predefined card order for all rounds
         when(mockDeck.draw())
             .thenReturn(
                 // Round 1
                 Card.HANDMAIDEN, Card.PRINCE, Card.GUARD, 
                 // Round 2
                 Card.GUARD, Card.PRINCESS, Card.HANDMAIDEN, Card.PRIEST, Card.COUNTESS, Card.PRINCE,
-                // Round 3
-                Card.COUNTESS, Card.BARON, Card.HANDMAIDEN,
-                // Round 4
+                // Round 3 a b
+                Card.HANDMAIDEN, Card.BARON, Card.COUNTESS,
+                // Round 4 
                 Card.GUARD, Card.KING, Card.PRINCESS, Card.PRIEST, Card.PRINCE,
                 // Round 5
                 Card.PRIEST, Card.COUNTESS, Card.BARON, Card.HANDMAIDEN, Card.KING,
                 // Round 6
                 Card.GUARD, Card.BARON, Card.HANDMAIDEN, Card.GUARD, Card.KING,
                 // Round 7
-                Card.COUNTESS, Card.GUARD, Card.KING, Card.BARON, Card.PRIEST, Card.PRINCE, Card.HANDMAIDEN,
+                Card.COUNTESS, Card.GUARD, Card.KING, Card.BARON, Card.PRIEST, Card.PRINCE, Card.GUARD, Card.HANDMAIDEN,
                 // Round 8
                 Card.PRINCE, Card.HANDMAIDEN, Card.COUNTESS, Card.BARON, Card.PRIEST, Card.GUARD
             );
@@ -83,9 +78,9 @@ public class FullGameTest {
         }
 
         // Final assertions
-        assertEquals(1, spyAlice.getTokens(), "Alice should have 1 token at the end of the game.");
-        assertEquals(7, spyBob.getTokens(), "Bob should have 7 tokens and win the game.");
-        assertSame(spyBob, playerList.getGameWinner(), "The winner should be Bob.");
+        assertEquals(1, alice.getTokens(), "Alice should have 1 token at the end of the game.");
+        assertEquals(7, bob.getTokens(), "Bob should have 7 tokens and win the game.");
+        assertSame(bob, playerList.getGameWinner(), "The winner should be Bob.");
     }
 
     // Individual round simulations
@@ -101,7 +96,6 @@ public class FullGameTest {
         // Assertions
         assertEquals(1, alice.getTokens(), "Alice should win Round 1.");
         assertEquals(0, bob.getTokens(), "Bob should have 0 tokens after Round 1.");
-        //verify(spyBob, times(1)).eliminate();
     }
 
     private void simulateRound2() {
@@ -109,57 +103,130 @@ public class FullGameTest {
         doReturn("1").when(mockUserInput).getCardIndex(alice);
         when(mockUserInput.getCardIndex(bob))
             .thenReturn("0")
-            .thenReturn("1"); 
+            .thenReturn("1");
         when(mockUserInput.getOpponent(any(PlayerList.class), any(Player.class), anyBoolean())).thenReturn(alice);
 
         // Gameplay
         game.playRound();
 
         // Assertions
-        assertEquals(1, playerList.getPlayer("Alice").getTokens(), "Alice should still have 1 token after Round 2.");
-        assertEquals(1, playerList.getPlayer("Bob").getTokens(), "Bob should win Round 2.");
+        assertEquals(1, alice.getTokens(), "Alice should still have 1 token after Round 2.");
+        assertEquals(1, bob.getTokens(), "Bob should win Round 2.");
     }
 
     private void simulateRound3() {
+        // Setup
+        when(mockUserInput.getCardIndex(bob)).thenReturn("0");
+        when(mockUserInput.getOpponent(any(PlayerList.class), any(Player.class))).thenReturn(alice);
+
+        // Gameplay
         game.playRound();
 
-        assertEquals(1, spyAlice.getTokens(), "Alice should still have 1 token after Round 3.");
-        assertEquals(2, spyBob.getTokens(), "Bob should win Round 3.");
+        // Assertions
+        assertEquals(1, alice.getTokens(), "Alice should still have 1 token after Round 3.");
+        assertEquals(2, bob.getTokens(), "Bob should win Round 3.");
     }
 
     private void simulateRound4() {
+        // Setup
+        when(mockUserInput.getCardIndex(bob))
+            .thenReturn("0")
+            .thenReturn("1");
+        when(mockUserInput.getCardIndex(alice)).thenReturn("1");
+        when(mockUserInput.getOpponent(any(PlayerList.class), any(Player.class)))
+            .thenReturn(alice)
+            .thenReturn(bob);
+        when(mockUserInput.getOpponent(any(PlayerList.class), any(Player.class), anyBoolean())).thenReturn(alice);
+
+        // Gameplay
         game.playRound();
 
-        assertEquals(1, spyAlice.getTokens(), "Alice should still have 1 token after Round 4.");
-        assertEquals(3, spyBob.getTokens(), "Bob should win Round 4.");
+        // Assertions
+        assertEquals(1, alice.getTokens(), "Alice should still have 1 token after Round 4.");
+        assertEquals(3, bob.getTokens(), "Bob should win Round 4.");
     }
 
     private void simulateRound5() {
+        // Setup
+        when(mockUserInput.getCardIndex(bob))
+            .thenReturn("0")
+            .thenReturn("0");
+        when(mockUserInput.getCardIndex(alice)).thenReturn("0");
+        when(mockUserInput.getOpponent(any(PlayerList.class), any(Player.class)))
+            .thenReturn(bob)
+            .thenReturn(alice);
+
+        // Gameplay
         game.playRound();
 
-        assertEquals(1, spyAlice.getTokens(), "Alice should still have 1 token after Round 5.");
-        assertEquals(4, spyBob.getTokens(), "Bob should win Round 5.");
+        // Assertions
+        assertEquals(1, alice.getTokens(), "Alice should still have 1 token after Round 5.");
+        assertEquals(4, bob.getTokens(), "Bob should win Round 5.");
     }
 
     private void simulateRound6() {
+        // Setup
+        when(mockUserInput.getCardIndex(bob))
+            .thenReturn("1")
+            .thenReturn("0");
+        when(mockUserInput.getCardIndex(alice)).thenReturn("0");
+        when(mockUserInput.getOpponent(any(PlayerList.class), any(Player.class))).thenReturn(alice);
+
+        // Gameplay
         game.playRound();
 
-        assertEquals(1, spyAlice.getTokens(), "Alice should still have 1 token after Round 6.");
-        assertEquals(5, spyBob.getTokens(), "Bob should win Round 6.");
+        // Assertions
+        assertEquals(1, alice.getTokens(), "Alice should still have 1 token after Round 6.");
+        assertEquals(5, bob.getTokens(), "Bob should win Round 6.");
     }
 
     private void simulateRound7() {
+        // Setup
+        when(mockUserInput.getCardIndex(bob))
+            .thenReturn("0")
+            .thenReturn("0")
+            .thenReturn("0");
+        when(mockUserInput.getCardIndex(alice))
+            .thenReturn("0")
+            .thenReturn("1");
+        when(mockUserInput.getCardName())
+            .thenReturn("Princess")
+            .thenReturn("Priest");
+        when(mockUserInput.getOpponent(any(PlayerList.class), any(Player.class)))
+            .thenReturn(alice)
+            .thenReturn(alice)
+            .thenReturn(alice);
+        when(mockUserInput.getOpponent(any(PlayerList.class), any(Player.class), anyBoolean())).thenReturn(alice);
+
+        // Gameplay
         game.playRound();
 
-        assertEquals(1, spyAlice.getTokens(), "Alice should still have 1 token after Round 7.");
-        assertEquals(6, spyBob.getTokens(), "Bob should win Round 7.");
+        // Assertions
+        assertEquals(1, alice.getTokens(), "Alice should still have 1 token after Round 7.");
+        assertEquals(6, bob.getTokens(), "Bob should win Round 7.");
     }
 
     private void simulateRound8() {
+        // Setup
+        when(mockUserInput.getCardIndex(bob))
+            .thenReturn("0")
+            .thenReturn("1")
+            .thenReturn("1");
+        when(mockUserInput.getCardIndex(alice))
+            .thenReturn("1")
+            .thenReturn("1");
+        when(mockUserInput.getCardName()).thenReturn("Prince");
+        when(mockUserInput.getOpponent(any(PlayerList.class), any(Player.class)))
+            .thenReturn(alice)
+            .thenReturn(bob)
+            .thenReturn(alice);
+
+        // Gameplay
         game.playRound();
 
-        assertEquals(1, spyAlice.getTokens(), "Alice should still have 1 token after Round 8.");
-        assertEquals(7, spyBob.getTokens(), "Bob should win Round 8.");
+        // Assertions
+        assertEquals(1, alice.getTokens(), "Alice should still have 1 token after Round 8.");
+        assertEquals(7, bob.getTokens(), "Bob should win Round 8.");
     }
 }
 
