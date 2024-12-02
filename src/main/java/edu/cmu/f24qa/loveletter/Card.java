@@ -113,10 +113,13 @@ public enum Card {
         boolean hasValidTarget = false;
 
         // Determine if the card has valid targets
-        if (this == PRINCE) {
+        if (this.value == 5) {
             hasValidTarget = hasValidTarget(players, user, true); // Include self
-        } else if (this == KING || this == BARON || this == PRIEST || this == GUARD) {
+        } else if (this.value == 6 || this.value >= 1 && this.value <= 3) {
             hasValidTarget = hasValidTarget(players, user, false); // Exclude self
+        } else {
+            this.action.execute(userInput, user, players, deck);
+            return;
         }
 
         // If no valid targets are available, discard the card without applying the effect
