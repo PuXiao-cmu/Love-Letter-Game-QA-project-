@@ -37,14 +37,18 @@ class BlackboxGetOpponentTest {
 
         // Setup game players
         players = new PlayerList();
-        player = new Player("Player");
-        opponent = new Player("Opponent");
-        protectedOpponent = new Player("ProtectedOpponent");
+        players.addPlayer("Player");
+        players.addPlayer("Opponent");
+        players.addPlayer("ProtectedOpponent");
 
-        players.addPlayer(player.getName());
-        players.addPlayer(opponent.getName());
-        players.addPlayer(protectedOpponent.getName());
-        players.getPlayer("ProtectedOpponent").switchProtection();
+        player = players.getPlayer("Player");
+        opponent = players.getPlayer("Opponent");
+        protectedOpponent = players.getPlayer("ProtectedOpponent");
+
+        player.receiveHandCard(Card.GUARD);
+        opponent.receiveHandCard(Card.GUARD);
+        protectedOpponent.receiveHandCard(Card.GUARD);
+        protectedOpponent.switchProtection();
     }
 
     /**
@@ -56,6 +60,9 @@ class BlackboxGetOpponentTest {
      */
     @Test
     void testGetOpponentWithNonExistentPlayer() {
+        // Set opponent to have cards
+        // when(opponent.hasHandCards()).thenReturn(true);
+
         // Mock inputs to first select a non-existent player, then the valid opponent
         doReturn("NonExistentPlayer", "Opponent").when(mockScanner).nextLine();
 
@@ -78,6 +85,8 @@ class BlackboxGetOpponentTest {
      */
     @Test
     void testGetOpponentWithProtectedPlayer() {
+        // Set opponent to have cards
+        // when(opponent.hasHandCards()).thenReturn(true);
         // Mock inputs to first select the protected player, then the valid opponent
         doReturn("ProtectedOpponent", "Opponent").when(mockScanner).nextLine();
 
@@ -96,6 +105,8 @@ class BlackboxGetOpponentTest {
      */
     @Test
     void testGetOpponentWithValidPlayerFirstTry() {
+        // Set opponent to have cards
+        // when(opponent.hasHandCards()).thenReturn(true);
         // Mock input to select the valid opponent on the first try
         doReturn("Opponent").when(mockScanner).nextLine();
 
