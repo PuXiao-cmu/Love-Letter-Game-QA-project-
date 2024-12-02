@@ -131,7 +131,7 @@ public class Game {
      *
      * @param winners the List of Players who won this round
      */
-    protected void handleRoundWinner(List<Player> winners) {
+    private void handleRoundWinner(List<Player> winners) {
         // winner.addToken();
         // System.out.println(winner.getName() + " has won this round!");
         // players.print();
