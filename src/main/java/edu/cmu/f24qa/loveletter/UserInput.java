@@ -45,4 +45,11 @@ public interface UserInput {
      * @return the opponent Player
      */
     Player getOpponent(PlayerList playerList, Player user, boolean selectSelf);
+
+    /**
+     * Get the number of opponents the user selects.
+     *
+     * @return the number of opponents as an integer.
+     */
+    Integer getNumOpponent();
 }
