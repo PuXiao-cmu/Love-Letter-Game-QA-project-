@@ -77,7 +77,7 @@ public class Game {
      * @return true if there is a winner, false if there is no winner now
      */
     private boolean isGameOver() {
-        return players.getGameWinner() != null;
+        return players.getGameWinnerCandidates() != null;
     }
 
     /**
@@ -156,8 +156,8 @@ public class Game {
      * Announces the game winner.
      */
     private void announceGameWinner() {
-        Player gameWinner = players.getGameWinner();
-        System.out.println(gameWinner + " has won the game and the heart of the princess!");
+        List<Player> gameWinners = players.getGameWinnerCandidates();
+        System.out.println(gameWinners + " has won the game and the heart of the princess!");
     }
 
     /**
