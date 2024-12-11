@@ -19,6 +19,11 @@ public class Player {
     private int tokens;
 
     /**
+     * Records the player who predicted this player will win
+     */
+    private Player jesterPredictor;
+
+    /**
      * Constructs a new player with the specified name.
      *
      * @param playerName The name of the player
@@ -180,5 +185,30 @@ public class Player {
     @Override
     public String toString() {
         return this.name + " (" + this.tokens + " tokens)";
+    }
+
+    /**
+     * Sets the predictor who used Jester card on this player.
+     *
+     * @param predictor the player who made the prediction
+     */
+    public void setJesterPredictor(Player predictor) {
+        this.jesterPredictor = predictor;
+    }
+
+    /**
+     * Gets the player who predicted this player will win.
+     *
+     * @return the predictor, or null if none
+     */
+    public Player getJesterPredictor() {
+        return jesterPredictor;
+    }
+
+    /**
+     * Clears the Jester prediction.
+     */
+    public void clearJesterPrediction() {
+        this.jesterPredictor = null;
     }
 }

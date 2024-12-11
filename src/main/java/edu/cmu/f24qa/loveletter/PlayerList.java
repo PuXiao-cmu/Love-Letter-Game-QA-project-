@@ -64,6 +64,7 @@ public class PlayerList {
         for (Player p : players) {
             p.clearHand();
             p.clearDiscarded();
+            p.clearJesterPrediction();
         }
     }
 

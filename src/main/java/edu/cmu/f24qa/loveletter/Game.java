@@ -133,9 +133,14 @@ public class Game {
      */
     protected void handleRoundWinner(List<Player> winners) {
         lastRoundWinners.clear(); // clear last round winners
+        List<Player> correctPredictors = new ArrayList<>(); // Collect all predictors who guessed correctly
         for (Player winner : winners) {
             winner.addToken();
             lastRoundWinners.add(winner); // add new winners
+            Player predictor = winner.getJesterPredictor();
+            if (predictor != null && !correctPredictors.contains(predictor)) {
+                correctPredictors.add(predictor);
+            }
         }
 
         if (winners.size() == 1) {
@@ -144,6 +149,12 @@ public class Game {
             System.out.println("This round ended in a tie! Winners: "
                     + winners.stream().map(Player::getName).collect(Collectors.joining(", ")));
         }
+
+        for (Player predictor : correctPredictors) {
+            predictor.addToken();
+            System.out.println(predictor.getName() + " correctly predicted a winner and earns a Token!");
+        }
+
         players.print();
     }
 
