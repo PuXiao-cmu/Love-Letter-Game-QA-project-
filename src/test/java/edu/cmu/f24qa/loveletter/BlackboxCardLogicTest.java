@@ -363,7 +363,8 @@ public class BlackboxCardLogicTest {
         GuardAction guardAction = new GuardAction();
 
         // Set up a correct guess scenario (opponent has "Prince")
-        when(userInput.getCardName()).thenReturn("Prince");
+        // when(userInput.getCardName()).thenReturn("Prince");
+        when(userInput.getCardNumber()).thenReturn(5);
         when(opponent.viewHandCard(0)).thenReturn(Card.PRINCE);
 
         // Execute Guard action
@@ -382,7 +383,8 @@ public class BlackboxCardLogicTest {
         GuardAction guardAction = new GuardAction();
 
         // Set up a correct guess scenario with "Guard" (invalid guess)
-        when(userInput.getCardName()).thenReturn("Guard");
+        // when(userInput.getCardName()).thenReturn("Guard");
+        when(userInput.getCardNumber()).thenReturn(1);
         when(opponent.viewHandCard(0)).thenReturn(Card.GUARD);
 
         // Execute Guard action
@@ -401,7 +403,8 @@ public class BlackboxCardLogicTest {
         GuardAction guardAction = new GuardAction();
 
         // Set up an incorrect guess scenario (opponent has "Prince", guess is "King")
-        when(userInput.getCardName()).thenReturn("King");
+        // when(userInput.getCardName()).thenReturn("King");
+        when(userInput.getCardNumber()).thenReturn(6);
         when(opponent.viewHandCard(0)).thenReturn(Card.PRINCE);
 
         // Execute Guard action
@@ -420,7 +423,8 @@ public class BlackboxCardLogicTest {
         GuardAction guardAction = new GuardAction();
 
         // Set up an incorrect guess scenario with "Guard" (invalid guess)
-        when(userInput.getCardName()).thenReturn("Guard");
+        // when(userInput.getCardName()).thenReturn("Guard");
+        when(userInput.getCardNumber()).thenReturn(1);
         when(opponent.viewHandCard(0)).thenReturn(Card.PRINCE);
 
         // Execute Guard action
