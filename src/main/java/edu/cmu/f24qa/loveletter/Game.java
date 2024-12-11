@@ -45,11 +45,16 @@ public class Game {
      */
     public void resetGame() {
         players.reset();
-        deck.build();
+        int numPlayers = players.numPlayer();
+        if (numPlayers >= 2 && numPlayers <= 4) {
+            deck.build();
+        } else if (numPlayers >= 5 && numPlayers <= 8) {
+            deck.buildPremium();
+        }
         deck.shuffle();
         deck.hideTopCard();
-
-        if (players.numPlayer() == 2) {
+        
+        if (numPlayers == 2) {
             deck.removeAnotherThreeCards();
         }
 
