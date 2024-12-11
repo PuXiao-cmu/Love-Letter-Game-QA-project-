@@ -21,11 +21,11 @@ public class BishopAction implements CardAction {
         Player opponent = userInput.getOpponent(players, user);
 
         // Get number guess from user
-        String cardName = userInput.getCardName();
+        int guessNumber = userInput.getCardNumber();
         Card opponentCard = opponent.viewHandCard(0);
 
-        // Check if guess matches opponent's card
-        if (opponentCard.getName().equalsIgnoreCase(cardName)) {
+        // Check if guess matches opponent's card value
+        if (opponentCard.getValue() == guessNumber) {
             // Award Token of Affection
             user.addToken();
 
