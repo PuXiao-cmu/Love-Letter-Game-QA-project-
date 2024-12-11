@@ -45,4 +45,6 @@ public interface UserInput {
      * @return the opponent Player
      */
     Player getOpponent(PlayerList playerList, Player user, boolean selectSelf);
+
+    void setSycophantChoice(Player sycophantChoice);
 }

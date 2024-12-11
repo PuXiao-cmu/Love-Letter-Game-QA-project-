@@ -10,12 +10,14 @@ import java.util.Scanner;
 public class CommandLineUserInput implements UserInput {
 
     private Scanner scanner;
+    private Player sycophantChoice;
 
     /**
      * Constructor of the CommandLineUserInput class.
      */
     public CommandLineUserInput() {
         scanner = new Scanner(System.in, StandardCharsets.UTF_8);
+        sycophantChoice = null;
     }
 
     /**
@@ -70,6 +72,15 @@ public class CommandLineUserInput implements UserInput {
      */
     @Override
     public Player getOpponent(PlayerList playerList, Player user) {
+        if (this.sycophantChoice != null) {
+            System.out.println("Your choice is subject to Sycophant Morris's action, the target is automatically assigned.");
+
+            Player temp = this.sycophantChoice;
+            this.sycophantChoice = null;
+
+            return temp;
+        }
+
         while (true) {
             System.out.print("Who would you like to target: ");
             String opponentName = scanner.nextLine();
@@ -108,6 +119,15 @@ public class CommandLineUserInput implements UserInput {
      */
     @Override
     public Player getOpponent(PlayerList playerList, Player user, boolean selectSelf) {
+        if (this.sycophantChoice != null) {
+            System.out.println("Your choice is subject to Sycophant Morris's action, the target is automatically assigned.");
+
+            Player temp = this.sycophantChoice;
+            this.sycophantChoice = null;
+
+            return temp;
+        }
+
         while (true) {
             System.out.print("Who would you like to target: ");
             String opponentName = scanner.nextLine();
@@ -134,5 +154,10 @@ public class CommandLineUserInput implements UserInput {
 
             return opponent;
         }
+    }
+
+    @Override
+    public void setSycophantChoice(Player sycophantChoice) {
+        this.sycophantChoice = sycophantChoice;
     }
 }
