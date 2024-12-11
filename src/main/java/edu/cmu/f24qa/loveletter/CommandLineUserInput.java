@@ -62,6 +62,23 @@ public class CommandLineUserInput implements UserInput {
     }
 
     /**
+     * Prompts the user to enter the number of a card for guessing.
+     * @return the number guessed by the user
+     */
+    @Override
+    public int getCardNumber() {
+    while (true) {
+        System.out.print("Which number would you like to guess: ");
+        try {
+            int guess = Integer.parseInt(scanner.nextLine());
+            return guess;
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter a valid number.");
+        }
+    }
+}
+
+    /**
      * Prompts the user to choose an opponent from the player list.
      *
      * @param playerList the list of players in the game
