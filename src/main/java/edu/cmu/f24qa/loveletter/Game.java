@@ -156,7 +156,9 @@ public class Game {
     }
 
     /**
-     * Get final the game winner.
+     * Get the final game winner.
+     *
+     * @return the final game winner
      */
     protected Player getFinalGameWinner() {
         List<Player> gameWinners = players.getGameWinnerCandidates();
