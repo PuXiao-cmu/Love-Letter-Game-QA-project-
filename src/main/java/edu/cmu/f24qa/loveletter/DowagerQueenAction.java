@@ -1,6 +1,6 @@
 package edu.cmu.f24qa.loveletter;
 
-public class DowagerQueenAction implements CardAction{
+public class DowagerQueenAction implements CardAction {
     /**
      *
      * @param userInput

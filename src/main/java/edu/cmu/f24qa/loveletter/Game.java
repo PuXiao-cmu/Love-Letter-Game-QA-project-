@@ -53,7 +53,7 @@ public class Game {
         }
         deck.shuffle();
         deck.hideTopCard();
-        
+
         if (numPlayers == 2) {
             deck.removeAnotherThreeCards();
         }
@@ -157,7 +157,17 @@ public class Game {
      */
     private void announceGameWinner() {
         List<Player> gameWinners = players.getGameWinnerCandidates();
-        System.out.println(gameWinners + " has won the game and the heart of the princess!");
+        while (gameWinners != null && gameWinners.size() > 1) {
+            System.out.println("Tie detected! Players involved in the tie: "
+                    + gameWinners.stream().map(Player::getName).collect(Collectors.joining(", ")));
+            System.out.println("Playing a tie-breaking round...");
+            players.setActivePlayers(gameWinners);
+            playRound();
+            gameWinners = determineRoundWinner();
+        }
+        if (gameWinners != null) {
+            System.out.println(gameWinners.get(0) + " has won the game and the heart of the princess!");
+        }
     }
 
     /**

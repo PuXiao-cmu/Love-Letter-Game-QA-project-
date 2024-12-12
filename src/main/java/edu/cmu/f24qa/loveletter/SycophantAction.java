@@ -1,6 +1,6 @@
 package edu.cmu.f24qa.loveletter;
 
-public class SycophantAction implements CardAction{
+public class SycophantAction implements CardAction {
     /**
      *
      * @param userInput

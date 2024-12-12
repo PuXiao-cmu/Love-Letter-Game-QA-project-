@@ -1,6 +1,6 @@
 package edu.cmu.f24qa.loveletter;
 
-public class JesterAction implements CardAction{
+public class JesterAction implements CardAction {
     /**
      *
      * @param userInput
