@@ -42,6 +42,10 @@ public class Player {
      * Eliminates the player from the round by discarding their hand.
      */
     public void eliminate() {
+        if (this.discarded.containsCard(Card.CONSTABLE)) {
+            this.addToken();
+            System.out.println(this.name + " gained a token from Constable Viktor!");
+        }
         this.discarded.add(this.hand.remove(0));
     }
 

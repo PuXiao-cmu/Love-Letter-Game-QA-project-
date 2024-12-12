@@ -56,4 +56,11 @@ public class DiscardPile {
             System.out.println(c);
         }
     }
+
+    /**
+     * Checks if the discard pile contains a specific card.
+     */
+    public boolean containsCard(Card card) {
+        return cards.contains(card);
+    }
 }
