@@ -53,7 +53,7 @@ public class Game {
         }
         deck.shuffle();
         deck.hideTopCard();
-        
+
         if (numPlayers == 2) {
             deck.removeAnotherThreeCards();
         }

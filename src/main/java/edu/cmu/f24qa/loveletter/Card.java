@@ -52,14 +52,14 @@ public enum Card {
         "king",
         "countess",
         "princess",
-        "jester", 
-        "assassin", 
-        "bishop", 
-        "dowager queen", 
-        "constable", 
-        "count", 
-        "sycophant", 
-        "baroness", 
+        "jester",
+        "assassin",
+        "bishop",
+        "dowager queen",
+        "constable",
+        "count",
+        "sycophant",
+        "baroness",
         "cardinal"
     };
 
@@ -134,10 +134,10 @@ public enum Card {
         boolean hasValidTarget = false;
 
         Set<String> targetCheckCards = Set.of(
-            "Guard", "Priest", "Baron", "King", 
+            "Guard", "Priest", "Baron", "King",
             "Cardinal", "Baroness", "Dowager Queen", "Bishop"
             );
-        
+
         // Determine if the card has valid targets
         if (this == PRINCE || this == SYCOPHANT) {
             hasValidTarget = hasValidTarget(players, user, true); // Include self
