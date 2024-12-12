@@ -16,5 +16,4 @@ public class SycophantAction implements CardAction {
 
         // TODO: need to implement check for card in next turn.
     }
-    
 }
