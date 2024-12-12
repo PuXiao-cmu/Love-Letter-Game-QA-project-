@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 public class Game {
@@ -162,7 +163,7 @@ public class Game {
      *
      * @return the final game winner
      */
-    protected Player getFinalGameWinner() {
+    protected @Nullable Player getFinalGameWinner() {
         List<Player> gameWinners = players.getGameWinnerCandidates();
         while (gameWinners != null && gameWinners.size() > 1) {
             System.out.println("Tie detected! Players involved in the tie: "
@@ -184,6 +185,7 @@ public class Game {
      * @param turn
      *             the player whose turn it is
      */
+    @SuppressFBWarnings(value = "NP_NONNULL_PARAM_VIOLATION", justification = "Passing null is valid.")
     protected void executeTurn(Player turn) {
         players.printUsedPiles();
         System.out.println("\n" + turn.getName() + "'s turn:");
@@ -199,7 +201,7 @@ public class Game {
         if (royaltyPos == 0 && turn.viewHandCard(1).getName().equalsIgnoreCase("countess")) {
             // playCard(turn.playHandCard(1), turn);
             cardToPlay = 1;
-        } else if (royaltyPos == 1 && turn.viewHandCard(0).getValue() == 7) {
+        } else if (royaltyPos == 1 && turn.viewHandCard(1).getName().equalsIgnoreCase("countess")) {
             // playCard(turn.playHandCard(0), turn);
             cardToPlay = 0;
         } else {
