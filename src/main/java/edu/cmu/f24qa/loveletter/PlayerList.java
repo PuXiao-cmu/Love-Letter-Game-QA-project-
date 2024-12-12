@@ -217,16 +217,17 @@ public class PlayerList {
      * Returns the winner of the game.
      * @return the game winner
      */
-    public @Nullable Player getGameWinner() {
+    public @Nullable List<Player> getGameWinnerCandidates() {
         int playerCount = players.size();
         int tokensNeeded;
+        List<Player> gameWinnerCandidates = new ArrayList<>();
 
         // Set victory condition based on number of players
         if (playerCount == 2) {
             tokensNeeded = 7;
         } else if (playerCount == 3) {
             tokensNeeded = 5;
-        } else if (playerCount == 4) {
+        } else if (playerCount >= 4 && playerCount <= 8) {
             tokensNeeded = 4;
         } else {
             return null;
@@ -235,11 +236,10 @@ public class PlayerList {
         // Check if any player has reached the required number of tokens
         for (Player p : players) {
             if (p.getTokens() == tokensNeeded) {
-                return p;
+                gameWinnerCandidates.add(p);
             }
         }
-        // throw new IllegalStateException("No player has won the game yet");
-        return null;
+        return gameWinnerCandidates;
     }
 
     /**
@@ -292,4 +292,14 @@ public class PlayerList {
         }
         return null;
     }
+
+    /**
+     * Remove all non active players.
+     * @param activePlayers the list of active player
+     */
+    public void setActivePlayers(List<Player> activePlayers) {
+        this.players.clear();
+        this.players.addAll(activePlayers);
+    }
+
 }

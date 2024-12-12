@@ -45,6 +45,27 @@ public class Deck {
     }
 
     /**
+     * Builds the deck for the 5-8 players mode.
+     */
+    public void buildPremium() {
+        build();
+        for (int i = 0; i < 3; i++) {
+            deck.push(Card.GUARD);
+        }
+        for (int i = 0; i < 2; i++) {
+            deck.push(Card.CARDINAL);
+            deck.push(Card.BARONESS);
+            deck.push(Card.SYCOPHANT);
+            deck.push(Card.COUNT);
+        }
+        deck.push(Card.JESTER);
+        deck.push(Card.ASSASSIN);
+        deck.push(Card.CONSTABLE);
+        deck.push(Card.DOWAGERQUEEN);
+        deck.push(Card.BISHOP);
+    }
+
+    /**
      * Shuffles the deck.
      */
     public void shuffle() {
@@ -105,5 +126,14 @@ public class Deck {
      */
     public boolean hasMoreCards() {
         return !deck.isEmpty();
+    }
+
+    /**
+     * Get the deck.
+     *
+     * @return the deck
+     */
+    public Deque<Card> getDeck() {
+        return deck;
     }
 }

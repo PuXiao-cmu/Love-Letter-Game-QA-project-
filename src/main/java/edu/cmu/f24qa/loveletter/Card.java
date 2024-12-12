@@ -1,5 +1,7 @@
 package edu.cmu.f24qa.loveletter;
 
+import java.util.Set;
+
 /**
  * Enumeration for different types of cards with names and values.
  */
@@ -12,8 +14,16 @@ public enum Card {
     KING("King", 6, new KingAction()),
     COUNTESS("Countess", 7, new CountessAction()),
     PRINCESS("Princess", 8, new PrincessAction()),
-    // New cards for 5-8 players
-    JESTER("Jester", 0, new JesterAction());
+    JESTER("Jester", 0, new JesterAction()),
+    ASSASSIN("Assassin", 0, new AssassinAction()),
+    CARDINAL("Cardinal", 2, new CardinalAction()),
+    BARONESS("Baroness", 3, new BaronessAction()),
+    SYCOPHANT("Sycophant", 4, new SycophantAction()),
+    COUNT("Count", 5, new CountAction()),
+    CONSTABLE("Constable", 6, new ConstableAction()),
+    DOWAGERQUEEN("DowagerQueen", 7, new DowagerQueenAction()),
+    BISHOP("Bishop", 9, new BishopAction());
+
 
     /**
      * The name of the card.
@@ -42,7 +52,15 @@ public enum Card {
         "king",
         "countess",
         "princess",
-        "jester"
+        "jester",
+        "assassin",
+        "bishop",
+        "dowager queen",
+        "constable",
+        "count",
+        "sycophant",
+        "baroness",
+        "cardinal"
     };
 
     /**
@@ -121,6 +139,9 @@ public enum Card {
             case "Priest": // 2
             case "Baron": // 3
             case "King": // 6
+            case "Baroness": // 3
+            case "Dowager Queen": // 7
+            case "Bishop": // 9
                 countValidTargets = countValidTargets(players, user, false);
                 if (countValidTargets < 1) {
                     System.out.println("No valid targets available. Card discarded without effect.");
@@ -137,6 +158,7 @@ public enum Card {
                 break;
 
             case "Prince": // 5
+            case "Sycophant": // 9
                 countValidTargets = countValidTargets(players, user, true);
                 if (countValidTargets < 1) {
                     System.out.println("No valid targets available. Card discarded without effect.");

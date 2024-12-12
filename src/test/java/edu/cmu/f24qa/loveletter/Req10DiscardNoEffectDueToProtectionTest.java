@@ -53,7 +53,8 @@ public class Req10DiscardNoEffectDueToProtectionTest {
         //Create a case that spyGuard.execute() can end normally
         bob.receiveHandCard(Card.COUNTESS);
         when(mockUserInput.getOpponent(playerList, alice)).thenReturn(bob);
-        when(mockUserInput.getCardName()).thenReturn("Countess");
+        // when(mockUserInput.getCardName()).thenReturn("Countess");
+        when(mockUserInput.getCardNumber()).thenReturn(7);
 
         // Alice plays GUARD
         spyGuard.execute(mockUserInput, alice, playerList, mockDeck);
