@@ -180,4 +180,23 @@ public class CommandLineUserInput implements UserInput {
     public void setSycophantChoice(Player sycophantChoice) {
         this.sycophantChoice = sycophantChoice;
     }
+    
+    /**
+     * Get the number of opponents the user selects.
+     *
+     * @return the number of opponents as an integer.
+     */
+    @Override
+    public Integer getNumOpponent() {
+        while (true) {
+            System.out.println("How many players would you like to select (please enter either 1 or 2): ");
+            String number = scanner.nextLine();
+
+            if (!number.equals("1") || !number.equals("2")) {
+                System.out.println("You can choose either 1 or 2 players. Please try again.");
+            }
+
+            return Integer.valueOf(number);
+        }
+    }
 }

@@ -19,7 +19,7 @@ public class Req15GameVictoryRulesTest {
     /**
      * Rule 15.2.1: Tests victory condition in 2-player game
      */
-    @Disabled("Issue #85: Game winner determination logic needs to be updated for different player counts")
+    //@Disabled("Issue #85: Game winner determination logic needs to be updated for different player counts")
     @Test
     void testTwoPlayerGameVictory() {
         playerList.addPlayer("Player1");
@@ -32,7 +32,7 @@ public class Req15GameVictoryRulesTest {
         for (int i = 0; i < 6; i++) {
             player1.addToken();
         }
-        assertNull(playerList.getGameWinnerCandidates().get(0), "No winner should be declared at 6 tokens");
+        assertTrue(playerList.getGameWinnerCandidates().isEmpty(), "No winner should be declared at 6 tokens");
 
         // Add 7th token (should trigger victory)
         player1.addToken();
@@ -55,7 +55,7 @@ public class Req15GameVictoryRulesTest {
         for (int i = 0; i < 4; i++) {
             player3.addToken();
         }
-        assertNull(playerList.getGameWinnerCandidates(), "No winner should be declared at 4 tokens");
+        assertTrue(playerList.getGameWinnerCandidates().isEmpty(), "No winner should be declared at 4 tokens");
 
         // Add 5th token (should trigger victory)
         player3.addToken();
@@ -65,7 +65,7 @@ public class Req15GameVictoryRulesTest {
     /**
      * Rule 15.2.3: Tests victory condition in 4-player game
      */
-    @Disabled("Issue #85: Game winner determination logic needs to be updated for different player counts")
+    //@Disabled("Issue #85: Game winner determination logic needs to be updated for different player counts")
     @Test
     void testFourPlayerGameVictory() {
         playerList.addPlayer("Player1");
@@ -80,7 +80,7 @@ public class Req15GameVictoryRulesTest {
         for (int i = 0; i < 3; i++) {
             player2.addToken();
         }
-        assertNull(playerList.getGameWinnerCandidates().get(0), "No winner should be declared at 3 tokens");
+        assertTrue(playerList.getGameWinnerCandidates().isEmpty(), "No winner should be declared at 3 tokens");
 
         // Add 4th token (should trigger victory)
         player2.addToken();
