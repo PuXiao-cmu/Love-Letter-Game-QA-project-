@@ -1,8 +1,6 @@
 package edu.cmu.f24qa.loveletter;
 
-
 public class BaronessAction implements CardAction {
-
     /**
      * Based on the user's choice, reveal the hand card of one or two other player(s)
      * to the user only.
