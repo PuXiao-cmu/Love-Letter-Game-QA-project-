@@ -143,7 +143,7 @@ public enum Card {
                 }
                 this.action.execute(userInput, user, players, deck);
                 break;
-            
+
             case "Cardinal": // 2
                 countValidTargets = countValidTargets(players, user, true);
                 if (countValidTargets < 2) {
