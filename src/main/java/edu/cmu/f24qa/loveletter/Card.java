@@ -13,7 +13,7 @@ public enum Card {
     COUNTESS("Countess", 7, new CountessAction()),
     PRINCESS("Princess", 8, new PrincessAction()),
     // New cards for 5-8 players
-    CARDINAL("Jester", 0, new JesterAction());
+    JESTER("Jester", 0, new JesterAction());
 
     /**
      * The name of the card.
