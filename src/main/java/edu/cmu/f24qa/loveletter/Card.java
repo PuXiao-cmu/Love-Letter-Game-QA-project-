@@ -15,7 +15,7 @@ public enum Card {
     COUNTESS("Countess", 7, new CountessAction()),
     PRINCESS("Princess", 8, new PrincessAction()),
     JESTER("Jester", 0, new JesterAction()),
-    ASSASIN("Assasin", 0, new AssassinAction()),
+    ASSASSIN("Assassin", 0, new AssassinAction()),
     CARDINAL("Cardinal", 2, new CardinalAction()),
     BARONESS("Baroness", 3, new BaronessAction()),
     SYCOPHANT("Sycophant", 4, new SycophantAction()),
