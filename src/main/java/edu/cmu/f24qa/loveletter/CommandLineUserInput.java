@@ -180,7 +180,7 @@ public class CommandLineUserInput implements UserInput {
     public void setSycophantChoice(Player sycophantChoice) {
         this.sycophantChoice = sycophantChoice;
     }
-    
+
     /**
      * Get the number of opponents the user selects.
      *
