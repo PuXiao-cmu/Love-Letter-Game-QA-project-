@@ -81,6 +81,16 @@ public class Player {
         return this.hand.peek(index);
     }
 
+    public int finalHandValue() {
+        int curCardValue = this.hand.peek(0).getValue() + this.discarded.numCountCard();
+
+        if (this.hand.peek(0).getName().equalsIgnoreCase("count")) {
+            curCardValue++;
+        }
+
+        return curCardValue;
+    }
+
     /**
      * Checks if the player has any cards in their hand.
      *

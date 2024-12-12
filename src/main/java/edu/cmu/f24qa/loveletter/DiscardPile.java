@@ -56,4 +56,14 @@ public class DiscardPile {
             System.out.println(c);
         }
     }
+
+    public int numCountCard() {
+        int num = 0;
+        for (Card card: cards) {
+            if (card.getName().equalsIgnoreCase("count")) {
+                num++;
+            }
+        }
+        return num;
+    }
 }
