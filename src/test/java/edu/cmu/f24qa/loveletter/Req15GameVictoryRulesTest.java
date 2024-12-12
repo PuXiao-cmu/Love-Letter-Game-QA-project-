@@ -32,11 +32,11 @@ public class Req15GameVictoryRulesTest {
         for (int i = 0; i < 6; i++) {
             player1.addToken();
         }
-        assertNull(playerList.getGameWinner(), "No winner should be declared at 6 tokens");
+        assertNull(playerList.getGameWinnerCandidates().get(0), "No winner should be declared at 6 tokens");
 
         // Add 7th token (should trigger victory)
         player1.addToken();
-        assertEquals(player1, playerList.getGameWinner(), "Player1 should win with 7 tokens in 2-player game");
+        assertEquals(player1, playerList.getGameWinnerCandidates().get(0), "Player1 should win with 7 tokens in 2-player game");
     }
 
     /**
@@ -55,11 +55,11 @@ public class Req15GameVictoryRulesTest {
         for (int i = 0; i < 4; i++) {
             player3.addToken();
         }
-        assertNull(playerList.getGameWinner(), "No winner should be declared at 4 tokens");
+        assertNull(playerList.getGameWinnerCandidates().get(0), "No winner should be declared at 4 tokens");
 
         // Add 5th token (should trigger victory)
         player3.addToken();
-        assertEquals(player3, playerList.getGameWinner(), "Player3 should win with 5 tokens in 3-player game");
+        assertEquals(player3, playerList.getGameWinnerCandidates().get(0), "Player3 should win with 5 tokens in 3-player game");
     }
 
     /**
@@ -80,11 +80,11 @@ public class Req15GameVictoryRulesTest {
         for (int i = 0; i < 3; i++) {
             player2.addToken();
         }
-        assertNull(playerList.getGameWinner(), "No winner should be declared at 3 tokens");
+        assertNull(playerList.getGameWinnerCandidates().get(0), "No winner should be declared at 3 tokens");
 
         // Add 4th token (should trigger victory)
         player2.addToken();
-        assertEquals(player2, playerList.getGameWinner(), "Player2 should win with 4 tokens in 4-player game");
+        assertEquals(player2, playerList.getGameWinnerCandidates().get(0), "Player2 should win with 4 tokens in 4-player game");
     }
 
     /**
