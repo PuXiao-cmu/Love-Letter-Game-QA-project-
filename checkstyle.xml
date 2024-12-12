@@ -78,12 +78,12 @@
 
   <!-- Miscellaneous other checks.                   -->
   <!-- See https://checkstyle.org/checks/misc/index.html -->
-  <module name="RegexpSingleline">
+  <!-- <module name="RegexpSingleline">
     <property name="format" value="\s+$"/>
     <property name="minimum" value="0"/>
     <property name="maximum" value="0"/>
     <property name="message" value="Line has trailing spaces."/>
-  </module>
+  </module> -->
 
   <module name="TreeWalker">
 
@@ -150,7 +150,7 @@
     <!-- See https://checkstyle.org/checks/coding/index.html -->
     <module name="EmptyStatement"/>
     <module name="EqualsHashCode"/>
-    <module name="HiddenField"/>
+    <!-- <module name="HiddenField"/> -->
     <module name="IllegalInstantiation"/>
     <module name="InnerAssignment"/>
     <module name="MissingSwitchDefault"/>

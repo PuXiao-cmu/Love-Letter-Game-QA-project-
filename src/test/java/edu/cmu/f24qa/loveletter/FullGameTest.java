@@ -80,7 +80,7 @@ public class FullGameTest {
         // Final assertions
         assertEquals(1, alice.getTokens(), "Alice should have 1 token at the end of the game.");
         assertEquals(7, bob.getTokens(), "Bob should have 7 tokens and win the game.");
-        assertSame(bob, playerList.getGameWinner(), "The winner should be Bob.");
+        assertSame(bob, playerList.getGameWinnerCandidates().get(0), "The winner should be Bob.");
     }
 
     // Individual round simulations

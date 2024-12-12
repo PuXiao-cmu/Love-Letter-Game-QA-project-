@@ -1,6 +1,6 @@
 package edu.cmu.f24qa.loveletter;
 
-public class AssassinAction implements CardAction{
+public class AssassinAction implements CardAction {
     /**
      *
      * @param userInput

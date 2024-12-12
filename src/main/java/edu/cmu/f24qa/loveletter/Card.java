@@ -52,14 +52,14 @@ public enum Card {
         "king",
         "countess",
         "princess",
-        "jester", 
-        "assassin", 
-        "bishop", 
-        "dowager queen", 
-        "constable", 
-        "count", 
-        "sycophant", 
-        "baroness", 
+        "jester",
+        "assassin",
+        "bishop",
+        "dowager queen",
+        "constable",
+        "count",
+        "sycophant",
+        "baroness",
         "cardinal"
     };
 

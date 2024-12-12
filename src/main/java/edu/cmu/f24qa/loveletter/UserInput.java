@@ -28,7 +28,7 @@ public interface UserInput {
     String getCardName();
 
     /**
-     * Prompts the user to enter a number guess
+     * Prompts the user to enter a number guess.
      * @return the number guessed by the user
      */
     int getCardNumber();
@@ -52,5 +52,9 @@ public interface UserInput {
      */
     Player getOpponent(PlayerList playerList, Player user, boolean selectSelf);
 
+    /**
+     * Sets the player that needs to be selected for next round (if select player action is involved).
+     * @param sycophantChoice Player selected.
+     */
     void setSycophantChoice(Player sycophantChoice);
 }
