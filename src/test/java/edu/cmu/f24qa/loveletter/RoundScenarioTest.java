@@ -81,7 +81,8 @@ public class RoundScenarioTest {
         // Simulate Player2's Turn (Turn 2)
         when(mockUserInput.getOpponent(playerList, player2)).thenReturn(player3); // Player2 targets Player3
         when(mockUserInput.getCardIndex(player2)).thenReturn("1"); // Select Guard
-        when(mockUserInput.getCardName()).thenReturn("Guard"); // Guess Guard
+        // when(mockUserInput.getCardName()).thenReturn("Guard"); // Guess Guard
+        when(mockUserInput.getCardNumber()).thenReturn(1); // Guess Guard
         game.executeTurn(player2);
 
         // After Turn 2
@@ -91,7 +92,8 @@ public class RoundScenarioTest {
         // Simulate Player3's Turn (Turn 3)
         when(mockUserInput.getOpponent(playerList, player3)).thenReturn(player2); // Player3 targets Player2
         when(mockUserInput.getCardIndex(player3)).thenReturn("0"); // Select Guard
-        when(mockUserInput.getCardName()).thenReturn("Prince"); // Guess Prince
+        // when(mockUserInput.getCardName()).thenReturn("Prince"); // Guess Prince
+        when(mockUserInput.getCardNumber()).thenReturn(5); // Guess Prince
         game.executeTurn(player3);
 
         // After Turn 3
