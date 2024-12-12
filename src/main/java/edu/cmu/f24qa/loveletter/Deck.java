@@ -127,8 +127,4 @@ public class Deck {
     public boolean hasMoreCards() {
         return !deck.isEmpty();
     }
-
-    public Deque<Card> getDeck() {
-        return deck;
-    }
 }
