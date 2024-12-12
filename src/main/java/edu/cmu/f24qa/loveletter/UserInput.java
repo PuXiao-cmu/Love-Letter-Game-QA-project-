@@ -57,4 +57,11 @@ public interface UserInput {
      * @param sycophantChoice Player selected.
      */
     void setSycophantChoice(Player sycophantChoice);
+
+    /**
+     * Get the number of opponents the user selects.
+     *
+     * @return the number of opponents as an integer.
+     */
+    Integer getNumOpponent();
 }

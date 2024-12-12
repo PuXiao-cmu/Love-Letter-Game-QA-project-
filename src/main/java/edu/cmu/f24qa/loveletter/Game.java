@@ -55,7 +55,7 @@ public class Game {
         }
         deck.shuffle();
         deck.hideTopCard();
-        
+
         if (numPlayers == 2) {
             deck.removeAnotherThreeCards();
         }
@@ -70,7 +70,10 @@ public class Game {
         while (!isGameOver()) {
             playRound();
         }
-        announceGameWinner();
+        Player finalWinner = getFinalGameWinner();
+        if (finalWinner != null) {
+            System.out.println(finalWinner + " has won the game and the heart of the princess!");
+        }
     }
 
     /**
@@ -155,11 +158,24 @@ public class Game {
     }
 
     /**
-     * Announces the game winner.
+     * Get the final game winner.
+     *
+     * @return the final game winner
      */
-    private void announceGameWinner() {
+    protected Player getFinalGameWinner() {
         List<Player> gameWinners = players.getGameWinnerCandidates();
-        System.out.println(gameWinners + " has won the game and the heart of the princess!");
+        while (gameWinners != null && gameWinners.size() > 1) {
+            System.out.println("Tie detected! Players involved in the tie: "
+                    + gameWinners.stream().map(Player::getName).collect(Collectors.joining(", ")));
+            System.out.println("Playing a tie-breaking round...");
+            players.setActivePlayers(gameWinners);
+            playRound();
+            gameWinners = determineRoundWinner();
+        }
+        if (gameWinners != null) {
+            return gameWinners.get(0);
+        }
+        return null;
     }
 
     /**
