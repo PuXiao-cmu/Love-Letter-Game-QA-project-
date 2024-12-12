@@ -127,4 +127,13 @@ public class Deck {
     public boolean hasMoreCards() {
         return !deck.isEmpty();
     }
+
+    /**
+     * Get the deck.
+     *
+     * @return the deck
+     */
+    public Deque<Card> getDeck() {
+        return deck;
+    }
 }
