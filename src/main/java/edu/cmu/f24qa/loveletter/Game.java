@@ -68,7 +68,10 @@ public class Game {
         while (!isGameOver()) {
             playRound();
         }
-        announceGameWinner();
+        Player finalWinner = getFinalGameWinner();
+        if (finalWinner != null) {
+            System.out.println(finalWinner + " has won the game and the heart of the princess!");
+        }
     }
 
     /**
@@ -153,9 +156,9 @@ public class Game {
     }
 
     /**
-     * Announces the game winner.
+     * Get final the game winner.
      */
-    private void announceGameWinner() {
+    protected Player getFinalGameWinner() {
         List<Player> gameWinners = players.getGameWinnerCandidates();
         while (gameWinners != null && gameWinners.size() > 1) {
             System.out.println("Tie detected! Players involved in the tie: "
@@ -166,8 +169,9 @@ public class Game {
             gameWinners = determineRoundWinner();
         }
         if (gameWinners != null) {
-            System.out.println(gameWinners.get(0) + " has won the game and the heart of the princess!");
+            return gameWinners.get(0);
         }
+        return null;
     }
 
     /**
