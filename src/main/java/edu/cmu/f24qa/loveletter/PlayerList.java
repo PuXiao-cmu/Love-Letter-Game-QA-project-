@@ -64,6 +64,7 @@ public class PlayerList {
         for (Player p : players) {
             p.clearHand();
             p.clearDiscarded();
+            p.clearJesterPrediction();
         }
     }
 
@@ -171,7 +172,7 @@ public class PlayerList {
         // Compare each player's card value
         for (Player player : players) {
             if (player.hasHandCards()) {
-                int cardValue = player.viewHandCard(0).getValue();
+                int cardValue = player.finalHandValue();
                 if (cardValue > highestCardValue) {
                     highestCardValue = cardValue;
                     result.clear();
@@ -291,4 +292,14 @@ public class PlayerList {
         }
         return null;
     }
+
+    /**
+     * Remove all non active players.
+     * @param activePlayers the list of active player
+     */
+    public void setActivePlayers(List<Player> activePlayers) {
+        this.players.clear();
+        this.players.addAll(activePlayers);
+    }
+
 }
