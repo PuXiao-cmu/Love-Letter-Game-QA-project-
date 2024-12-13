@@ -1,13 +1,14 @@
 package edu.cmu.f24qa.loveletter;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+/**
+ * Whitebox tests for Constable card functionality in 5-8 player game.
+ */
 public class WhiteboxConstableLogicTest {
     private UserInput mockUserInput;
     private Player mockUser;

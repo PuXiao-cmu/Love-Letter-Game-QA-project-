@@ -9,7 +9,7 @@ import java.io.PrintStream;
 import org.junit.jupiter.api.Assertions;
 
 /**
- * Blackbox tests for Constable card functionality in 5-8 player game.
+ * Blackbox tests for Constable card in 5-8 player game.
  */
 class BlackboxConstableLogicTest {
     private UserInput mockUserInput;
