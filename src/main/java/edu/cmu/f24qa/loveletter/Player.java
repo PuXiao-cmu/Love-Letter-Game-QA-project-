@@ -53,7 +53,7 @@ public class Player {
             this.addToken();
             System.out.println(this.name + " gained a token from Constable Viktor!");
         }
-        this.discarded.add(this.hand.remove(0));
+        this.hand.remove(0);
     }
 
     /**

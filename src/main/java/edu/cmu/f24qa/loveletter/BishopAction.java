@@ -34,12 +34,15 @@ public class BishopAction implements CardAction {
                 return; // Game ends immediately
             }
 
-            // Handle target player's card (unless it's Princess)
-            if (opponentCard != Card.PRINCESS) {
+            if (opponentCard == Card.PRINCESS) {
+                opponent.eliminate();
+            } else {
                 opponent.discardCard(opponent.playHandCard(0));
                 if (deck.hasMoreCards()) {
                     opponent.receiveHandCard(deck.draw());
                 }
+            } else {
+                opponent.eliminate();
             }
         }
     }
