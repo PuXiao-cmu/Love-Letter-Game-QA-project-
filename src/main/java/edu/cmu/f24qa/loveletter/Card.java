@@ -167,6 +167,15 @@ public enum Card {
                 this.action.execute(userInput, user, players, deck);
                 break;
 
+            case "Cardinal": // 2
+                countValidTargets = countValidTargets(players, user, true);
+                if (countValidTargets < 2) {
+                    System.out.println("No valid targets available. Card discarded without effect.");
+                    return;
+                }
+                this.action.execute(userInput, user, players, deck);
+                break;
+
             default:
                 System.out.println("Unknown card: " + this.name);
                 return;
