@@ -152,6 +152,7 @@ public enum Card {
             case "Countess": // 7
             case "Princess": // 8
             case "Jester": // 0
+            case "Constable": // 6
                 this.action.execute(userInput, user, players, deck);
                 break;
 
