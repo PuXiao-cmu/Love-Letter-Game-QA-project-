@@ -11,9 +11,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  */
 public class CommandLineUserInput implements UserInput {
 
-    private Scanner scanner;
+    protected Scanner scanner;
     @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "This is required for card action.")
-    private Player sycophantChoice;
+    protected Player sycophantChoice;
 
     /**
      * Constructor of the CommandLineUserInput class.
@@ -99,6 +99,7 @@ public class CommandLineUserInput implements UserInput {
 
             if (this.sycophantChoice != null) {
                 System.out.println("Your choice is subject to Sycophant Morris's action.");
+                System.out.println("Your card selection is now " + this.sycophantChoice.getName());
                 opponent = this.sycophantChoice;
                 this.sycophantChoice = null;
             }
@@ -144,6 +145,7 @@ public class CommandLineUserInput implements UserInput {
 
             if (this.sycophantChoice != null) {
                 System.out.println("Your choice is subject to Sycophant Morris's action.");
+                System.out.println("Your card selection is now " + this.sycophantChoice.getName());
                 opponent = this.sycophantChoice;
                 this.sycophantChoice = null;
             }
