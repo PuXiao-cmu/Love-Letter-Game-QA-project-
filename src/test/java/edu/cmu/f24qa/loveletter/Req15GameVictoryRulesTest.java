@@ -19,7 +19,7 @@ public class Req15GameVictoryRulesTest {
     /**
      * Rule 15.2.1: Tests victory condition in 2-player game
      */
-    @Disabled("Issue #85: Game winner determination logic needs to be updated for different player counts")
+    //@Disabled("Issue #85: Game winner determination logic needs to be updated for different player counts")
     @Test
     void testTwoPlayerGameVictory() {
         playerList.addPlayer("Player1");
@@ -32,11 +32,11 @@ public class Req15GameVictoryRulesTest {
         for (int i = 0; i < 6; i++) {
             player1.addToken();
         }
-        assertNull(playerList.getGameWinner(), "No winner should be declared at 6 tokens");
+        assertTrue(playerList.getGameWinnerCandidates().isEmpty(), "No winner should be declared at 6 tokens");
 
         // Add 7th token (should trigger victory)
         player1.addToken();
-        assertEquals(player1, playerList.getGameWinner(), "Player1 should win with 7 tokens in 2-player game");
+        assertEquals(player1, playerList.getGameWinnerCandidates().get(0), "Player1 should win with 7 tokens in 2-player game");
     }
 
     /**
@@ -55,17 +55,17 @@ public class Req15GameVictoryRulesTest {
         for (int i = 0; i < 4; i++) {
             player3.addToken();
         }
-        assertNull(playerList.getGameWinner(), "No winner should be declared at 4 tokens");
+        assertTrue(playerList.getGameWinnerCandidates().isEmpty(), "No winner should be declared at 4 tokens");
 
         // Add 5th token (should trigger victory)
         player3.addToken();
-        assertEquals(player3, playerList.getGameWinner(), "Player3 should win with 5 tokens in 3-player game");
+        assertEquals(player3, playerList.getGameWinnerCandidates().get(0), "Player3 should win with 5 tokens in 3-player game");
     }
 
     /**
      * Rule 15.2.3: Tests victory condition in 4-player game
      */
-    @Disabled("Issue #85: Game winner determination logic needs to be updated for different player counts")
+    //@Disabled("Issue #85: Game winner determination logic needs to be updated for different player counts")
     @Test
     void testFourPlayerGameVictory() {
         playerList.addPlayer("Player1");
@@ -80,11 +80,11 @@ public class Req15GameVictoryRulesTest {
         for (int i = 0; i < 3; i++) {
             player2.addToken();
         }
-        assertNull(playerList.getGameWinner(), "No winner should be declared at 3 tokens");
+        assertTrue(playerList.getGameWinnerCandidates().isEmpty(), "No winner should be declared at 3 tokens");
 
         // Add 4th token (should trigger victory)
         player2.addToken();
-        assertEquals(player2, playerList.getGameWinner(), "Player2 should win with 4 tokens in 4-player game");
+        assertEquals(player2, playerList.getGameWinnerCandidates().get(0), "Player2 should win with 4 tokens in 4-player game");
     }
 
     /**
