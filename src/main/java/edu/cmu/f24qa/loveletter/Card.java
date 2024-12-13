@@ -53,7 +53,7 @@ public enum Card {
         "jester",
         "assassin",
         "bishop",
-        "dowager queen",
+        "dowagerqueen",
         "constable",
         "count",
         "sycophant",
@@ -138,7 +138,7 @@ public enum Card {
             case "Baron": // 3
             case "King": // 6
             case "Baroness": // 3
-            case "Dowager Queen": // 7
+            case "DowagerQueen": // 7
             case "Bishop": // 9
                 countValidTargets = countValidTargets(players, user, false);
                 if (countValidTargets < 1) {
@@ -152,6 +152,7 @@ public enum Card {
             case "Countess": // 7
             case "Princess": // 8
             case "Jester": // 0
+            case "Constable": // 6
                 this.action.execute(userInput, user, players, deck);
                 break;
 
