@@ -1,7 +1,5 @@
 package edu.cmu.f24qa.loveletter;
 
-import java.util.Set;
-
 /**
  * Enumeration for different types of cards with names and values.
  */
