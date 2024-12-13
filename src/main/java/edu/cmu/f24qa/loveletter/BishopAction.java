@@ -30,7 +30,7 @@ public class BishopAction implements CardAction {
             user.addToken();
 
             // Check if this causes immediate win
-            if (players.getGameWinnerCandidates() == user) {
+            if (players.getGameWinnerCandidates().contains(user)) {
                 return; // Game ends immediately
             }
 
