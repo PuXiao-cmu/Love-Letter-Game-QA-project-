@@ -217,7 +217,7 @@ public class PlayerList {
      * Returns the winner of the game.
      * @return the game winner
      */
-    public @Nullable List<Player> getGameWinnerCandidates() {
+    public List<Player> getGameWinnerCandidates() {
         int playerCount = players.size();
         int tokensNeeded;
         List<Player> gameWinnerCandidates = new ArrayList<>();
@@ -230,7 +230,7 @@ public class PlayerList {
         } else if (playerCount >= 4 && playerCount <= 8) {
             tokensNeeded = 4;
         } else {
-            return null;
+            return gameWinnerCandidates;
         }
 
         // Check if any player has reached the required number of tokens
