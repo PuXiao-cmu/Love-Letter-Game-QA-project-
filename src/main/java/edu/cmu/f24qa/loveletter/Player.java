@@ -81,6 +81,12 @@ public class Player {
         return this.hand.peek(index);
     }
 
+    /**
+     * Computes the final value of the player's hand card, including bonuses for "Count" cards in the hand 
+     * and discard pile.
+     *
+     * @return The final hand card value after applying "Count" card bonuses.
+     */
     public int finalHandValue() {
         int curCardValue = this.hand.peek(0).getValue() + this.discarded.numCountCard();
 

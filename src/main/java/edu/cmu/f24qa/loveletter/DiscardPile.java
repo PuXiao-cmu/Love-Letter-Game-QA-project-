@@ -57,6 +57,11 @@ public class DiscardPile {
         }
     }
 
+    /**
+     * Counts the number of "Count" cards in the discard pile.
+     *
+     * @return The number of "Count" cards in the discard pile.
+     */
     public int numCountCard() {
         int num = 0;
         for (Card card: cards) {
