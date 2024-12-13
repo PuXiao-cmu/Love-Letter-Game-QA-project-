@@ -291,4 +291,14 @@ public class PlayerList {
         }
         return null;
     }
+
+    /**
+     * Remove all non active players.
+     * @param activePlayers the list of active player
+     */
+    public void setActivePlayers(List<Player> activePlayers) {
+        this.players.clear();
+        this.players.addAll(activePlayers);
+    }
+
 }
