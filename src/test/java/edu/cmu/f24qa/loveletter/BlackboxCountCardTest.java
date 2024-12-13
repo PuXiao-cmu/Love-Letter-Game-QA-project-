@@ -11,7 +11,6 @@ class BlackboxCountCardTest {
 
     @BeforeEach
     void setup() {
-        // Initialize the player
         player = new Player("TestPlayer");
     }
 
@@ -20,10 +19,8 @@ class BlackboxCountCardTest {
      */
     @Test
     void testFinalHandValueWithCountInHand() {
-        // Add a "Count" card to the player's hand
         player.receiveHandCard(Card.COUNT);
 
-        // Verify final hand value
         assertEquals(6, player.finalHandValue());
     }
 
@@ -32,13 +29,10 @@ class BlackboxCountCardTest {
      */
     @Test
     void testFinalHandValueWithCountInHandAndDiscardPile() {
-        // Add a "Count" card to the player's hand
         player.receiveHandCard(Card.COUNT);
 
-        // Add a "Count" card to the player's discard pile
         player.discardCard(Card.COUNT);
 
-        // Verify final hand value
         assertEquals(7, player.finalHandValue());
     }
 
@@ -47,14 +41,22 @@ class BlackboxCountCardTest {
      */
     @Test
     void testFinalHandValueWithTwoCountsInDiscardPile() {
-        // Add a non-"Count" card to the player's hand
         player.receiveHandCard(Card.GUARD);
 
-        // Add two "Count" cards to the player's discard pile
         player.discardCard(Card.COUNT);
         player.discardCard(Card.COUNT);
 
-        // Verify final hand value
         assertEquals(3, player.finalHandValue());
+    }
+
+    /**
+     * Rule 4: If the player does not have any "Count" card in hand or discard pile,
+     * the final hand value is the base value of the hand card.
+     */
+    @Test
+    void testFinalHandValueWithoutAnyCountCard() {
+        player.receiveHandCard(Card.GUARD);
+
+        assertEquals(1, player.finalHandValue());
     }
 }

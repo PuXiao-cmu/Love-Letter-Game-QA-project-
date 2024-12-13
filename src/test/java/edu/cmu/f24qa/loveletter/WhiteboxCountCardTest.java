@@ -4,34 +4,38 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class WhiteboxCountCardTest {
 
-    private UserInput mockUserInput;
-    private Player mockUser;
-    private PlayerList mockPlayers;
-    private Deck mockDeck;
-    private CountAction countAction;
+    private UserInput userInput;
+    private Player player;
+    private PlayerList playerList;
+    private Deck deck;
 
     @BeforeEach
-    void setup() {
-        // Initialize mocks for dependencies
-        mockUserInput = mock(UserInput.class);
-        mockUser = mock(Player.class);
-        mockPlayers = mock(PlayerList.class);
-        mockDeck = mock(Deck.class);
-
-        // Initialize the CountAction instance
-        countAction = new CountAction();
+    void setUp() {
+        deck = new Deck();
+        deck.build();
+        deck.shuffle();
+        userInput = mock(UserInput.class);
+        player = mock(Player.class);
+        playerList = mock(PlayerList.class);
     }
 
+    /**
+     * Test ID: CountT1
+     * Tests that the CountAction.execute method does not trigger any actions.
+     * Verifies that the player, userInput, and playerList are not interacted with.
+     */
     @Test
-    void testExecute() {
-        // Act
-        assertDoesNotThrow(() -> countAction.execute(mockUserInput, mockUser, mockPlayers, mockDeck));
+    void testCountAction() {
+        CountAction countAction = new CountAction();
 
-        // Verify no unexpected interactions with mocks
-        verifyNoInteractions(mockUserInput, mockUser, mockPlayers, mockDeck);
+        countAction.execute(userInput, player, playerList, deck);
+
+        // Verify no interactions with mocks
+        verifyNoInteractions(userInput);
+        verifyNoInteractions(player);
+        verifyNoInteractions(playerList);
     }
 }
