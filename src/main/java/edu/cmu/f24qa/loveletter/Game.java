@@ -221,17 +221,17 @@ public class Game {
         }
 
         Set<String> cardsSelectPlayer = new HashSet<>() {{
-            add("king");
-            add("prince");
-            add("baron");
-            add("priest");
-            add("guard");
-            add("bishop");
-            add("dowagerqueen");
-            add("sycophant");
-            add("baroness");
-            add("cardinal");
-            add("jester");
+            add("King");
+            add("Prince");
+            add("Baron");
+            add("Priest");
+            add("Guard");
+            add("Bishop");
+            add("DowagerQueen");
+            add("Sycophant");
+            add("Baroness");
+            add("Cardinal");
+            add("Jester");
         }};
 
         if (!cardsSelectPlayer.contains(turn.viewHandCard(cardToPlay).getName())) {

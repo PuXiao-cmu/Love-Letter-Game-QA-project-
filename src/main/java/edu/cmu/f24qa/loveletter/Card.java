@@ -42,23 +42,23 @@ public enum Card {
      * All possible card names.
      */
     public static final String[] CARD_NAMES = {
-        "guard",
-        "priest",
-        "baron",
-        "handmaiden",
-        "prince",
-        "king",
-        "countess",
-        "princess",
-        "jester",
-        "assassin",
-        "bishop",
-        "dowagerqueen",
-        "constable",
-        "count",
-        "sycophant",
-        "baroness",
-        "cardinal"
+        "Guard",
+        "Priest",
+        "Baron",
+        "Handmaiden",
+        "Prince",
+        "King",
+        "Countess",
+        "Princess",
+        "Jester",
+        "Assassin",
+        "Bishop",
+        "DowagerQueen",
+        "Constable",
+        "Count",
+        "Sycophant",
+        "Baroness",
+        "Cardinal"
     };
 
     /**
@@ -152,6 +152,8 @@ public enum Card {
             case "Countess": // 7
             case "Princess": // 8
             case "Jester": // 0
+            case "Assassin": //0
+            case "Count": //5
             case "Constable": // 6
                 this.action.execute(userInput, user, players, deck);
                 break;
