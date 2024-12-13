@@ -30,6 +30,7 @@ public class WhiteboxSycophantCardTest {
     }
 
     /**
+     * Test ID: Sycophant-W1
      * Tests the execution of the SycophantAction where a player is selected.
      */
     @Test
