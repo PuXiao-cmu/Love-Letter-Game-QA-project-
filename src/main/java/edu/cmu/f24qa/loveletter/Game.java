@@ -227,7 +227,7 @@ public class Game {
             add("priest");
             add("guard");
             add("bishop");
-            add("dowager queen");
+            add("dowagerqueen");
             add("sycophant");
             add("baroness");
             add("cardinal");
