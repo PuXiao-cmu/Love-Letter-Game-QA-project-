@@ -80,7 +80,7 @@ class BlackboxBishopCardTest {
         bishopCard.execute(mockUserInput, spyPlayer, playerList, deck);
 
         assertEquals(initialTokens + 1, spyPlayer.getTokens(), "Player should gain a token");
-        assertTrue(spyOpponent.hasHandCards(), "Opponent should keep Princess card");
+        assertFalse(spyOpponent.hasHandCards(), "Opponent should be eliminated when Princess is revealed");
     }
 
     /**
