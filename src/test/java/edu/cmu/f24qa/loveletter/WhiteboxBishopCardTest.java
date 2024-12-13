@@ -82,10 +82,8 @@ public class WhiteboxBishopCardTest {
         when(mockUserInput.getCardNumber()).thenReturn(2);
         when(mockOpponent.viewHandCard(0)).thenReturn(Card.BARON);
 
-        // Execute
         bishopAction.execute(mockUserInput, mockUser, mockPlayerList, deck);
 
-        // Verify
         verify(mockUser, never()).addToken();
         verify(mockOpponent, never()).discardCard(any(Card.class));
         verify(mockOpponent, never()).receiveHandCard(any(Card.class));
