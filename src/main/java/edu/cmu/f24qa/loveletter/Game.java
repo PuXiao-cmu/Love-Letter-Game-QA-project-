@@ -176,7 +176,7 @@ public class Game {
      */
     protected @Nullable Player getFinalGameWinner() {
         List<Player> gameWinners = players.getGameWinnerCandidates();
-        while (!gameWinners.isEmpty() && gameWinners.size() > 1) {
+        while (gameWinners.size() > 1) {
             System.out.println("Tie detected! Players involved in the tie: "
                     + gameWinners.stream().map(Player::getName).collect(Collectors.joining(", ")));
             System.out.println("Playing a tie-breaking round...");
