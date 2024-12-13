@@ -1,5 +1,7 @@
 package edu.cmu.f24qa.loveletter;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Represents a player in the Love Letter game.
  */
@@ -17,6 +19,11 @@ public class Player {
      * The number of blocks the player has won.
      */
     private int tokens;
+
+    /**
+     * Records the player who predicted this player will win.
+     */
+    private Player jesterPredictor;
 
     /**
      * Constructs a new player with the specified name.
@@ -42,6 +49,10 @@ public class Player {
      * Eliminates the player from the round by discarding their hand.
      */
     public void eliminate() {
+        if (this.discarded.containsCard(Card.CONSTABLE)) {
+            this.addToken();
+            System.out.println(this.name + " gained a token from Constable Viktor!");
+        }
         this.discarded.add(this.hand.remove(0));
     }
 
@@ -79,6 +90,22 @@ public class Player {
      */
     public Card viewHandCard(int index) {
         return this.hand.peek(index);
+    }
+
+    /**
+     * Computes the final value of the player's hand card, including bonuses for "Count" cards in the hand 
+     * and discard pile.
+     *
+     * @return The final hand card value after applying "Count" card bonuses.
+     */
+    public int finalHandValue() {
+        int curCardValue = this.hand.peek(0).getValue() + this.discarded.numCountCard();
+
+        if (this.hand.peek(0).getName().equalsIgnoreCase("count")) {
+            curCardValue++;
+        }
+
+        return curCardValue;
     }
 
     /**
@@ -180,5 +207,32 @@ public class Player {
     @Override
     public String toString() {
         return this.name + " (" + this.tokens + " tokens)";
+    }
+
+    /**
+     * Sets the predictor who used Jester card on this player.
+     *
+     * @param predictor the player who made the prediction
+     */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Design requires direct setting of predictor")
+    public void setJesterPredictor(Player predictor) {
+        this.jesterPredictor = predictor;
+    }
+
+    /**
+     * Gets the player who predicted this player will win.
+     *
+     * @return the predictor, or null if none
+     */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "Design requires direct access to predictor")
+    public Player getJesterPredictor() {
+        return jesterPredictor;
+    }
+
+    /**
+     * Clears the Jester prediction.
+     */
+    public void clearJesterPrediction() {
+        this.jesterPredictor = null;
     }
 }
