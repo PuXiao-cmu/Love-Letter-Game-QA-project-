@@ -3,6 +3,8 @@ package edu.cmu.f24qa.loveletter;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * CommandLineUserInput is a concrete implementation of the UserInput interface
  * that uses the command line (Scanner) for input.
@@ -10,12 +12,15 @@ import java.util.Scanner;
 public class CommandLineUserInput implements UserInput {
 
     private Scanner scanner;
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "This is required for card action.")
+    private Player sycophantChoice;
 
     /**
      * Constructor of the CommandLineUserInput class.
      */
     public CommandLineUserInput() {
         scanner = new Scanner(System.in, StandardCharsets.UTF_8);
+        sycophantChoice = null;
     }
 
     /**
@@ -91,6 +96,13 @@ public class CommandLineUserInput implements UserInput {
             System.out.print("Who would you like to target: ");
             String opponentName = scanner.nextLine();
             Player opponent = playerList.getPlayer(opponentName);
+
+            if (this.sycophantChoice != null) {
+                System.out.println("Your choice is subject to Sycophant Morris's action.");
+                opponent = this.sycophantChoice;
+                this.sycophantChoice = null;
+            }
+
             if (opponent == null) {
                 System.out.println("Invalid player name. Please try again.");
                 continue;
@@ -129,6 +141,13 @@ public class CommandLineUserInput implements UserInput {
             System.out.print("Who would you like to target: ");
             String opponentName = scanner.nextLine();
             Player opponent = playerList.getPlayer(opponentName);
+
+            if (this.sycophantChoice != null) {
+                System.out.println("Your choice is subject to Sycophant Morris's action.");
+                opponent = this.sycophantChoice;
+                this.sycophantChoice = null;
+            }
+
             if (opponent == null) {
                 System.out.println("Invalid player name. Please try again.");
                 continue;
@@ -151,6 +170,15 @@ public class CommandLineUserInput implements UserInput {
 
             return opponent;
         }
+    }
+
+    /**
+     * Sets the player that needs to be selected for next round (if select player action is involved).
+     * @param sycophantChoice Player selected.
+     */
+    @Override
+    public void setSycophantChoice(Player sycophantChoice) {
+        this.sycophantChoice = sycophantChoice;
     }
 
     /**
