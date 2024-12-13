@@ -56,4 +56,19 @@ public class DiscardPile {
             System.out.println(c);
         }
     }
+
+    /**
+     * Counts the number of "Count" cards in the discard pile.
+     *
+     * @return The number of "Count" cards in the discard pile.
+     */
+    public int numCountCard() {
+        int num = 0;
+        for (Card card: cards) {
+            if (card.getName().equalsIgnoreCase("count")) {
+                num++;
+            }
+        }
+        return num;
+    }
 }

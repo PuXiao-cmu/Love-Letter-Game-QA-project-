@@ -1,5 +1,7 @@
 package edu.cmu.f24qa.loveletter;
 
+import java.util.Set;
+
 /**
  * Enumeration for different types of cards with names and values.
  */
@@ -11,7 +13,17 @@ public enum Card {
     PRINCE("Prince", 5, new PrinceAction()),
     KING("King", 6, new KingAction()),
     COUNTESS("Countess", 7, new CountessAction()),
-    PRINCESS("Princess", 8, new PrincessAction());
+    PRINCESS("Princess", 8, new PrincessAction()),
+    JESTER("Jester", 0, new JesterAction()),
+    ASSASSIN("Assassin", 0, new AssassinAction()),
+    CARDINAL("Cardinal", 2, new CardinalAction()),
+    BARONESS("Baroness", 3, new BaronessAction()),
+    SYCOPHANT("Sycophant", 4, new SycophantAction()),
+    COUNT("Count", 5, new CountAction()),
+    CONSTABLE("Constable", 6, new ConstableAction()),
+    DOWAGERQUEEN("DowagerQueen", 7, new DowagerQueenAction()),
+    BISHOP("Bishop", 9, new BishopAction());
+
 
     /**
      * The name of the card.
@@ -39,7 +51,16 @@ public enum Card {
         "prince",
         "king",
         "countess",
-        "princess"
+        "princess",
+        "jester",
+        "assassin",
+        "bishop",
+        "dowager queen",
+        "constable",
+        "count",
+        "sycophant",
+        "baroness",
+        "cardinal"
     };
 
     /**
@@ -77,7 +98,7 @@ public enum Card {
     }
 
     /**
-     * Checks if there is at least one valid target for the current card.
+     * Counts the number of valid targets for the current card.
      *
      * A valid target is a player who:
      * 1. Is not protected by the Handmaid card.
@@ -86,15 +107,16 @@ public enum Card {
      * @param players    the list of all players in the game
      * @param user       the player who is using the card
      * @param includeSelf whether to include the user as a potential target
-     * @return true if at least one valid target is found; false otherwise
+     * @return the number of valid targets
      */
-    private boolean hasValidTarget(PlayerList players, Player user, boolean includeSelf) {
+    private int countValidTargets(PlayerList players, Player user, boolean includeSelf) {
+        int validTargetCount = 0;
         for (Player player : players.players) {
-            if ((includeSelf || player != user) && !player.isProtected()) {
-                return true; // A valid target is found
+            if ((includeSelf || player != user) && !player.isProtected() && player.hasHandCards()) {
+                validTargetCount++;
             }
         }
-        return false; // No valid targets
+        return validTargetCount;
     }
 
     /**
@@ -110,29 +132,46 @@ public enum Card {
      *          the deck
      */
     public void execute(UserInput userInput, Player user, PlayerList players, Deck deck) {
-        boolean hasValidTarget = false;
+        int countValidTargets;
 
-        // Determine if the card has valid targets
-        if (this.value == 5) {
-            hasValidTarget = hasValidTarget(players, user, true); // Include self
-        } else if (this.value == 6 || this.value >= 1 && this.value <= 3) {
-            hasValidTarget = hasValidTarget(players, user, false); // Exclude self
-        } else {
-            this.action.execute(userInput, user, players, deck);
-            return;
+        switch (this.name) {
+            case "Guard": // 1
+            case "Priest": // 2
+            case "Baron": // 3
+            case "King": // 6
+            case "Baroness": // 3
+            case "Dowager Queen": // 7
+            case "Bishop": // 9
+                countValidTargets = countValidTargets(players, user, false);
+                if (countValidTargets < 1) {
+                    System.out.println("No valid targets available. Card discarded without effect.");
+                    return;
+                }
+                this.action.execute(userInput, user, players, deck);
+                break;
+
+            case "Handmaiden": // 4
+            case "Countess": // 7
+            case "Princess": // 8
+            case "Jester": // 0
+                this.action.execute(userInput, user, players, deck);
+                break;
+
+            case "Prince": // 5
+            case "Sycophant": // 9
+                countValidTargets = countValidTargets(players, user, true);
+                if (countValidTargets < 1) {
+                    System.out.println("No valid targets available. Card discarded without effect.");
+                    return;
+                }
+                this.action.execute(userInput, user, players, deck);
+                break;
+
+            default:
+                System.out.println("Unknown card: " + this.name);
+                return;
         }
-
-        // If no valid targets are available, discard the card without applying the effect
-        if (!hasValidTarget) {
-            System.out.println("No valid targets available. Card discarded without effect.");
-            user.discardCard(this);
-            return;
-        }
-
-        // Execute the card action if there are valid targets
-        this.action.execute(userInput, user, players, deck);
     }
-
 
     /**
      * Provides a string representation of the card in the format "name (value)".
