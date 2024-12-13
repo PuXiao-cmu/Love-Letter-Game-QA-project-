@@ -17,8 +17,8 @@ class BlackboxSycophantCardTest {
     private Scanner mockScanner;
     private Player sycophantPlayer; // The player who plays Sycophant
     private Player selectedPlayer; // The player selected by Sycophant
-    private Player firstInputPlayer;
-    private Player secondInputPlayer;
+    private Player firstInputPlayer; // The first input player selected by the next player
+    private Player secondInputPlayer; // The second input player selected by the next player
     private Player anotherPlayer;  // Another player in the game
     private PlayerList playerList;
     private Deck deck;

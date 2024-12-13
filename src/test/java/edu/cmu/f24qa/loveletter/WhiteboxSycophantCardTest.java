@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
 
 /**
- * White-box tests for the SycophantAction class to achieve 100% coverage.
+ * White-box tests for the SycophantAction class
  */
 public class WhiteboxSycophantCardTest {
 

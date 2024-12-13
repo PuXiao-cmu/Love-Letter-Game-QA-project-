@@ -41,8 +41,6 @@ public class BishopAction implements CardAction {
                 if (deck.hasMoreCards()) {
                     opponent.receiveHandCard(deck.draw());
                 }
-            } else {
-                opponent.eliminate();
             }
         }
     }
