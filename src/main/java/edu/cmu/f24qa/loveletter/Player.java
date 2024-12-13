@@ -1,5 +1,7 @@
 package edu.cmu.f24qa.loveletter;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Represents a player in the Love Letter game.
  */
@@ -17,6 +19,11 @@ public class Player {
      * The number of blocks the player has won.
      */
     private int tokens;
+
+    /**
+     * Records the player who predicted this player will win.
+     */
+    private Player jesterPredictor;
 
     /**
      * Constructs a new player with the specified name.
@@ -196,5 +203,32 @@ public class Player {
     @Override
     public String toString() {
         return this.name + " (" + this.tokens + " tokens)";
+    }
+
+    /**
+     * Sets the predictor who used Jester card on this player.
+     *
+     * @param predictor the player who made the prediction
+     */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Design requires direct setting of predictor")
+    public void setJesterPredictor(Player predictor) {
+        this.jesterPredictor = predictor;
+    }
+
+    /**
+     * Gets the player who predicted this player will win.
+     *
+     * @return the predictor, or null if none
+     */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "Design requires direct access to predictor")
+    public Player getJesterPredictor() {
+        return jesterPredictor;
+    }
+
+    /**
+     * Clears the Jester prediction.
+     */
+    public void clearJesterPrediction() {
+        this.jesterPredictor = null;
     }
 }
