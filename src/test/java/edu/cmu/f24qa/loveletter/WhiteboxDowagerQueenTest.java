@@ -24,8 +24,11 @@ class WhiteboxDowagerQueenTest {
         
         mockUser = spy(new Player("User"));
         mockOpponent = spy(new Player("Opponent"));
+        @SuppressWarnings("unused")
         Player player3 = new Player("Player3");
+        @SuppressWarnings("unused")
         Player player4 = new Player("Player4");
+        @SuppressWarnings("unused")
         Player player5 = new Player("Player5");
         
         when(mockPlayerList.numPlayer()).thenReturn(5);
