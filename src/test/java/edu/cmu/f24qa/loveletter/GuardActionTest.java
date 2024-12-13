@@ -34,7 +34,8 @@ class GuardActionTest {
 
         guardAction = new GuardAction();
         
-        when(mockUserInput.getCardName()).thenReturn("Guard");
+        // when(mockUserInput.getCardName()).thenReturn("Guard");
+        when(mockUserInput.getCardNumber()).thenReturn(1);
         when(mockOpponent.viewHandCard(0)).thenReturn(Card.PRIEST);
     }
 

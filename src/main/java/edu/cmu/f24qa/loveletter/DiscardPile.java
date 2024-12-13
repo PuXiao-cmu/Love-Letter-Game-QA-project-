@@ -56,4 +56,28 @@ public class DiscardPile {
             System.out.println(c);
         }
     }
+
+    /**
+     * Checks if the discard pile contains a specific card.
+     * @param card the card to check whether contain
+     * @return true if the card is in cards, false if the card not in cards
+     */
+    public boolean containsCard(Card card) {
+        return cards.contains(card);
+    }
+
+    /**
+     * Counts the number of "Count" cards in the discard pile.
+     *
+     * @return The number of "Count" cards in the discard pile.
+     */
+    public int numCountCard() {
+        int num = 0;
+        for (Card card: cards) {
+            if (card.getName().equalsIgnoreCase("count")) {
+                num++;
+            }
+        }
+        return num;
+    }
 }

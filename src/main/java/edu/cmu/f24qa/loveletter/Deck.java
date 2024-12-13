@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Represents a deck of cards used in the Love Letter game.
  */
@@ -13,6 +15,7 @@ public class Deck {
     /**
      * The queue of cards representing the deck.
      */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "DI is required for testing purposes")
     private Deque<Card> deck;
     private Card topCard;
     private List<Card> revealedCards;
@@ -42,6 +45,27 @@ public class Deck {
         deck.push(Card.KING);
         deck.push(Card.COUNTESS);
         deck.push(Card.PRINCESS);
+    }
+
+    /**
+     * Builds the deck for the 5-8 players mode.
+     */
+    public void buildPremium() {
+        build();
+        for (int i = 0; i < 3; i++) {
+            deck.push(Card.GUARD);
+        }
+        for (int i = 0; i < 2; i++) {
+            deck.push(Card.CARDINAL);
+            deck.push(Card.BARONESS);
+            deck.push(Card.SYCOPHANT);
+            deck.push(Card.COUNT);
+        }
+        deck.push(Card.JESTER);
+        deck.push(Card.ASSASSIN);
+        deck.push(Card.CONSTABLE);
+        deck.push(Card.DOWAGERQUEEN);
+        deck.push(Card.BISHOP);
     }
 
     /**
@@ -105,5 +129,14 @@ public class Deck {
      */
     public boolean hasMoreCards() {
         return !deck.isEmpty();
+    }
+
+    /**
+     * Get the deck.
+     *
+     * @return the deck
+     */
+    public Deque<Card> getDeck() {
+        return deck;
     }
 }

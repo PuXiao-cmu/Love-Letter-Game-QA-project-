@@ -55,7 +55,8 @@ public class Hand {
      */
     public int royaltyPos() {
         for (int i = 0; i < hand.size(); i++) {
-            if (hand.get(i).getValue() == 5 || hand.get(i).getValue() == 6) {
+            if (hand.get(i).getName().equalsIgnoreCase("prince")
+            || hand.get(i).getName().equalsIgnoreCase("king")) {
                 return i;
             }
         }
