@@ -29,6 +29,7 @@ public interface UserInput {
 
     /**
      * Prompts the user to enter a number guess.
+     *
      * @return the number guessed by the user
      */
     int getCardNumber();

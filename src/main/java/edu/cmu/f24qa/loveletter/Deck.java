@@ -62,7 +62,7 @@ public class Deck {
             deck.push(Card.COUNT);
         }
         deck.push(Card.JESTER);
-        deck.push(Card.ASSASIN);
+        deck.push(Card.ASSASSIN);
         deck.push(Card.CONSTABLE);
         deck.push(Card.DOWAGERQUEEN);
         deck.push(Card.BISHOP);
