@@ -144,9 +144,14 @@ public class Game {
      */
     protected void handleRoundWinner(List<Player> winners) {
         lastRoundWinners.clear(); // clear last round winners
+        List<Player> correctPredictors = new ArrayList<>(); // Collect all predictors who guessed correctly
         for (Player winner : winners) {
             winner.addToken();
             lastRoundWinners.add(winner); // add new winners
+            Player predictor = winner.getJesterPredictor();
+            if (predictor != null && !correctPredictors.contains(predictor)) {
+                correctPredictors.add(predictor);
+            }
         }
 
         if (winners.size() == 1) {
@@ -155,6 +160,12 @@ public class Game {
             System.out.println("This round ended in a tie! Winners: "
                     + winners.stream().map(Player::getName).collect(Collectors.joining(", ")));
         }
+
+        for (Player predictor : correctPredictors) {
+            predictor.addToken();
+            System.out.println(predictor.getName() + " correctly predicted a winner and earns a Token!");
+        }
+
         players.print();
     }
 
@@ -165,7 +176,7 @@ public class Game {
      */
     protected @Nullable Player getFinalGameWinner() {
         List<Player> gameWinners = players.getGameWinnerCandidates();
-        while (gameWinners != null && gameWinners.size() > 1) {
+        while (!gameWinners.isEmpty() && gameWinners.size() > 1) {
             System.out.println("Tie detected! Players involved in the tie: "
                     + gameWinners.stream().map(Player::getName).collect(Collectors.joining(", ")));
             System.out.println("Playing a tie-breaking round...");
@@ -173,7 +184,7 @@ public class Game {
             playRound();
             gameWinners = determineRoundWinner();
         }
-        if (gameWinners != null) {
+        if (!gameWinners.isEmpty()) {
             return gameWinners.get(0);
         }
         return null;
@@ -210,17 +221,17 @@ public class Game {
         }
 
         Set<String> cardsSelectPlayer = new HashSet<>() {{
-            add("king");
-            add("prince");
-            add("baron");
-            add("priest");
-            add("guard");
-            add("bishop");
-            add("dowager queen");
-            add("sycophant");
-            add("baroness");
-            add("cardinal");
-            add("jester");
+            add("King");
+            add("Prince");
+            add("Baron");
+            add("Priest");
+            add("Guard");
+            add("Bishop");
+            add("DowagerQueen");
+            add("Sycophant");
+            add("Baroness");
+            add("Cardinal");
+            add("Jester");
         }};
 
         if (!cardsSelectPlayer.contains(turn.viewHandCard(cardToPlay).getName().toLowerCase())) {

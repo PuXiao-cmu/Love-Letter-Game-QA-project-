@@ -34,6 +34,7 @@ public class WhiteboxBaronessCardTest {
     }
 
     /**
+     * Test ID: BaronessT1
      * Tests the execute method when the user selects only one opponent.
      * Verifies that the correct interactions occur and the opponent's
      * hand card is revealed as expected.
@@ -58,6 +59,7 @@ public class WhiteboxBaronessCardTest {
     }
 
     /**
+     * Test ID: BaronessT2
      * Tests the execute method when the user selects two opponents.
      * Verifies that the correct interactions occur and both opponents'
      * hand cards are revealed as expected.
