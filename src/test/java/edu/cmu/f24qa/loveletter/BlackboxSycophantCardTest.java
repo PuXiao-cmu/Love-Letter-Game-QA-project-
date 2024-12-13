@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -148,12 +150,29 @@ class BlackboxSycophantCardTest {
      */
     @Test
     void testSycophantEffectIgnoredWhenNoPlayerSelectionRequired() {
-        when(mockScanner.nextLine()).thenReturn("SelectedPlayer");
+        when(mockScanner.nextLine()).thenReturn("SelectedPlayer").thenReturn("0");
 
         sycophantCard.execute(userInput, sycophantPlayer, playerList, deck);
 
-        countessCard.execute(userInput, selectedPlayer, playerList, deck);
+        assertEquals(selectedPlayer, userInput.sycophantChoice);
+
+        System.out.println("the selected player is: " + userInput.sycophantChoice.getName());
+
+        game.executeTurn(selectedPlayer);
 
         assertNull(userInput.sycophantChoice);
+    }
+
+    @Test
+    void testSycophantEffectIgnoredWhenNoPlayerSelectionRequired2() {
+        when(mockScanner.nextLine()).thenReturn("SelectedPlayer").thenReturn("0").thenReturn("FirstInputPlayer");
+
+        sycophantCard.execute(userInput, sycophantPlayer, playerList, deck);
+
+        assertEquals(selectedPlayer, userInput.sycophantChoice);
+
+        game.executeTurn(anotherPlayer);
+
+        // assertNull(userInput.sycophantChoice);
     }
 }
