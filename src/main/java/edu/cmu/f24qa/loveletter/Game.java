@@ -83,7 +83,7 @@ public class Game {
      * @return true if there is a winner, false if there is no winner now
      */
     private boolean isGameOver() {
-        return players.getGameWinnerCandidates() != null;
+        return !players.getGameWinnerCandidates().isEmpty();
     }
 
     /**
@@ -223,7 +223,7 @@ public class Game {
             add("jester");
         }};
 
-        if (!cardsSelectPlayer.contains(turn.viewHandCard(cardToPlay).getName())) {
+        if (!cardsSelectPlayer.contains(turn.viewHandCard(cardToPlay).getName().toLowerCase())) {
             userInput.setSycophantChoice(null);
         }
 
