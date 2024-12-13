@@ -59,6 +59,8 @@ public class DiscardPile {
 
     /**
      * Checks if the discard pile contains a specific card.
+     * @param card the card to check whether contain
+     * @return true if the card is in cards, false if the card not in cards
      */
     public boolean containsCard(Card card) {
         return cards.contains(card);
