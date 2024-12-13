@@ -234,7 +234,7 @@ public class Game {
             add("Jester");
         }};
 
-        if (!cardsSelectPlayer.contains(turn.viewHandCard(cardToPlay).getName().toLowerCase())) {
+        if (!cardsSelectPlayer.contains(turn.viewHandCard(cardToPlay).getName())) {
             userInput.setSycophantChoice(null);
         }
 

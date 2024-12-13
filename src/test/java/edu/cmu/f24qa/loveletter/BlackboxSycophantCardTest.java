@@ -5,9 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.Deque;
-import java.util.HashSet;
 import java.util.Scanner;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -86,16 +84,12 @@ class BlackboxSycophantCardTest {
      */
     @Test
     void testSycophantEffectIgnoredWhenPlayerSelectionShouldNotBeSelf() {
-        // Mock Scanner input to select the desired player
         when(mockScanner.nextLine()).thenReturn("SelectedPlayer").thenReturn("FirstInputPlayer");
 
-        // Execute Sycophant card
         sycophantCard.execute(userInput, sycophantPlayer, playerList, deck);
 
-        // Mock getOpponent to ensure it respects Sycophant effect
         Player returnedPlayer = userInput.getOpponent(playerList, selectedPlayer, false);
 
-        // Assert that the returned player is the one chosen by the Sycophant effect
         assertEquals(firstInputPlayer, returnedPlayer);
     }
 
@@ -106,16 +100,12 @@ class BlackboxSycophantCardTest {
      */
     @Test
     void testSycophantEffectReplacesNextPlayerSelection() {
-        // Mock Scanner input to select the desired player
         when(mockScanner.nextLine()).thenReturn("SelectedPlayer").thenReturn("FirstInputPlayer");
 
-        // Execute Sycophant card
         sycophantCard.execute(userInput, sycophantPlayer, playerList, deck);
 
-        // Mock getOpponent to ensure it respects Sycophant effect
         Player returnedPlayer = userInput.getOpponent(playerList, anotherPlayer);
 
-        // Assert that the returned player is the one chosen by the Sycophant effect
         assertEquals(selectedPlayer, returnedPlayer);
     }
 
@@ -127,18 +117,14 @@ class BlackboxSycophantCardTest {
      */
     @Test
     void testSycophantEffectReplacesOnlyFirstPlayerSelection() {
-        // Mock Scanner input to select the desired player
         when(mockScanner.nextLine()).thenReturn("SelectedPlayer").
         thenReturn("FirstInputPlayer").thenReturn("SecondInputPlayer");
 
-        // Execute Sycophant card
         sycophantCard.execute(userInput, sycophantPlayer, playerList, deck);
 
-        // Mock getOpponent to ensure it respects Sycophant effect
         Player returnedPlayer1 = userInput.getOpponent(playerList, anotherPlayer);
         Player returnedPlayer2 = userInput.getOpponent(playerList, anotherPlayer);
 
-        // Assert that the returned player is the one chosen by the Sycophant effect
         assertEquals(selectedPlayer, returnedPlayer1);
         assertEquals(secondInputPlayer, returnedPlayer2);
     }
@@ -161,18 +147,5 @@ class BlackboxSycophantCardTest {
         game.executeTurn(selectedPlayer);
 
         assertNull(userInput.sycophantChoice);
-    }
-
-    @Test
-    void testSycophantEffectIgnoredWhenNoPlayerSelectionRequired2() {
-        when(mockScanner.nextLine()).thenReturn("SelectedPlayer").thenReturn("0").thenReturn("FirstInputPlayer");
-
-        sycophantCard.execute(userInput, sycophantPlayer, playerList, deck);
-
-        assertEquals(selectedPlayer, userInput.sycophantChoice);
-
-        game.executeTurn(anotherPlayer);
-
-        // assertNull(userInput.sycophantChoice);
     }
 }
