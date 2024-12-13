@@ -22,6 +22,24 @@ public class GuardAction implements CardAction {
 
         int guessedNumber = userInput.getCardNumber();
         Card opponentCard = opponent.viewHandCard(0);
+        // Eliminate the player if opponent card is Assassin
+        if (opponentCard == Card.ASSASSIN) {
+            System.out.println("Opponent has assassinated you!");
+            // Eliminate the player
+            user.eliminate();
+
+            // Opponent redraw a new card
+            opponent.discardCard(opponent.playHandCard(0));
+            // Check if the deck is empty
+            if (deck.hasMoreCards()) {
+                // Allow the opponent to draw a new card from the deck
+                opponent.receiveHandCard(deck.draw());
+            } else if (deck.hasHiddenCard()) {
+                // If the deck is empty, draw the hidden card
+                opponent.receiveHandCard(deck.useHiddenCard());
+            }
+            return;
+        }
 
         // Check if the guessed number is valid (excluding Guard, which is 1)
         if (guessedNumber == 1) {

@@ -55,7 +55,7 @@ class ExtraSetupTest {
         assertEquals(2, cardCount.get(Card.SYCOPHANT), "There should be 2 Sycophants in the deck.");
         assertEquals(2, cardCount.get(Card.COUNT), "There should be 2 Counts in the deck.");
         assertEquals(1, cardCount.get(Card.JESTER), "There should be 1 Jester in the deck.");
-        assertEquals(1, cardCount.get(Card.ASSASIN), "There should be 1 Assassin in the deck.");
+        assertEquals(1, cardCount.get(Card.ASSASSIN), "There should be 1 Assassin in the deck.");
         assertEquals(1, cardCount.get(Card.CONSTABLE), "There should be 1 Constable in the deck.");
         assertEquals(1, cardCount.get(Card.DOWAGERQUEEN), "There should be 1 Dowager Queen in the deck.");
         assertEquals(1, cardCount.get(Card.BISHOP), "There should be 1 Bishop in the deck.");
