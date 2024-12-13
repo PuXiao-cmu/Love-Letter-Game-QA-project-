@@ -338,7 +338,7 @@ public class WhiteboxCardLogicTest {
      * Tests that playing Guard on an opponent and having an incorrect guess results in
      * not eliminating that opponent.
      */
-    @Disabled("Test needs to be updated due to rule changes")
+    @Disabled("Changed because of new Guard Card function.")
     @Test
     public void testGuardExecuteWithIncorrectGuess() {
         GuardAction guardAction = new GuardAction();
