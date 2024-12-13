@@ -153,6 +153,7 @@ public enum Card {
             case "Handmaiden": // 4
             case "Countess": // 7
             case "Princess": // 8
+            case "Jester": // 0
                 this.action.execute(userInput, user, players, deck);
                 break;
 
@@ -180,7 +181,6 @@ public enum Card {
                 return;
         }
     }
-
 
     /**
      * Provides a string representation of the card in the format "name (value)".

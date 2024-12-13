@@ -2,9 +2,12 @@ package edu.cmu.f24qa.loveletter;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 public class Game {
@@ -80,7 +83,7 @@ public class Game {
      * @return true if there is a winner, false if there is no winner now
      */
     private boolean isGameOver() {
-        return players.getGameWinnerCandidates() != null;
+        return !players.getGameWinnerCandidates().isEmpty();
     }
 
     /**
@@ -141,9 +144,14 @@ public class Game {
      */
     protected void handleRoundWinner(List<Player> winners) {
         lastRoundWinners.clear(); // clear last round winners
+        List<Player> correctPredictors = new ArrayList<>(); // Collect all predictors who guessed correctly
         for (Player winner : winners) {
             winner.addToken();
             lastRoundWinners.add(winner); // add new winners
+            Player predictor = winner.getJesterPredictor();
+            if (predictor != null && !correctPredictors.contains(predictor)) {
+                correctPredictors.add(predictor);
+            }
         }
 
         if (winners.size() == 1) {
@@ -152,6 +160,12 @@ public class Game {
             System.out.println("This round ended in a tie! Winners: "
                     + winners.stream().map(Player::getName).collect(Collectors.joining(", ")));
         }
+
+        for (Player predictor : correctPredictors) {
+            predictor.addToken();
+            System.out.println(predictor.getName() + " correctly predicted a winner and earns a Token!");
+        }
+
         players.print();
     }
 
@@ -160,7 +174,7 @@ public class Game {
      *
      * @return the final game winner
      */
-    protected Player getFinalGameWinner() {
+    protected @Nullable Player getFinalGameWinner() {
         List<Player> gameWinners = players.getGameWinnerCandidates();
         while (gameWinners != null && gameWinners.size() > 1) {
             System.out.println("Tie detected! Players involved in the tie: "
@@ -182,6 +196,7 @@ public class Game {
      * @param turn
      *             the player whose turn it is
      */
+    @SuppressFBWarnings(value = "NP_NONNULL_PARAM_VIOLATION", justification = "Passing null is valid.")
     protected void executeTurn(Player turn) {
         players.printUsedPiles();
         System.out.println("\n" + turn.getName() + "'s turn:");
@@ -192,15 +207,38 @@ public class Game {
         turn.receiveHandCard(deck.draw());
 
         int royaltyPos = turn.handRoyaltyPos();
-
-        if (royaltyPos == 0 && turn.viewHandCard(1).getValue() == 7) {
-            playCard(turn.playHandCard(1), turn);
-        } else if (royaltyPos == 1 && turn.viewHandCard(0).getValue() == 7) {
-            playCard(turn.playHandCard(0), turn);
+        
+        int cardToPlay;
+        if (royaltyPos == 0 && turn.viewHandCard(1).getName().equalsIgnoreCase("countess")) {
+            // playCard(turn.playHandCard(1), turn);
+            cardToPlay = 1;
+        } else if (royaltyPos == 1 && turn.viewHandCard(1).getName().equalsIgnoreCase("countess")) {
+            // playCard(turn.playHandCard(0), turn);
+            cardToPlay = 0;
         } else {
-            int idx = Integer.parseInt(userInput.getCardIndex(turn));
-            playCard(turn.playHandCard(idx), turn);
+            cardToPlay = Integer.parseInt(userInput.getCardIndex(turn));
+            // playCard(turn.playHandCard(idx), turn);
         }
+
+        Set<String> cardsSelectPlayer = new HashSet<>() {{
+            add("king");
+            add("prince");
+            add("baron");
+            add("priest");
+            add("guard");
+            add("bishop");
+            add("dowager queen");
+            add("sycophant");
+            add("baroness");
+            add("cardinal");
+            add("jester");
+        }};
+
+        if (!cardsSelectPlayer.contains(turn.viewHandCard(cardToPlay).getName())) {
+            userInput.setSycophantChoice(null);
+        }
+
+        playCard(turn.playHandCard(cardToPlay), turn);        
     }
 
     /**

@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Represents a deck of cards used in the Love Letter game.
  */
@@ -13,6 +15,7 @@ public class Deck {
     /**
      * The queue of cards representing the deck.
      */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "DI is required for testing purposes")
     private Deque<Card> deck;
     private Card topCard;
     private List<Card> revealedCards;
