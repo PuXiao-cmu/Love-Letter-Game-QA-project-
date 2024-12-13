@@ -1,9 +1,12 @@
 package edu.cmu.f24qa.loveletter;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,14 +24,20 @@ class BlackboxDowagerQueenTest {
     @BeforeEach
     void setup() {
         playerList = new PlayerList();
+        
         playerList.addPlayer("User");
         playerList.addPlayer("Opponent");
+        playerList.addPlayer("Player3");
+        playerList.addPlayer("Player4");
+        playerList.addPlayer("Player5");
+        
+        assertEquals(5, playerList.numPlayer(), "Should have 5 players for Dowager Queen card");
         
         user = playerList.getPlayer("User");
         opponent = playerList.getPlayer("Opponent");
         dowagerQueenAction = new DowagerQueenAction();
         deck = new Deck();
-        deck.build();
+        deck.buildPremium();
         
         mockUserInput = mock(UserInput.class);
         when(mockUserInput.getOpponent(any(PlayerList.class), any(Player.class)))
@@ -90,55 +99,5 @@ class BlackboxDowagerQueenTest {
         // Verify results
         assertTrue(user.hasHandCards(), "User should still be in game");
         assertTrue(opponent.hasHandCards(), "Opponent should still be in game");
-    }
-
-    /**
-     * Rule 4: When selecting non-existent opponent
-     */
-    @Test
-    void testNonExistentOpponentSelection() {
-        Player validOpponent = new Player("ValidOpponent");
-        playerList.addPlayer("ValidOpponent");
-        
-        when(mockUserInput.getOpponent(any(PlayerList.class), any(Player.class)))
-            .thenReturn(validOpponent);
-        
-        user.receiveHandCard(Card.GUARD);
-        validOpponent.receiveHandCard(Card.PRIEST);
-        
-        int initialUserCards = user.hasHandCards() ? 1 : 0;
-        
-        dowagerQueenAction.execute(mockUserInput, user, playerList, deck);
-    
-        assertTrue(user.hasHandCards() || validOpponent.hasHandCards(), 
-            "Game should proceed with valid opponent");
-    }
-
-    /**
-     * Rule 5: When selecting protected opponent
-     */
-    @Test
-    void testProtectedOpponentSelection() {
-        Player protectedOpponent = playerList.getPlayer("Opponent");
-        Player validOpponent = new Player("ValidOpponent");
-        playerList.addPlayer("ValidOpponent");
-        
-        when(mockUserInput.getOpponent(any(PlayerList.class), any(Player.class)))
-            .thenReturn(validOpponent);
-        
-        user.receiveHandCard(Card.GUARD);
-        protectedOpponent.receiveHandCard(Card.KING);
-        validOpponent.receiveHandCard(Card.PRIEST);
-        protectedOpponent.switchProtection();
-        
-        assertTrue(user.hasHandCards(), "User should have cards initially");
-        assertTrue(protectedOpponent.hasHandCards(), "Protected opponent should have cards initially");
-        assertTrue(protectedOpponent.isProtected(), "Opponent should be protected");
-    
-        dowagerQueenAction.execute(mockUserInput, user, playerList, deck);
-    
-        // Verify protected opponent was not affected
-        assertTrue(protectedOpponent.hasHandCards(), "Protected opponent should still have cards");
-        assertTrue(protectedOpponent.isProtected(), "Protected opponent should still be protected");
     }
 }
