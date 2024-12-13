@@ -3,10 +3,14 @@ package edu.cmu.f24qa.loveletter;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
+
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class BishopActionTest {
+public class WhiteboxBishopCardTest {
     private UserInput mockUserInput;
     private Player mockUser;
     private Player mockOpponent;
@@ -90,15 +94,15 @@ public class BishopActionTest {
     /**
      * BishopT4: Correct guess leads to immediate win(Bishop-W4)
      */
-    @Test
+    @Test 
     void testBishopT4_CorrectGuessLeadsToWin() {
         Card priestCard = Card.PRIEST;
         when(mockUserInput.getCardNumber()).thenReturn(2);
         when(mockOpponent.viewHandCard(0)).thenReturn(priestCard);
         when(mockOpponent.playHandCard(0)).thenReturn(priestCard);
 
-        // Mock game winner check
-        when(mockPlayerList.getGameWinner()).thenReturn(mockUser);
+        List<Player> winners = Collections.singletonList(mockUser);
+        when(mockPlayerList.getGameWinnerCandidates()).thenReturn(winners);
 
         bishopAction.execute(mockUserInput, mockUser, mockPlayerList, deck);
 
@@ -106,7 +110,7 @@ public class BishopActionTest {
         verify(mockUserInput).getCardNumber();
         verify(mockOpponent).viewHandCard(0);
         verify(mockUser).addToken();
-        verify(mockPlayerList).getGameWinner();
+        verify(mockPlayerList).getGameWinnerCandidates();
 
         verify(mockOpponent, never()).playHandCard(anyInt());
         verify(mockOpponent, never()).discardCard(any(Card.class));
