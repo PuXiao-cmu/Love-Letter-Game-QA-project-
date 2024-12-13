@@ -1,5 +1,7 @@
 package edu.cmu.f24qa.loveletter;
 
+import java.util.Set;
+
 /**
  * Enumeration for different types of cards with names and values.
  */
@@ -11,7 +13,17 @@ public enum Card {
     PRINCE("Prince", 5, new PrinceAction()),
     KING("King", 6, new KingAction()),
     COUNTESS("Countess", 7, new CountessAction()),
-    PRINCESS("Princess", 8, new PrincessAction());
+    PRINCESS("Princess", 8, new PrincessAction()),
+    JESTER("Jester", 0, new JesterAction()),
+    ASSASIN("Assasin", 0, new AssassinAction()),
+    CARDINAL("Cardinal", 2, new CardinalAction()),
+    BARONESS("Baroness", 3, new BaronessAction()),
+    SYCOPHANT("Sycophant", 4, new SycophantAction()),
+    COUNT("Count", 5, new CountAction()),
+    CONSTABLE("Constable", 6, new ConstableAction()),
+    DOWAGERQUEEN("DowagerQueen", 7, new DowagerQueenAction()),
+    BISHOP("Bishop", 9, new BishopAction());
+
 
     /**
      * The name of the card.
@@ -39,7 +51,16 @@ public enum Card {
         "prince",
         "king",
         "countess",
-        "princess"
+        "princess",
+        "jester",
+        "assassin",
+        "bishop",
+        "dowager queen",
+        "constable",
+        "count",
+        "sycophant",
+        "baroness",
+        "cardinal"
     };
 
     /**
@@ -112,10 +133,15 @@ public enum Card {
     public void execute(UserInput userInput, Player user, PlayerList players, Deck deck) {
         boolean hasValidTarget = false;
 
+        Set<String> targetCheckCards = Set.of(
+            "Guard", "Priest", "Baron", "King",
+            "Cardinal", "Baroness", "Dowager Queen", "Bishop"
+            );
+
         // Determine if the card has valid targets
-        if (this.value == 5) {
+        if (this == PRINCE || this == SYCOPHANT) {
             hasValidTarget = hasValidTarget(players, user, true); // Include self
-        } else if (this.value == 6 || this.value >= 1 && this.value <= 3) {
+        } else if (targetCheckCards.contains(this.name)) {
             hasValidTarget = hasValidTarget(players, user, false); // Exclude self
         } else {
             this.action.execute(userInput, user, players, deck);
@@ -125,7 +151,6 @@ public enum Card {
         // If no valid targets are available, discard the card without applying the effect
         if (!hasValidTarget) {
             System.out.println("No valid targets available. Card discarded without effect.");
-            user.discardCard(this);
             return;
         }
 

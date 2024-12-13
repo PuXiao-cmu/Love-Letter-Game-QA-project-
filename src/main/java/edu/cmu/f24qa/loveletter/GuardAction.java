@@ -20,15 +20,21 @@ public class GuardAction implements CardAction {
     public void execute(UserInput userInput, Player user, PlayerList players, Deck deck) {
         Player opponent = userInput.getOpponent(players, user);
 
-        String cardName = userInput.getCardName();
+        int guessedNumber = userInput.getCardNumber();
         Card opponentCard = opponent.viewHandCard(0);
-        if (cardName.equalsIgnoreCase("Guard")) {
-            System.out.println("You have guessed incorrectly");
-        } else if (opponentCard.getName().equalsIgnoreCase(cardName)) {
+
+        // Check if the guessed number is valid (excluding Guard, which is 1)
+        if (guessedNumber == 1) {
+            System.out.println("You cannot guess Guard!");
+            return;
+        }
+
+        // Compare guessed number with the opponent's card value
+        if (opponentCard.getValue() == guessedNumber) {
             System.out.println("You have guessed correctly!");
             opponent.eliminate();
         } else {
-            System.out.println("You have guessed incorrectly");
+            System.out.println("You have guessed incorrectly.");
         }
     }
 }

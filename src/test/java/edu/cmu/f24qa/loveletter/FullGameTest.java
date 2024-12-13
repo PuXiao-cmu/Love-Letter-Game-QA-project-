@@ -80,13 +80,14 @@ public class FullGameTest {
         // Final assertions
         assertEquals(1, alice.getTokens(), "Alice should have 1 token at the end of the game.");
         assertEquals(7, bob.getTokens(), "Bob should have 7 tokens and win the game.");
-        assertSame(bob, playerList.getGameWinner(), "The winner should be Bob.");
+        assertSame(bob, playerList.getGameWinnerCandidates().get(0), "The winner should be Bob.");
     }
 
     // Individual round simulations
     private void simulateRound1() {
         // Setup
-        doReturn("Prince").when(mockUserInput).getCardName(); // Alice guesses Bob's card
+        // doReturn("Prince").when(mockUserInput).getCardName(); // Alice guesses Bob's card
+        doReturn(5).when(mockUserInput).getCardNumber(); // Alice guesses Bob's card
         when(mockUserInput.getCardIndex(any(Player.class))).thenReturn("1");
         when(mockUserInput.getOpponent(any(PlayerList.class), any(Player.class))).thenReturn(bob);
 
@@ -189,9 +190,12 @@ public class FullGameTest {
         when(mockUserInput.getCardIndex(alice))
             .thenReturn("0")
             .thenReturn("1");
-        when(mockUserInput.getCardName())
-            .thenReturn("Princess")
-            .thenReturn("Priest");
+        // when(mockUserInput.getCardName())
+        //     .thenReturn("Princess")
+        //     .thenReturn("Priest");
+        when(mockUserInput.getCardNumber())
+            .thenReturn(8)
+            .thenReturn(2);
         when(mockUserInput.getOpponent(any(PlayerList.class), any(Player.class)))
             .thenReturn(alice)
             .thenReturn(alice)
@@ -215,7 +219,8 @@ public class FullGameTest {
         when(mockUserInput.getCardIndex(alice))
             .thenReturn("1")
             .thenReturn("1");
-        when(mockUserInput.getCardName()).thenReturn("Prince");
+        // when(mockUserInput.getCardName()).thenReturn("Prince");
+        when(mockUserInput.getCardNumber()).thenReturn(5);
         when(mockUserInput.getOpponent(any(PlayerList.class), any(Player.class)))
             .thenReturn(alice)
             .thenReturn(bob)

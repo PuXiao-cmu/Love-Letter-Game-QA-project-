@@ -82,6 +82,22 @@ public class Player {
     }
 
     /**
+     * Computes the final value of the player's hand card, including bonuses for "Count" cards in the hand 
+     * and discard pile.
+     *
+     * @return The final hand card value after applying "Count" card bonuses.
+     */
+    public int finalHandValue() {
+        int curCardValue = this.hand.peek(0).getValue() + this.discarded.numCountCard();
+
+        if (this.hand.peek(0).getName().equalsIgnoreCase("count")) {
+            curCardValue++;
+        }
+
+        return curCardValue;
+    }
+
+    /**
      * Checks if the player has any cards in their hand.
      *
      * @return true if the player has any cards, false if not
